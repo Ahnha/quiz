@@ -4,18 +4,17 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import emailjs from '@emailjs/browser';
 
 interface ResultEmailFormProps {
-    userEmail: string;
-    userName: string;
     quizTitle: string;
     score: number;
     resultText: string;
     onSent: () => void;
 }
 
-const SITE_KEY = '6Ld2LnorAAAAAGZEx4BdyxobZF9Ql04R5bZGgp34';
+const SITE_KEY = '6Ld2LnorAAAAAGZEx4BdyxobZF9Ql04R5bZGgp34'; // Cheia ta reală de reCAPTCHA
 
-const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ userEmail, userName, quizTitle, score, resultText, onSent }) => {
-    const [email, setEmail] = useState('');
+const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, resultText, onSent }) => {
+    const [userName, setUserName] = useState<string>('');
+    const [userEmail, setUserEmail] = useState<string>('');
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const [sending, setSending] = useState(false);
     const [error, setError] = useState('');
@@ -27,25 +26,29 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ userEmail, userName, 
             setError('Te rugăm să completezi captcha.');
             return;
         }
-        if (!email) {
+        if (!userEmail) {
             setError('Te rugăm să introduci un email.');
+            return;
+        }
+        if (!userName) {
+            setError('Te rugăm să introduci numele tău.');
             return;
         }
 
         setSending(true);
 
         emailjs.send(
-            'service_b0eycgy',
-            'template_quiz',
+            'service_b0eycgy',     // Service ID EmailJS
+            'template_quiz',       // Template ID EmailJS
             {
                 to_email: userEmail,
                 quiz_title: quizTitle,
                 quiz_score: score,
                 quiz_result: resultText,
-                from_page: 'Quiz App',  // label personalizat
+                from_page: 'Quiz App',
                 user_name: userName,
             },
-            'qpMdCwldZeAqODpQR'
+            'qpMdCwldZeAqODpQR'    // Public key EmailJS
         ).then(() => {
             onSent();
         }).catch((e) => {
@@ -62,16 +65,24 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ userEmail, userName, 
                 Trimite rezultatul pe email
             </Typography>
             <TextField
+                label="Numele tău"
+                type="text"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                fullWidth
+                sx={{ mb: 2 }}
+            />
+            <TextField
                 label="Email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
                 fullWidth
                 sx={{ mb: 2 }}
             />
             <Box display="flex" justifyContent="center" mb={2}>
                 <ReCAPTCHA
-                    sitekey={"6Ld2LnorAAAAAGZEx4BdyxobZF9Ql04R5bZGgp34"}
+                    sitekey={SITE_KEY}
                     onChange={(token) => setCaptchaToken(token)}
                 />
             </Box>
