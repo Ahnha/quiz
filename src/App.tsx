@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AppLayout from './layout/AppLayout';
+import QuizzesPage from './pages/QuizzesPage';
+import { Typography } from '@mui/material';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => (
+  <Router>
+    <AppLayout>
+      <Routes>
+        <Route path="/" element={<Navigate to="/quizzes" replace />} />
+        <Route path="/quizzes" element={<QuizzesPage />} />
+        {/* Pentru extensie: <Route path="/about" element={<AboutPage />} /> */}
+        <Route path="*" element={<Typography>404 - Pagina nu a fost găsită</Typography>} />
+      </Routes>
+    </AppLayout>
+  </Router>
+);
 
 export default App;
