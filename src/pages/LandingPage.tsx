@@ -31,7 +31,7 @@ const LandingPage: React.FC = () => {
                         variant="contained"
                         color="secondary"
                         size="large"
-                        onClick={() => navigate('/quizuri')}
+                        onClick={() => navigate('/quiz')}
                     >
                         Începe Quiz-ul
                     </Button>
