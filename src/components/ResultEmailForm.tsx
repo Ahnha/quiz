@@ -67,7 +67,7 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, res
             />
             <Box display="flex" justifyContent="center" mb={2}>
                 <ReCAPTCHA
-                    sitekey={SITE_KEY}
+                    sitekey={"6Ld2LnorAAAAAGZEx4BdyxobZF9Ql04R5bZGgp34"}
                     onChange={(token) => setCaptchaToken(token)}
                 />
             </Box>
