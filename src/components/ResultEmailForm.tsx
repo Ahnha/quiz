@@ -10,7 +10,7 @@ interface ResultEmailFormProps {
     onSent: () => void;
 }
 
-const SITE_KEY = '6Ld2LnorAAAAAGZEx4BdyxobZF9Ql04R5bZGgp34'; // Cheia ta reală de reCAPTCHA
+const SITE_KEY = '6Ld7ZTYUAAAAAGgBvCrSeiQrUBLw55jP8hetKuer'; // Cheia ta reală de reCAPTCHA
 
 const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, resultText, onSent }) => {
     const [userName, setUserName] = useState<string>('');
