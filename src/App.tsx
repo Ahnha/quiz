@@ -1,23 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import AppLayout from './layout/AppLayout';
-import QuizzesPage from './pages/QuizzesPage';
-import { Typography } from '@mui/material';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
+import QuizzesPage from './pages/QuizzesPage';
 
-const App: React.FC = () => (
-  <Router>
-    <AppLayout>
+const App: React.FC = () => {
+  return (
+    <BrowserRouter basename={process.env.NODE_ENV === 'production' ? '/quizzes' : '/'}>
       <Routes>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/quizuri" element={<QuizzesPage />} />
-        </Routes>
-        {/* Pentru extensie: <Route path="/about" element={<AboutPage />} /> */}
-        <Route path="*" element={<Typography>404 - Pagina nu a fost găsită</Typography>} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/quiz" element={<QuizzesPage />} />
       </Routes>
-    </AppLayout>
-  </Router>
-);
+    </BrowserRouter>
+  );
+};
 
 export default App;
