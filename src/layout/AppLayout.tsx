@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Tabs, Tab, Container, Box } from '@mui/material';
+import { AppBar, Toolbar, Tabs, Tab, Container, Box } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
 type NavTab = {
