@@ -9,8 +9,10 @@ const App: React.FC = () => (
   <Router>
     <AppLayout>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/quiz" element={<QuizzesPage />} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/quizuri" element={<QuizzesPage />} />
+        </Routes>
         {/* Pentru extensie: <Route path="/about" element={<AboutPage />} /> */}
         <Route path="*" element={<Typography>404 - Pagina nu a fost găsită</Typography>} />
       </Routes>
