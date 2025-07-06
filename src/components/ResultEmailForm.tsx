@@ -4,15 +4,17 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import emailjs from '@emailjs/browser';
 
 interface ResultEmailFormProps {
+    userEmail: string;
+    userName: string;
     quizTitle: string;
     score: number;
     resultText: string;
     onSent: () => void;
 }
 
-const SITE_KEY = 'YOUR_RECAPTCHA_SITE_KEY'; // înlocuiește cu key-ul tău
+const SITE_KEY = '6Ld2LnorAAAAAGZEx4BdyxobZF9Ql04R5bZGgp34';
 
-const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, resultText, onSent }) => {
+const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ userEmail, userName, quizTitle, score, resultText, onSent }) => {
     const [email, setEmail] = useState('');
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const [sending, setSending] = useState(false);
@@ -33,15 +35,17 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, res
         setSending(true);
 
         emailjs.send(
-            'YOUR_SERVICE_ID',
-            'YOUR_TEMPLATE_ID',
+            'service_b0eycgy',
+            'template_quiz',
             {
-                to_email: email,
+                to_email: userEmail,
                 quiz_title: quizTitle,
                 quiz_score: score,
                 quiz_result: resultText,
+                from_page: 'Quiz App',  // label personalizat
+                user_name: userName,
             },
-            'YOUR_PUBLIC_KEY'
+            'qpMdCwldZeAqODpQR'
         ).then(() => {
             onSent();
         }).catch((e) => {
