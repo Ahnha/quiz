@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Box, Tabs, Tab, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Tabs, Tab, Container } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
 type NavTab = {
@@ -9,8 +9,8 @@ type NavTab = {
 
 const tabs: NavTab[] = [
     { label: 'Quizuri', path: '/quizzes' },
-    // Aici adaugi ușor alte taburi, ex:
-    // { label: 'Despre', path: '/about' },
+    // Add new tabs here    , ex:
+    // { label: 'About', path: '/about' },
 ];
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

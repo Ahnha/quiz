@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Box, Stack } from '@mui/material';
-import agingQuiz from '../quizzes/agingQuiz';
 import { QuizData } from '../quiz.ts/quiz';
 import ResultEmailForm from './ResultEmailForm';
 
