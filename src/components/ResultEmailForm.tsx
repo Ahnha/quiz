@@ -47,6 +47,7 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, res
                 quiz_result: resultText,
                 from_page: 'Quiz App',
                 user_name: userName,
+                'g-recaptcha-response': captchaToken
             },
             'qpMdCwldZeAqODpQR'    // Public key EmailJS
         ).then(() => {
