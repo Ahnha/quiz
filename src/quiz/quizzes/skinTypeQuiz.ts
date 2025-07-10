@@ -1,7 +1,10 @@
-import { QuizData } from '../quiz.ts/quiz';
+import { QuizDef } from '../type';
 
-const skinTypeQuiz: QuizData = {
+const skinTypeQuiz: QuizDef = {
+    id: "skin-type",
     title: 'What Is Your Skin Type?',
+    description:
+        "Află ce tip de piele ai pentru a primi recomandări personalizate despre îngrijire, produse și rutină.",
     questions: [
         {
             question: "Cum se simte pielea ta la câteva ore după curățare?",

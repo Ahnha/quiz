@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import QuizzesPage from './pages/QuizzesPage';
+import './styles/themeStyles.css'; // <-- import stilurile proprii
 
 const App: React.FC = () => {
   return (

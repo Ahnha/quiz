@@ -2,23 +2,27 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import ReCAPTCHA from 'react-google-recaptcha';
 import emailjs from '@emailjs/browser';
+import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 interface ResultEmailFormProps {
     quizTitle: string;
     score: number;
     resultText: string;
-    onSent: () => void;
 }
 
 const SITE_KEY = '6Ld7ZTYUAAAAAGgBvCrSeiQrUBLw55jP8hetKuer'; // Cheia ta reală de reCAPTCHA
-
-const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, resultText, onSent }) => {
+const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, resultText }) => {
     const [userName, setUserName] = useState<string>('');
     const [userEmail, setUserEmail] = useState<string>('');
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const [sending, setSending] = useState(false);
     const [error, setError] = useState('');
+    const [showSuccess, setShowSuccess] = useState(false);
 
+    const navigate = useNavigate();
     const handleSubmit = () => {
         setError('');
 
@@ -41,7 +45,7 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, res
             'service_b0eycgy',     // Service ID EmailJS
             'template_quiz',       // Template ID EmailJS
             {
-                to_email: userEmail,
+                from_email: userEmail,
                 quiz_title: quizTitle,
                 quiz_score: score,
                 quiz_result: resultText,
@@ -51,7 +55,8 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, res
             },
             'qpMdCwldZeAqODpQR'    // Public key EmailJS
         ).then(() => {
-            onSent();
+          setShowSuccess(true);
+          setTimeout(() => navigate('/'), 200);
         }).catch((e) => {
             setError('A apărut o eroare la trimiterea emailului.');
             console.error(e);
@@ -96,7 +101,18 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({ quizTitle, score, res
             >
                 Trimite
             </Button>
+            <Snackbar
+                open={showSuccess}
+                autoHideDuration={2000}
+                onClose={() => setShowSuccess(false)}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <MuiAlert onClose={() => setShowSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                    Email trimis cu succes! 🌿
+                </MuiAlert>
+            </Snackbar>
         </Box>
+        
     );
 };
 

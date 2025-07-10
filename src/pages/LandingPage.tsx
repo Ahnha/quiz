@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Button, Container, Typography, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { landingTitle, landingSubtitle, landingSections } from '../landingText';
+import { landingTitle, landingSubtitle, landingSections } from '../landing/landingText';
+import '.././styles/themeStyles.css';
 
 const LandingPage: React.FC = () => {
     const navigate = useNavigate();
@@ -10,15 +11,9 @@ const LandingPage: React.FC = () => {
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Box
                 sx={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    bgcolor: 'primary.main',
-                    color: 'white',
-                    textAlign: 'center',
-                    p: 4,
-                }}
+                    backgroundColor: 'var(--primary-color)',
+                    color: 'white'
+                  }}
             >
                 <Container maxWidth="md">
                     <Typography variant="h2" fontWeight={700} mb={3}>
@@ -55,9 +50,9 @@ const LandingPage: React.FC = () => {
                 </Container>
             </Box>
 
-            <Box bgcolor="primary.dark" color="white" textAlign="center" py={2}>
-                <Typography variant="body2">&copy; {new Date().getFullYear()} Skin Studio. Toate drepturile rezervate.</Typography>
-            </Box>
+            <footer className="footer">
+                <p>&copy; {new Date().getFullYear()} Skin Studio. Toate drepturile rezervate.</p>
+            </footer>
         </Box>
     );
 };

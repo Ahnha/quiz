@@ -1,8 +1,9 @@
-import { QuizData } from "../quiz.ts/quiz";
+import { QuizDef } from '../type';
 
-
-const skinAgingQuiz: QuizData = {
+const skinAgingQuiz: QuizDef = {
+    id: 'skin-aging',
     title: 'Ce vârstă are pielea ta?',
+    description: 'Evaluează-ți obiceiurile și află dacă pielea ta îmbătrânește prematur sau e în formă excelentă.',
     questions: [
         {
             question: "Cât de des folosești protecție solară?",

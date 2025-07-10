@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, Typography, Button, Box, Stack } from '@mui/material';
-import { QuizData } from '../quiz.ts/quiz';
+import { QuizDef } from '../../quiz/type';
 import ResultEmailForm from './ResultEmailForm';
 
 interface QuizProps {
-    quiz: QuizData;
+    quiz: QuizDef;
 }
 
 const Quiz: React.FC<QuizProps> = ({ quiz }) => {
@@ -42,7 +42,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
     };
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f5f5f5">
+        <Box className="quiz-inner-wrapper" width="100%" display="flex" justifyContent="center" alignItems="center" flex="1">
             <Card sx={{ maxWidth: 600, width: '90%', boxShadow: 3 }}>
                 <CardContent>
                     {!showResult ? (
@@ -57,8 +57,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                 {questions[current].options.map((option, idx) => (
                                     <Button
                                         key={idx}
-                                        variant="contained"
-                                        color="primary"
+                                        className="quiz-button"
                                         onClick={() => handleAnswer(option.score)}
                                     >
                                         {option.text}
@@ -91,7 +90,6 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                 quizTitle={title}
                                 score={score}
                                 resultText={getResultText()}
-                                onSent={() => window.alert('Email trimis cu succes!')}
                             />
                             <Button
                                 variant="outlined"
