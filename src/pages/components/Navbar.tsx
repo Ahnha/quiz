@@ -6,7 +6,7 @@ const Navbar: React.FC = () => (
     <header className="navbar">
         <div className="navbar-container">
             <Link to="/" className="navbar-logo">
-                <span>🧴</span> Non-Toxic Romania
+                SKIN STUDIO
             </Link>
             <nav className="navbar-links">
                 <Link to="/quiz">Quiz-uri</Link>
