@@ -55,7 +55,7 @@ const AppFooter: React.FC = () => {
                 </div>
 
                 <div className="footer-bottom">
-                    <p>&copy; 2024 Skin Studio. {t.footer.rightsReserved}</p>
+                    <p>{t.footer.rightsReserved}</p>
                 </div>
             </div>
         </footer>

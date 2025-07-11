@@ -3,7 +3,7 @@ import '../../styles/footer.css';
 
 const Footer: React.FC = () => (
     <footer className="footer">
-        © 2025 Non-Toxic Romania. Toate drepturile rezervate.
+        © 2025 Skin Studio Romania.
     </footer>
 );
 

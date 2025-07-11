@@ -231,9 +231,12 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
     return (
         <div className="result-email-form">
             <Paper elevation={3} className="form-container">
-                <Typography variant="h4" component="h2" className="form-title">
-                    Trimite Rezultatele Quizului
-                </Typography>
+                <div className="form-header-with-flower">
+                    <div className="decorative-flower">🌸</div>
+                    <Typography variant="h4" component="h2" className="form-title">
+                        Trimite Rezultatele Quizului
+                    </Typography>
+                </div>
 
                 <Typography variant="body1" className="form-subtitle">
                     Primește un raport detaliat pe email și opțional trimite rezultatele către Skin Studio site-ului.

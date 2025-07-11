@@ -51,8 +51,8 @@ const LandingPage: React.FC = () => {
                             <div className="hero-image">
                                 <div className="image-placeholder">
                                     <div className="placeholder-content">
-                                        <div className="placeholder-icon">🌸</div>
-                                        <span>Natural Beauty</span>
+                                        <div className="placeholder-icon animated-flower">🌸</div>
+                                        <span className="placeholder-text">Natural Beauty</span>
                                     </div>
                                 </div>
                             </div>
