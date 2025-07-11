@@ -8,10 +8,6 @@ import React from 'react';
 // Routes = container for multiple Route components
 import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 
-// HelmetProvider = manages HTML head tags (like meta tags, title) for SEO
-// Similar to how you might manage page metadata in Java web apps
-import { HelmetProvider } from 'react-helmet-async';
-
 // Custom imports - these are our own components and utilities
 // Similar to importing your own Java classes
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -53,7 +49,7 @@ import './styles/security.css';
  * - Security audit and monitoring
  * 
  * PATTERN: SEO Optimization
- * - HelmetProvider for dynamic meta tags (like managing meta tags in Java)
+ * - Native DOM manipulation for meta tags (like managing meta tags in Java)
  * - Structured data support (like JSON-LD in Java templates)
  * - Search engine optimization
  */
@@ -70,52 +66,46 @@ const App: React.FC = () => {
     // If any component crashes, this prevents the entire app from crashing
     <ErrorBoundary>
 
-      {/* HelmetProvider = manages HTML head tags for SEO */}
-      {/* Similar to managing meta tags in your Java web app */}
-      <HelmetProvider>
+      {/* ContentSecurityPolicy = adds security headers */}
+      {/* Similar to security headers in Spring Security */}
+      <ContentSecurityPolicy />
 
-        {/* ContentSecurityPolicy = adds security headers */}
-        {/* Similar to security headers in Spring Security */}
-        <ContentSecurityPolicy />
+      {/* LanguageProvider = provides language/translation context */}
+      {/* Similar to LocaleResolver in Spring MVC */}
+      <LanguageProvider>
 
-        {/* LanguageProvider = provides language/translation context */}
-        {/* Similar to LocaleResolver in Spring MVC */}
-        <LanguageProvider>
+        {/* Router = handles navigation between pages */}
+        {/* Similar to Spring MVC routing configuration */}
+        <Router>
 
-          {/* Router = handles navigation between pages */}
-          {/* Similar to Spring MVC routing configuration */}
-          <Router>
+          {/* Routes = container for all our page routes */}
+          {/* Similar to @RequestMapping annotations in Spring */}
+          <Routes>
 
-            {/* Routes = container for all our page routes */}
-            {/* Similar to @RequestMapping annotations in Spring */}
-            <Routes>
+            {/* Route = defines a URL path and what component to show */}
+            {/* path="/" = URL path (like @RequestMapping("/") in Spring) */}
+            {/* element={<Component />} = what component to render */}
+            {/* Similar to returning a view name in Spring MVC */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/quiz" element={<QuizzesPage />} />
+            <Route path="/quiz/:quizId" element={<QuizPage />} />
+            <Route path="/artisan" element={<FeaturesPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-              {/* Route = defines a URL path and what component to show */}
-              {/* path="/" = URL path (like @RequestMapping("/") in Spring) */}
-              {/* element={<Component />} = what component to render */}
-              {/* Similar to returning a view name in Spring MVC */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/quiz" element={<QuizzesPage />} />
-              <Route path="/quiz/:quizId" element={<QuizPage />} />
-              <Route path="/artisan" element={<FeaturesPage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          </Routes>
 
-            </Routes>
+          {/* GDPRConsent = cookie consent popup */}
+          {/* Similar to cookie consent in Java web apps */}
+          <GDPRConsent />
 
-            {/* GDPRConsent = cookie consent popup */}
-            {/* Similar to cookie consent in Java web apps */}
-            <GDPRConsent />
+          {/* SecurityAudit = security monitoring (development only) */}
+          {/* Similar to security logging in Java applications */}
+          <SecurityAudit />
 
-            {/* SecurityAudit = security monitoring (development only) */}
-            {/* Similar to security logging in Java applications */}
-            <SecurityAudit />
+        </Router>
 
-          </Router>
-
-        </LanguageProvider>
-
-      </HelmetProvider>
+      </LanguageProvider>
 
     </ErrorBoundary>
   );

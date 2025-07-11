@@ -167,8 +167,7 @@ export interface Translations {
         privacyPolicy: string;
         termsOfService: string;
         contact: string;
-        email: string;
-        phone: string;
+        connectWithUs: string;
         rightsReserved: string;
         products: string;
         handmadeSoaps: string;
@@ -341,8 +340,7 @@ export const translations: Record<Language, Translations> = {
             privacyPolicy: 'Privacy Policy',
             termsOfService: 'Terms of Service',
             contact: 'Contact Us',
-            email: 'info@skinstudio.com',
-            phone: '+1 (555) 123-4567',
+            connectWithUs: 'Connect with us on social media',
             rightsReserved: '© 2024 Skin Studio. All rights reserved.',
             products: 'Products',
             handmadeSoaps: 'Handmade Soaps',
@@ -513,8 +511,7 @@ export const translations: Record<Language, Translations> = {
             privacyPolicy: 'Politica de Confidențialitate',
             termsOfService: 'Termeni și Condiții',
             contact: 'Contactați-ne',
-            email: 'info@skinstudio.com',
-            phone: '+1 (555) 123-4567',
+            connectWithUs: 'Conectează-te cu noi pe rețelele sociale',
             rightsReserved: '© 2024 Skin Studio. Toate drepturile rezervate.',
             products: 'Produse',
             handmadeSoaps: 'Săpunuri Handmade',

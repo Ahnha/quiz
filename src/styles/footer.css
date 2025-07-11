@@ -139,6 +139,70 @@
     outline-offset: 2px;
 }
 
+/* Facebook Icon Styling */
+.social-icon {
+    font-size: 20px !important;
+    color: #1877f2;
+    transition: color 0.3s ease;
+}
+
+.facebook-link:hover .social-icon {
+    color: white;
+}
+
+/* Contact Section Styling */
+.contact-info {
+    color: var(--text-light);
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.contact-social {
+    display: flex;
+    gap: 12px;
+}
+
+.contact-social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--glass-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.contact-social-link:hover {
+    background: #1877f2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(24, 119, 242, 0.3);
+    border-color: #1877f2;
+}
+
+.contact-social-link:focus {
+    outline: 2px solid #1877f2;
+    outline-offset: 2px;
+}
+
+.contact-icon {
+    font-size: 18px !important;
+    color: #1877f2;
+    transition: color 0.3s ease;
+}
+
+.contact-social-link:hover .contact-icon {
+    color: white;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .footer-futuristic {

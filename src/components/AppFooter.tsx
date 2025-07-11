@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import '../styles/footer.css';
 
 const AppFooter: React.FC = () => {
@@ -18,10 +19,11 @@ const AppFooter: React.FC = () => {
                                 href="https://www.facebook.com/skin.studio.the/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="social-link"
+                                className="social-link facebook-link"
                                 aria-label="Follow us on Facebook"
                             >
-                                📘 Facebook
+                                <FacebookIcon className="social-icon" />
+                                <span>Facebook</span>
                             </a>
                         </div>
                     </div>
@@ -46,8 +48,21 @@ const AppFooter: React.FC = () => {
 
                     <div className="footer-section">
                         <h4>{t.footer.contact}</h4>
-                        <p>{t.footer.email}</p>
-                        <p>{t.footer.phone}</p>
+                        <p className="contact-info">
+                            {t.footer.connectWithUs}
+                        </p>
+                        <div className="contact-social">
+                            <a
+                                href="https://www.facebook.com/skin.studio.the/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="contact-social-link"
+                                aria-label="Contact us on Facebook"
+                            >
+                                <FacebookIcon className="contact-icon" />
+                                <span>Facebook</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
 

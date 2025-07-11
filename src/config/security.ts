@@ -20,6 +20,7 @@
 // process.env = similar to System.getProperty() in Java
 // NODE_ENV = environment variable (like -Dspring.profiles.active in Java)
 const isDevelopment = process.env.NODE_ENV === 'development';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Security configuration object
