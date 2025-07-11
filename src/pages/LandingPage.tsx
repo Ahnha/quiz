@@ -19,7 +19,7 @@ const LandingPage: React.FC = () => {
                         {landingSubtitle}
                     </Typography>
                     <Button
-                        className="cta-button"
+                        className="hero-button"
                         onClick={() => navigate('/quiz')}
                     >
                         Începe Quiz-ul
