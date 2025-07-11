@@ -4,12 +4,23 @@ import { QuizDef } from '../../quiz/type';
 import ResultEmailForm from './ResultEmailForm';
 import { QuizService } from '../../services/quizService';
 import { UI, QUIZ } from '../../utils/constants';
+import { useLanguage } from '../../contexts/LanguageContext';
 import '../../styles/quiz.css';
 
 // PATTERN: Interface Segregation - Only expose what's needed
 interface QuizProps {
     quiz: QuizDef;
 }
+
+/**
+ * Helper function to get localized text
+ */
+const getLocalizedText = (text: string | { ro: string; en: string }, language: 'en' | 'ro'): string => {
+    if (typeof text === 'string') {
+        return text;
+    }
+    return text[language];
+};
 
 /**
  * Quiz Component
@@ -27,6 +38,8 @@ interface QuizProps {
  * - Immutable state updates
  */
 const Quiz: React.FC<QuizProps> = ({ quiz }) => {
+    const { language } = useLanguage();
+
     // PATTERN: State Organization - Group related state
     const [quizState, setQuizState] = useState({
         current: 0,
@@ -41,7 +54,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
         quiz.questions.length
     );
 
-    const resultText = QuizService.findResult(quiz, quizState.score);
+    const resultText = QuizService.findResult(quiz, quizState.score, language);
 
     /**
      * Handle answer selection
@@ -100,6 +113,11 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
         window.location.reload();
     };
 
+    // Get localized content
+    const currentQuestion = quiz.questions[quizState.current];
+    const questionText = getLocalizedText(currentQuestion.question, language);
+    const quizTitle = getLocalizedText(quiz.title, language);
+
     return (
         <Box className="quiz-inner-wrapper" width="100%" display="flex" justifyContent="center" alignItems="center" flex="1">
             <Card sx={{
@@ -130,15 +148,15 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                     fontWeight: 500
                                 }}
                             >
-                                Întrebarea {quizState.current + 1} din {quiz.questions.length}
+                                {language === 'ro' ? 'Întrebarea' : 'Question'} {quizState.current + 1} {language === 'ro' ? 'din' : 'of'} {quiz.questions.length}
                             </Typography>
 
                             <Typography variant="h4" className="quiz-question-title" sx={{ marginBottom: '2rem' }}>
-                                {quiz.questions[quizState.current].question}
+                                {questionText}
                             </Typography>
 
                             <Stack spacing={2} className="quiz-options">
-                                {quiz.questions[quizState.current].options.map((option, idx) => (
+                                {currentQuestion.options.map((option, idx) => (
                                     <Button
                                         key={idx}
                                         className="quiz-button"
@@ -165,7 +183,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                             }
                                         }}
                                     >
-                                        {option.text}
+                                        {getLocalizedText(option.text, language)}
                                     </Button>
                                 ))}
                             </Stack>
@@ -185,7 +203,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                         }
                                     }}
                                 >
-                                    ← Înapoi
+                                    ← {language === 'ro' ? 'Înapoi' : 'Back'}
                                 </Button>
 
                                 <Typography variant="body2" sx={{ color: 'var(--text-light)' }}>
@@ -196,17 +214,17 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                     ) : (
                         <Box className="quiz-result">
                             <Typography variant="h3" className="result-title" gutterBottom>
-                                🎉 Rezultatul tău
+                                🎉 {language === 'ro' ? 'Rezultatul tău' : 'Your Result'}
                             </Typography>
                             <Typography variant="h5" className="result-score" sx={{ marginBottom: '2rem' }}>
-                                Scor total: {quizState.score}
+                                {language === 'ro' ? 'Scor total' : 'Total Score'}: {quizState.score}
                             </Typography>
                             <Typography variant="body1" className="result-text" sx={{ marginBottom: '3rem' }}>
                                 {resultText}
                             </Typography>
 
                             <ResultEmailForm
-                                quizTitle={quiz.title}
+                                quizTitle={quizTitle}
                                 score={quizState.score}
                                 resultText={resultText}
                             />
@@ -225,7 +243,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                     }
                                 }}
                             >
-                                🔄 Reîncepe Quiz-ul
+                                🔄 {language === 'ro' ? 'Reîncepe Quiz-ul' : 'Restart Quiz'}
                             </Button>
                         </Box>
                     )}

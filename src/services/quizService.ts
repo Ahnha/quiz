@@ -6,6 +6,16 @@ import { QUIZ } from '../utils/constants';
 // PATTERN: Dependency Inversion - Depends on abstractions, not concretions
 
 /**
+ * Helper function to get localized text
+ */
+const getLocalizedText = (text: string | { ro: string; en: string }, language: 'en' | 'ro'): string => {
+    if (typeof text === 'string') {
+        return text;
+    }
+    return text[language];
+};
+
+/**
  * Quiz Service
  * 
  * PATTERN: Service Pattern
@@ -38,12 +48,18 @@ export class QuizService {
      * - Different strategies for finding results
      * - Easy to extend with new result types
      */
-    static findResult(quiz: QuizDef, score: number): string {
+    static findResult(quiz: QuizDef, score: number, language: 'en' | 'ro' = 'en'): string {
         const result = quiz.results.find(r =>
             score >= r.minScore && score <= r.maxScore
         );
 
-        return result ? result.text : QUIZ.DEFAULT_RESULT;
+        if (result) {
+            return getLocalizedText(result.text, language);
+        }
+
+        return typeof QUIZ.DEFAULT_RESULT === 'string'
+            ? QUIZ.DEFAULT_RESULT
+            : getLocalizedText(QUIZ.DEFAULT_RESULT, language);
     }
 
     /**

@@ -8,8 +8,18 @@ import { quizzes } from '../quiz/quizzes';
 import '../styles/global.css';
 import '../styles/quiz.css';
 
+/**
+ * Helper function to get localized text
+ */
+const getLocalizedText = (text: string | { ro: string; en: string }, language: 'en' | 'ro'): string => {
+    if (typeof text === 'string') {
+        return text;
+    }
+    return text[language];
+};
+
 const QuizzesPage: React.FC = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     return (
         <div className="quiz-page-futuristic">
@@ -38,10 +48,10 @@ const QuizzesPage: React.FC = () => {
                                     <div className="quiz-icon">
                                         <div className="icon-circle">{quiz.icon}</div>
                                     </div>
-                                    <h3 className="quiz-name">{quiz.title}</h3>
+                                    <h3 className="quiz-name">{getLocalizedText(quiz.title, language)}</h3>
                                 </div>
 
-                                <p className="quiz-description">{quiz.description}</p>
+                                <p className="quiz-description">{getLocalizedText(quiz.description, language)}</p>
 
                                 <div className="quiz-meta">
                                     <span className="quiz-duration">

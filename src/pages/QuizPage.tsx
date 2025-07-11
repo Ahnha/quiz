@@ -8,10 +8,20 @@ import QuizResultForm from './components/QuizResultForm';
 import '../styles/global.css';
 import '../styles/quizPage.css';
 
+/**
+ * Helper function to get localized text
+ */
+const getLocalizedText = (text: string | { ro: string; en: string }, language: 'en' | 'ro'): string => {
+    if (typeof text === 'string') {
+        return text;
+    }
+    return text[language];
+};
+
 const QuizPage: React.FC = () => {
     const { quizId } = useParams<{ quizId: string }>();
     const navigate = useNavigate();
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
@@ -85,6 +95,13 @@ const QuizPage: React.FC = () => {
 
     const progressPercentage = ((currentQuestion + 1) / quiz.questions.length) * 100;
 
+    // Get localized content
+    const currentQuestionData = quiz.questions[currentQuestion];
+    const questionText = getLocalizedText(currentQuestionData.question, language);
+    const resultData = getResult();
+    const resultText = getLocalizedText(resultData.text, language);
+    const quizTitle = getLocalizedText(quiz.title, language);
+
     return (
         <div className="quiz-page-futuristic">
             <Navbar />
@@ -109,17 +126,17 @@ const QuizPage: React.FC = () => {
                             {/* Question */}
                             <div className="question-content">
                                 <h2 className="question-title">
-                                    {quiz.questions[currentQuestion].question}
+                                    {questionText}
                                 </h2>
 
                                 <div className="options-grid">
-                                    {quiz.questions[currentQuestion].options.map((option, index) => (
+                                    {currentQuestionData.options.map((option, index) => (
                                         <button
                                             key={index}
                                             className="option-button btn-minimal"
                                             onClick={() => handleAnswer(option.score)}
                                         >
-                                            {option.text}
+                                            {getLocalizedText(option.text, language)}
                                         </button>
                                     ))}
                                 </div>
@@ -150,7 +167,7 @@ const QuizPage: React.FC = () => {
                             </div>
 
                             <div className="result-content">
-                                <p className="result-text">{getResult().text}</p>
+                                <p className="result-text">{resultText}</p>
                             </div>
 
                             <div className="result-actions">
@@ -184,9 +201,9 @@ const QuizPage: React.FC = () => {
 
             {showResultForm && (
                 <QuizResultForm
-                    quizName={quiz.title}
+                    quizName={quizTitle}
                     score={score}
-                    result={getResult().text}
+                    result={resultText}
                     onClose={() => setShowResultForm(false)}
                 />
             )}

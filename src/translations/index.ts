@@ -56,6 +56,11 @@ export interface Translations {
             title: string;
             benefits: string[];
         };
+        scientificReferences: {
+            title: string;
+            agingStudies: string[];
+            skinTypeStudies: string[];
+        };
     };
 
     // Quiz Result Form
@@ -241,6 +246,17 @@ export const translations: Record<Language, Translations> = {
                     'Learn about your skin\'s unique needs',
                 ],
             },
+            scientificReferences: {
+                title: 'Scientific References',
+                agingStudies: [
+                    'Aging Studies: The impact of age on skin health and appearance.',
+                    'Skin Type Studies: Understanding different skin types and their unique needs.',
+                ],
+                skinTypeStudies: [
+                    'Skin Type Studies: Understanding different skin types and their unique needs.',
+                    'Aging Studies: The impact of age on skin health and appearance.',
+                ],
+            },
         },
         quizResultForm: {
             title: 'Send Quiz Results',
@@ -410,6 +426,17 @@ export const translations: Record<Language, Translations> = {
                     'Descoperă ingrediente naturale care funcționează pentru tine',
                     'Primește rutine detaliate de îngrijire și sfaturi',
                     'Învață despre nevoile unice ale pielii tale',
+                ],
+            },
+            scientificReferences: {
+                title: 'Referințe Științifice',
+                agingStudies: [
+                    'Studii de îmbătrânire: Impactul vârstei asupra sănătății și aspectului pielii.',
+                    'Studii de tip de piele: Înțelegerea diferitelor tipuri de piele și nevoile unice ale fiecăreia.',
+                ],
+                skinTypeStudies: [
+                    'Studii de tip de piele: Înțelegerea diferitelor tipuri de piele și nevoile unice ale fiecăreia.',
+                    'Studii de îmbătrânire: Impactul vârstei asupra sănătății și aspectului pielii.',
                 ],
             },
         },
