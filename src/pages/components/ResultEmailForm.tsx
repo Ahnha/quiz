@@ -236,7 +236,7 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
                 </Typography>
 
                 <Typography variant="body1" className="form-subtitle">
-                    Primește un raport detaliat pe email și opțional trimite rezultatele către proprietarul site-ului.
+                    Primește un raport detaliat pe email și opțional trimite rezultatele către Skin Studio site-ului.
                 </Typography>
 
                 <Box component="form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="form-content">

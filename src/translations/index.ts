@@ -417,7 +417,7 @@ export const translations: Record<Language, Translations> = {
             title: 'Trimite Rezultatele Quizului',
             emailLabel: 'Adresă de Email',
             emailPlaceholder: 'Introduceți adresa dumneavoastră de email',
-            sendToOwner: 'Trimite rezultate către proprietarul site-ului',
+            sendToOwner: 'Trimite rezultate către Skin Studio site-ului',
             captchaLabel: 'Verificare Securitate',
             captchaPlaceholder: 'Introduceți răspunsul',
             fillAllFields: 'Vă rugăm să completați toate câmpurile',

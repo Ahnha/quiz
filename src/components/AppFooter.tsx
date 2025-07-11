@@ -14,18 +14,6 @@ const AppFooter: React.FC = () => {
                     <div className="footer-section">
                         <h3>Skin Studio</h3>
                         <p>{t.footer.description}</p>
-                        <div className="social-links">
-                            <a
-                                href="https://www.facebook.com/skin.studio.the/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="social-link facebook-link"
-                                aria-label="Follow us on Facebook"
-                            >
-                                <FacebookIcon className="social-icon" />
-                                <span>Facebook</span>
-                            </a>
-                        </div>
                     </div>
 
                     <div className="footer-section">

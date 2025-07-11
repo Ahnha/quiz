@@ -8,7 +8,17 @@
 }
 
 html {
+    scroll-behavior: auto;
+}
+
+/* Smooth scrolling for anchor links only */
+a[href^="#"] {
     scroll-behavior: smooth;
+}
+
+/* Ensure React Router links don't get smooth scrolling */
+a[href^="/"] {
+    scroll-behavior: auto;
 }
 
 body {
