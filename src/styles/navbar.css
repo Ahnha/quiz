@@ -1,72 +1,219 @@
-.navbar {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 0.75rem 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: sticky;
+/* Futuristic Minimalist Navbar */
+.navbar-futuristic {
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
+  height: 70px;
 }
 
-.navbar-logo {
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: white;
-  text-decoration: none;
+/* Brand/Logo */
+.navbar-brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: translateY(-1px);
+}
+
+.brand-logo {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
 
 .brand-text {
-  font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-color);
 }
 
-.navbar-links {
+/* Navigation Links */
+.navbar-nav {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
 }
 
-.navbar-links a {
-  color: white;
+.nav-link {
+  padding: 8px 16px;
   text-decoration: none;
-  font-size: 1rem;
-  transition: opacity 0.3s ease;
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.navbar-links a:hover {
-  opacity: 0.8;
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  transition: left 0.3s ease;
+  z-index: -1;
 }
 
-/* Mobile responsive */
-@media (max-width: 600px) {
+.nav-link:hover {
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.nav-link:hover::before {
+  left: 0;
+}
+
+.nav-link.active {
+  color: var(--primary-color);
+  background: rgba(127, 176, 105, 0.1);
+  border: 1px solid var(--primary-color);
+}
+
+/* Navbar Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+}
+
+.hamburger span {
+  width: 100%;
+  height: 2px;
+  background: var(--text-color);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
   .navbar-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .navbar-links {
-    justify-content: flex-start;
-    width: 100%;
-  }
-
-  .navbar-logo {
-    font-size: 1rem;
+    padding: 0 16px;
+    height: 60px;
   }
 
   .brand-text {
-    font-size: 1.1rem;
+    font-size: 16px;
   }
+
+  .navbar-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 80px 32px 32px;
+    gap: 16px;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 1px solid var(--border-color);
+    box-shadow: var(--shadow-heavy);
+  }
+
+  .navbar-nav.nav-open {
+    right: 0;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--border-light);
+    color: var(--text-color);
+    font-weight: 500;
+  }
+
+  .nav-link:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+  }
+
+  .nav-link.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar-actions {
+    gap: 12px;
+  }
+}
+
+/* Scroll Effect */
+.navbar-futuristic.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-light);
 }

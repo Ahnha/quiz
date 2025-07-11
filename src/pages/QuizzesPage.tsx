@@ -1,58 +1,78 @@
-import React, { useState } from 'react';
-import { Select, MenuItem, SelectChangeEvent } from '@mui/material';
-import { quizzes } from '../quiz/quizzes';
-import Quiz from './components/Quiz';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
+import SEO from '../components/SEO';
 import Navbar from './components/Navbar';
-import '../styles/themeStyles.css'; 
+import AppFooter from '../components/AppFooter';
+import { quizzes } from '../quiz/quizzes';
+import '../styles/global.css';
+import '../styles/quiz.css';
 
 const QuizzesPage: React.FC = () => {
-    const [selectedQuiz, setSelectedQuiz] = useState<typeof quizzes[0] | null>(null);
-
-    const handleQuizChange = (e: SelectChangeEvent<string>) => {
-        const index = parseInt(e.target.value, 10);
-        if (!isNaN(index) && quizzes[index]) {
-            setSelectedQuiz(quizzes[index]);
-        }
-    };
+    const { t } = useLanguage();
 
     return (
-        <div className="quiz-page min-h-screen flex flex-col">
+        <div className="quiz-page-futuristic">
+            <SEO
+                title="Skin Type Quiz - Discover Your Perfect Natural Skincare Routine | Skin Studio"
+                description="Take our comprehensive skin type quiz to discover your perfect natural skincare routine. Get personalized recommendations for natural beauty products based on your skin concerns and lifestyle."
+                keywords="skin type quiz, skincare quiz, natural skincare routine, skin analysis, beauty quiz, personalized skincare, skin concerns, natural beauty products, skincare recommendations"
+                url="/quiz"
+            />
+
             <Navbar />
-            <main className="quiz-content flex-1 flex justify-center items-center px-4">
-                {!selectedQuiz ? (
-                    <div className="quiz-selection-container">
-                        <h2 className="section-title">Alege un Quiz</h2>
-                        <div className="quiz-card">
-                            <Select
-                                value=""
-                                displayEmpty
-                                onChange={handleQuizChange}
-                                fullWidth
-                                sx={{ fontSize: '1.2rem' }}
-                            >
-                                <MenuItem value="" disabled>
-                                    Selectează un quiz din listă
-                                </MenuItem>
-                                {quizzes.map((quiz, index) => (
-                                    <MenuItem key={index} value={index.toString()}>
-                                        {quiz.title}
-                                    </MenuItem>
+
+            <main className="quiz-main">
+                <div className="container-futuristic">
+                    <div className="quiz-header">
+                        <h1 className="quiz-title">{t.quiz.title}</h1>
+                        <p className="quiz-subtitle">
+                            {t.quiz.subtitle}
+                        </p>
+                    </div>
+
+                    <div className="quiz-grid">
+                        {quizzes.map((quiz) => (
+                            <div key={quiz.id} className="quiz-card glass-card">
+                                <div className="quiz-card-header">
+                                    <div className="quiz-icon">
+                                        <div className="icon-circle">{quiz.icon}</div>
+                                    </div>
+                                    <h3 className="quiz-name">{quiz.title}</h3>
+                                </div>
+
+                                <p className="quiz-description">{quiz.description}</p>
+
+                                <div className="quiz-meta">
+                                    <span className="quiz-duration">
+                                        ⏱️ {quiz.questions.length} {t.quiz.questions}
+                                    </span>
+                                    <span className="quiz-time">{t.quiz.minutes}</span>
+                                </div>
+
+                                <Link to={`/quiz/${quiz.id}`} className="btn-minimal primary">
+                                    {t.quiz.startQuiz}
+                                </Link>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="quiz-info">
+                        <div className="info-card glass-card">
+                            <h3>{t.quiz.whyTakeQuiz.title}</h3>
+                            <ul>
+                                {t.quiz.whyTakeQuiz.benefits.map((benefit, index) => (
+                                    <li key={index}>{benefit}</li>
                                 ))}
-                            </Select>
-                            <p className="quiz-description">
-                                Selectează unul dintre quizuri pentru a afla mai multe despre pielea ta,
-                                obiceiurile tale și recomandări personalizate.
-                            </p>
+                            </ul>
                         </div>
                     </div>
-                ) : (
-                    <Quiz quiz={selectedQuiz} />
-                )}
+                </div>
             </main>
-            <footer className="footer">
-                <p>&copy; {new Date().getFullYear()} Skin Studio. Toate drepturile rezervate.</p>
-            </footer>
+
+            <AppFooter />
         </div>
-      );
-    }
+    );
+};
+
 export default QuizzesPage;

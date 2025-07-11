@@ -1,0 +1,234 @@
+/* Privacy Policy Page Styles */
+.privacy-policy-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.privacy-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.privacy-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+}
+
+.back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.privacy-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.last-updated {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+.privacy-content {
+    padding: 40px 30px;
+}
+
+.introduction {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+}
+
+.introduction p {
+    margin: 0;
+    line-height: 1.7;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.policy-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.policy-section:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.policy-section h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.policy-section ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.policy-section li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+    color: #34495e;
+    font-size: 0.95rem;
+}
+
+.policy-section li:last-child {
+    margin-bottom: 0;
+}
+
+.contact-section {
+    margin-top: 40px;
+    padding: 25px;
+    background: rgba(46, 204, 113, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.contact-section h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #27ae60;
+}
+
+.contact-info p {
+    margin: 0 0 8px 0;
+    line-height: 1.6;
+    color: #2c3e50;
+    font-size: 0.95rem;
+}
+
+.contact-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .privacy-policy-page {
+        padding: 10px;
+    }
+
+    .privacy-header {
+        padding: 30px 20px;
+    }
+
+    .privacy-header h1 {
+        font-size: 2rem;
+    }
+
+    .back-link {
+        position: static;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .privacy-content {
+        padding: 30px 20px;
+    }
+
+    .introduction,
+    .policy-section,
+    .contact-section {
+        padding: 15px;
+    }
+
+    .policy-section h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .privacy-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .policy-section h2 {
+        font-size: 1.1rem;
+    }
+
+    .policy-section li {
+        font-size: 0.9rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .privacy-container {
+        background: rgba(44, 62, 80, 0.95);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .introduction {
+        background: rgba(102, 126, 234, 0.2);
+    }
+
+    .introduction p {
+        color: #ecf0f1;
+    }
+
+    .policy-section {
+        background: rgba(52, 73, 94, 0.7);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .policy-section:hover {
+        background: rgba(52, 73, 94, 0.9);
+    }
+
+    .policy-section h2 {
+        color: #ecf0f1;
+    }
+
+    .policy-section li {
+        color: #bdc3c7;
+    }
+
+    .contact-section {
+        background: rgba(46, 204, 113, 0.2);
+    }
+
+    .contact-info p {
+        color: #ecf0f1;
+    }
+}

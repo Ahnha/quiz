@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/themeStyles.css'; // noul tău fișier CSS global
+import './styles/global.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

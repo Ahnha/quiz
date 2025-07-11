@@ -9,7 +9,7 @@ export const quizzes: QuizDef[] = [
     nonToxicLifeQuiz
 ];
 
-export const allQuizzes = [skinTypeQuiz];
+export const allQuizzes = [agingQuiz, skinTypeQuiz, nonToxicLifeQuiz];
 
 export const getQuizById = (id: string) =>
     allQuizzes.find((quiz) => quiz.id === id);

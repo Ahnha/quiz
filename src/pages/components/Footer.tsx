@@ -1,7 +1,8 @@
 import React from 'react';
+import '../../styles/footer.css';
 
 const Footer: React.FC = () => (
-    <footer className="bg-[#8e24aa] text-white text-sm py-3 text-center mt-auto">
+    <footer className="footer">
         © 2025 Non-Toxic Romania. Toate drepturile rezervate.
     </footer>
 );

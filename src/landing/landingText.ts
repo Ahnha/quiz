@@ -1,13 +1,17 @@
-export const landingTitle = "Descoperă Skin Studio";
-export const landingSubtitle = "Descoperă ce tip de piele ai ca să îți poți îngriji tenul în mod personalizat";
+export const landingTitle = "Pielea ta merită ce e mai bun";
+export const landingSubtitle = "Descoperă tipul tău de piele și primește recomandări personalizate pentru produse naturale care funcționează";
 
 export const landingSections = [
     {
-        title: "De ce Skin Studio?",
-        text: "La Skin Studio, combinăm știința și naturalețea pentru a-ți oferi o experiență unică. Descoperă cât de bine îți cunoști pielea și primește recomandări adaptate nevoilor tale."
+        title: "De ce să alegi Skin Studio?",
+        text: "Combinăm știința dermatologică cu puterea naturii pentru a-ți oferi soluții personalizate. Fiecare quiz este creat de experți pentru a-ți oferi cele mai precise recomandări pentru pielea ta."
     },
     {
-        title: "Cum te ajutăm?",
-        text: "Fiecare quiz te ajută să înțelegi mai bine cum reacționează pielea ta și cum o poți proteja zi de zi."
+        title: "Cum funcționează?",
+        text: "Răspunde la câteva întrebări simple despre pielea ta și obiceiurile tale. Vei primi un profil complet cu recomandări de produse naturale adaptate nevoilor tale specifice."
+    },
+    {
+        title: "Produse 100% naturale",
+        text: "Toate recomandările noastre sunt pentru produse naturale, fără ingrediente toxice, testate dermatologic și aprobate pentru pielea ta sensibilă."
     }
 ];

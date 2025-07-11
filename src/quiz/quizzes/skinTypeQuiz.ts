@@ -1,6 +1,7 @@
 import { QuizDef } from '../type';
 
 const skinTypeQuiz: QuizDef = {
+    icon: "🌱",
     id: "skin-type",
     title: 'What Is Your Skin Type?',
     description:

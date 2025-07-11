@@ -18,6 +18,7 @@ export type QuizDef = {
   id: string;
   title: string;
   description: string;
+  icon: string;
   questions: Question[];
   results: Result[];
 };

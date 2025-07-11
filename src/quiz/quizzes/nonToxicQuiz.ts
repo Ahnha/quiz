@@ -1,9 +1,11 @@
 import { QuizDef } from '../type';
 
-const skinAgingQuiz: QuizDef = {
-    id: 'skin-aging',
-    title: 'Ce vârstă are pielea ta?',
-    description: 'Evaluează-ți obiceiurile și află dacă pielea ta îmbătrânește prematur sau e în formă excelentă.',
+const nonToxicLifeQuiz: QuizDef = {
+    id: "non-toxic",
+    title: 'Non-Toxic Lifestyle',
+    description:
+        "Descoperă cât de non-toxic este stilul tău de viață și primește sfaturi pentru o tranziție graduală.",
+    icon: "🌱",
     questions: [
         {
             question: "Cât de des folosești protecție solară?",
@@ -89,4 +91,4 @@ const skinAgingQuiz: QuizDef = {
     ],
 };
 
-export default skinAgingQuiz;
+export default nonToxicLifeQuiz;

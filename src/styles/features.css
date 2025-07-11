@@ -1,0 +1,314 @@
+/* Futuristic Minimalist Artisan Page */
+.artisan-page-futuristic {
+    min-height: 100vh;
+    background: var(--background-light);
+    padding-top: 70px;
+}
+
+.artisan-main {
+    padding: 80px 0;
+}
+
+.artisan-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.artisan-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 200;
+    margin-bottom: 16px;
+    color: var(--text-color);
+}
+
+.artisan-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* Filters Section */
+.filters-section {
+    margin-bottom: 60px;
+}
+
+.filters-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.filter-count {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.toggle-icon {
+    font-size: 18px;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+}
+
+.filters-content {
+    padding: 32px;
+    margin-bottom: 24px;
+}
+
+.filter-group {
+    margin-bottom: 32px;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-group h4 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--text-color);
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-chip {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-chip:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.filter-chip.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 32px;
+    margin-bottom: 60px;
+}
+
+.product-card {
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.product-image {
+    height: 200px;
+    background: var(--gradient-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-placeholder {
+    width: 80px;
+    height: 80px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-light);
+}
+
+.product-emoji {
+    font-size: 2.5rem;
+}
+
+.product-content {
+    padding: 32px;
+}
+
+.product-name {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+.product-description {
+    color: var(--text-light);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.product-meta {
+    margin-bottom: 24px;
+}
+
+.product-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.product-tag {
+    padding: 4px 12px;
+    background: rgba(168, 213, 186, 0.1);
+    color: var(--primary-color);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.product-ingredients,
+.product-benefits {
+    margin-bottom: 20px;
+}
+
+.product-ingredients h4,
+.product-benefits h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ingredients-list,
+.benefits-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ingredient,
+.benefit {
+    padding: 4px 12px;
+    background: var(--background-light);
+    color: var(--text-light);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.benefit {
+    background: rgba(212, 165, 165, 0.1);
+    color: var(--accent-color);
+}
+
+/* No Results */
+.no-results {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-light);
+}
+
+.no-results h3 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+.no-results p {
+    font-weight: 300;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .artisan-page-futuristic {
+        padding-top: 60px;
+    }
+
+    .artisan-main {
+        padding: 60px 0;
+    }
+
+    .artisan-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .artisan-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .filters-content {
+        padding: 24px;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .product-content {
+        padding: 24px;
+    }
+
+    .product-tags {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-options {
+        gap: 6px;
+    }
+
+    .filter-chip {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .product-image {
+        height: 150px;
+    }
+
+    .image-placeholder {
+        width: 60px;
+        height: 60px;
+    }
+
+    .product-emoji {
+        font-size: 2rem;
+    }
+
+    .product-content {
+        padding: 20px;
+    }
+}

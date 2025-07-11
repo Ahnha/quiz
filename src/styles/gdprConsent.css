@@ -1,0 +1,378 @@
+/* GDPR Consent Styles - Themed for Site Consistency */
+.gdpr-consent-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-glass-dark, rgba(0, 0, 0, 0.18));
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: var(--spacing-lg, 24px);
+}
+
+.gdpr-consent-modal {
+    max-width: 480px;
+    width: 100%;
+    max-height: 95vh;
+    overflow-y: auto;
+    background: var(--glass-bg);
+    border-radius: var(--radius-xl, 16px);
+    box-shadow: var(--shadow-heavy);
+    border: 1.5px solid var(--glass-border);
+    font-family: var(--font-family);
+    animation: gdprSlideIn 0.3s var(--transition-normal);
+    padding: 0;
+}
+
+@keyframes gdprSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.gdpr-header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
+}
+
+.gdpr-header h2 {
+    margin: 0 0 8px 0;
+    font-size: var(--font-size-2xl, 24px);
+    font-weight: 600;
+    color: var(--text-white);
+    letter-spacing: -0.01em;
+}
+
+.gdpr-subtitle {
+    margin: 0;
+    color: var(--text-white);
+    font-size: var(--font-size-base, 16px);
+    font-weight: 400;
+    opacity: 0.85;
+}
+
+.gdpr-content {
+    padding: var(--spacing-lg, 24px);
+    background: var(--bg-primary);
+}
+
+.gdpr-description {
+    margin: 0 0 var(--spacing-md, 16px) 0;
+    color: var(--text-color);
+    line-height: 1.7;
+    font-size: var(--font-size-base, 16px);
+}
+
+.gdpr-preferences {
+    margin: var(--spacing-md, 16px) 0;
+}
+
+.preference-item {
+    margin-bottom: var(--spacing-md, 16px);
+    padding: var(--spacing-md, 16px);
+    border-radius: var(--radius-lg, 12px);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-normal);
+}
+
+.preference-item:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.preference-item.necessary {
+    background: var(--bg-glass);
+    border-color: var(--primary-color);
+}
+
+.preference-header {
+    margin-bottom: 8px;
+}
+
+.preference-label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    gap: 12px;
+    font-size: var(--font-size-base, 16px);
+}
+
+.preference-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-custom {
+    position: relative;
+    height: 20px;
+    width: 20px;
+    background-color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm, 4px);
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all var(--transition-normal);
+}
+
+.preference-checkbox:checked~.checkbox-custom {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.preference-checkbox:checked~.checkbox-custom:after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.preference-checkbox:disabled~.checkbox-custom {
+    background-color: var(--border-light);
+    border-color: var(--border-light);
+    cursor: not-allowed;
+}
+
+.preference-info {
+    flex: 1;
+}
+
+.preference-info h4 {
+    margin: 0 0 4px 0;
+    font-size: var(--font-size-base, 16px);
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.always-active,
+.purpose {
+    font-size: var(--font-size-xs, 12px);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.always-active {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.purpose {
+    background: var(--secondary-color);
+    color: var(--text-white);
+}
+
+.preference-description {
+    margin: 0;
+    color: var(--text-light);
+    font-size: var(--font-size-sm, 14px);
+    line-height: 1.5;
+    padding-left: 32px;
+}
+
+.gdpr-links {
+    display: flex;
+    gap: var(--spacing-md, 16px);
+    margin: var(--spacing-md, 16px) 0;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.link-button {
+    @apply btn-minimal;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    text-decoration: underline;
+    font-size: var(--font-size-sm, 14px);
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: var(--radius-md, 8px);
+    transition: all var(--transition-normal);
+}
+
+.link-button:hover {
+    background: var(--primary-light);
+    color: var(--text-white);
+}
+
+.gdpr-actions {
+    padding: var(--spacing-lg, 24px);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md, 16px);
+    background: var(--bg-primary);
+    border-radius: 0 0 var(--radius-xl, 16px) var(--radius-xl, 16px);
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-sm, 8px);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+    @apply btn-minimal;
+    padding: 12px 24px;
+    border-radius: var(--radius-lg, 12px);
+    font-size: var(--font-size-base, 16px);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-transform: none;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--text-white);
+    border: none;
+    box-shadow: var(--shadow-light);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    color: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-light);
+    color: var(--text-white);
+    border-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gdpr-consent-overlay {
+        padding: var(--spacing-md, 16px);
+    }
+
+    .gdpr-consent-modal {
+        max-height: 98vh;
+    }
+
+    .gdpr-header {
+        padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-sm, 8px);
+    }
+
+    .gdpr-header h2 {
+        font-size: var(--font-size-xl, 20px);
+    }
+
+    .gdpr-content {
+        padding: var(--spacing-md, 16px);
+    }
+
+    .gdpr-actions {
+        padding: var(--spacing-md, 16px);
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        padding: 14px 20px;
+    }
+
+    .gdpr-links {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .gdpr-header h2 {
+        font-size: var(--font-size-lg, 18px);
+    }
+
+    .preference-label {
+        gap: 8px;
+    }
+
+    .preference-description {
+        padding-left: 28px;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .gdpr-consent-modal {
+        background: var(--glass-bg);
+        border-color: var(--glass-border);
+    }
+
+    .gdpr-header {
+        background: var(--gradient-primary);
+    }
+
+    .gdpr-header h2,
+    .gdpr-subtitle {
+        color: var(--text-white);
+    }
+
+    .gdpr-content,
+    .gdpr-actions {
+        background: var(--bg-glass);
+    }
+
+    .preference-item {
+        background: var(--bg-glass);
+        border-color: var(--glass-border);
+    }
+
+    .preference-item:hover {
+        background: var(--bg-primary);
+    }
+
+    .preference-info h4 {
+        color: var(--primary-light);
+    }
+
+    .btn-secondary {
+        background: var(--bg-glass);
+        color: var(--primary-light);
+    }
+
+    .btn-secondary:hover {
+        background: var(--primary-light);
+        color: var(--text-white);
+    }
+}

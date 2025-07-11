@@ -5,39 +5,135 @@
   <meta charset="utf-8" />
   <link rel="icon" href="%PUBLIC_URL%/logo.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+  <meta name="theme-color" content="#06B6D4" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-  <title>Skin Studio</title>
+  <!-- Primary Meta Tags -->
+  <title>Skin Studio - Natural Skincare Quiz & Personalized Beauty Recommendations</title>
+  <meta name="title" content="Skin Studio - Natural Skincare Quiz & Personalized Beauty Recommendations" />
+  <meta name="description"
+    content="Discover your perfect natural skincare routine with our personalized quiz. Get expert recommendations for natural beauty products, anti-aging solutions, and customized skincare advice. 100% natural, dermatologically tested products." />
+  <meta name="keywords"
+    content="natural skincare, skin type quiz, personalized beauty, anti-aging products, natural beauty, skincare routine, dermatological products, organic skincare, beauty quiz, skin care recommendations" />
+  <meta name="author" content="Skin Studio" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://skinstudio.app/" />
+  <meta property="og:title" content="Skin Studio - Natural Skincare Quiz & Personalized Beauty Recommendations" />
+  <meta property="og:description"
+    content="Discover your perfect natural skincare routine with our personalized quiz. Get expert recommendations for natural beauty products, anti-aging solutions, and customized skincare advice." />
+  <meta property="og:image" content="%PUBLIC_URL%/logo.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Skin Studio" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://skinstudio.app/" />
+  <meta property="twitter:title" content="Skin Studio - Natural Skincare Quiz & Personalized Beauty Recommendations" />
+  <meta property="twitter:description"
+    content="Discover your perfect natural skincare routine with our personalized quiz. Get expert recommendations for natural beauty products, anti-aging solutions, and customized skincare advice." />
+  <meta property="twitter:image" content="%PUBLIC_URL%/logo.png" />
+
+  <!-- Additional SEO Meta Tags -->
+  <meta name="application-name" content="Skin Studio" />
+  <meta name="apple-mobile-web-app-title" content="Skin Studio" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://skinstudio.app/" />
+
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/logo.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/logo.png" />
+
+  <!-- Manifest -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Skin Studio",
+    "url": "https://skinstudio.app/",
+    "description": "Natural skincare quiz and personalized beauty recommendations",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://skinstudio.app/quiz?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Skin Studio",
+    "url": "https://skinstudio.app/",
+    "logo": "https://skinstudio.app/logo.png",
+    "description": "Natural skincare and beauty products with personalized recommendations",
+    "sameAs": [
+      "https://www.facebook.com/skin.studio.the/"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "email": "info@skinstudio.app"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does the skin type quiz work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our personalized skin type quiz asks about your skin concerns, lifestyle, and preferences to provide customized natural skincare recommendations."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are your products 100% natural?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, all our recommended products are 100% natural, dermatologically tested, and free from harmful ingredients."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does the quiz take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The quiz takes approximately 5 minutes to complete and provides immediate personalized results."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-  <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
 </body>
 
 </html>
