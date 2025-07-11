@@ -11,6 +11,7 @@ interface QuizResultData {
     score: number;
     result: string;
     userEmail: string;
+    userName: string; // Add mandatory name field
     sendToOwner: boolean;
 }
 
@@ -35,6 +36,7 @@ interface QuizResultFormProps {
  */
 const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result, onClose }) => {
     const { t, language } = useLanguage();
+    const [userName, setUserName] = useState(''); // Add name state
     const [email, setEmail] = useState('');
     const [sendToOwner, setSendToOwner] = useState(false);
     const [captchaValue, setCaptchaValue] = useState('');
@@ -63,6 +65,12 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
     const validateForm = (): { isValid: boolean; errors: string[] } => {
         const errors: string[] = [];
 
+        if (!userName.trim()) {
+            errors.push('Name is required');
+        } else if (!SecurityUtils.isValidName(userName)) {
+            errors.push('Please enter a valid name (2-50 characters, no special characters)');
+        }
+
         if (!email) {
             errors.push(t.quizResultForm?.fillAllFields || 'Please fill all fields');
         } else if (!SecurityUtils.isValidEmail(email)) {
@@ -86,6 +94,12 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
     };
 
     // PATTERN: Event Handlers - Clean and focused
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const sanitizedName = SecurityUtils.sanitizeInput(e.target.value);
+        setUserName(sanitizedName);
+        setMessage(''); // Clear error when user starts typing
+    };
+
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const sanitizedEmail = SecurityUtils.sanitizeInput(e.target.value);
         setEmail(sanitizedEmail);
@@ -105,6 +119,7 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
             quizName,
             score,
             result,
+            userName,
             userEmail: email,
             sendToOwner,
         };
@@ -129,6 +144,7 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
             quizName,
             score,
             result,
+            userName,
             userEmail: email,
             sendToOwner,
         };
@@ -173,6 +189,7 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
                 quizName,
                 score,
                 result,
+                userName,
                 userEmail: email,
                 sendToOwner,
             };
@@ -207,6 +224,19 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
                 </div>
 
                 <form onSubmit={handleSubmit} className="form-content">
+                    <div className="form-group">
+                        <label htmlFor="name">Full Name</label>
+                        <input
+                            type="text"
+                            id="name"
+                            value={userName}
+                            onChange={handleNameChange}
+                            placeholder="Enter your full name"
+                            required
+                            className="form-input"
+                        />
+                    </div>
+
                     <div className="form-group">
                         <label htmlFor="email">{t.quizResultForm?.emailLabel || 'Email Address'}</label>
                         <input

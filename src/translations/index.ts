@@ -66,6 +66,9 @@ export interface Translations {
     // Quiz Result Form
     quizResultForm: {
         title: string;
+        nameLabel: string;
+        namePlaceholder: string;
+        nameRequired: string;
         emailLabel: string;
         emailPlaceholder: string;
         sendToOwner: string;
@@ -260,6 +263,9 @@ export const translations: Record<Language, Translations> = {
         },
         quizResultForm: {
             title: 'Send Quiz Results',
+            nameLabel: 'Name',
+            namePlaceholder: 'Enter your name',
+            nameRequired: 'Name is required',
             emailLabel: 'Email Address',
             emailPlaceholder: 'Enter your email',
             sendToOwner: 'Send results to site owner',
@@ -382,7 +388,7 @@ export const translations: Record<Language, Translations> = {
         landing: {
             hero: {
                 title: 'Descoperă Frumusețea Ta Naturală',
-                subtitle: 'Experimentează arta îngrijirii pielii handmade cu abordarea noastră personalizată pentru frumusețea naturală',
+                subtitle: 'Experimentează arta îngrijirii pielii cu abordarea noastră personalizată pentru frumusețea naturală',
                 startJourney: 'Începe Călătoria',
                 exploreProducts: 'Explorează Produsele',
             },
@@ -442,6 +448,9 @@ export const translations: Record<Language, Translations> = {
         },
         quizResultForm: {
             title: 'Trimite Rezultatele Quizului',
+            nameLabel: 'Nume',
+            namePlaceholder: 'Introduceți numele dumneavoastră',
+            nameRequired: 'Numele este obligatoriu',
             emailLabel: 'Adresă de Email',
             emailPlaceholder: 'Introduceți adresa dumneavoastră de email',
             sendToOwner: 'Trimite rezultate către Skin Studio site-ului',
@@ -532,7 +541,7 @@ export const translations: Record<Language, Translations> = {
             consentVersion: 'Versiunea Consimțământului',
         },
         footer: {
-            description: 'Descoperă arta îngrijirii pielii handmade cu abordarea noastră personalizată pentru frumusețea naturală.',
+            description: 'Descoperă arta îngrijirii pielii cu abordarea noastră personalizată pentru frumusețea naturală.',
             quickLinks: 'Link-uri Rapide',
             legal: 'Legal',
             privacyPolicy: 'Politica de Confidențialitate',
