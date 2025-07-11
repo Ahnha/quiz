@@ -278,7 +278,13 @@ export const generatePDFContent = (
     quizTitle: string,
     score: number,
     resultText: string,
-    userName: string
+    userName: string,
+    quizResult?: {
+        minScore: number;
+        maxScore: number;
+        text: string | { ro: string; en: string };
+    },
+    language: 'ro' | 'en' = 'ro'
 ) => {
     const skinType = getSkinTypeFromScore(score);
     const agingCategory = getAgingCategoryFromScore(score);
@@ -294,6 +300,8 @@ export const generatePDFContent = (
         score,
         resultText,
         userName,
-        quizTitle
+        quizTitle,
+        quizResult,
+        language
     };
 }; 

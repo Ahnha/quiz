@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getQuizById } from '../quiz/quizzes';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 import Navbar from './components/Navbar';
 import AppFooter from '../components/AppFooter';
 import QuizResultForm from './components/QuizResultForm';
@@ -22,6 +23,9 @@ const QuizPage: React.FC = () => {
     const { quizId } = useParams<{ quizId: string }>();
     const navigate = useNavigate();
     const { t, language } = useLanguage();
+
+    // Auto scroll to top when navigating to quiz
+    useScrollToTop();
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
@@ -93,6 +97,12 @@ const QuizPage: React.FC = () => {
         ) || quiz.results[0];
     };
 
+    const getQuizResult = () => {
+        return quiz.results.find(result =>
+            score >= result.minScore && score <= result.maxScore
+        ) || quiz.results[0];
+    };
+
     const progressPercentage = ((currentQuestion + 1) / quiz.questions.length) * 100;
 
     // Get localized content
@@ -101,6 +111,7 @@ const QuizPage: React.FC = () => {
     const resultData = getResult();
     const resultText = getLocalizedText(resultData.text, language);
     const quizTitle = getLocalizedText(quiz.title, language);
+    const quizResult = getQuizResult();
 
     return (
         <div className="quiz-page-futuristic">
@@ -204,6 +215,8 @@ const QuizPage: React.FC = () => {
                     quizName={quizTitle}
                     score={score}
                     result={resultText}
+                    quizResult={quizResult}
+                    language={language}
                     onClose={() => setShowResultForm(false)}
                 />
             )}

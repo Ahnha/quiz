@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 import SEO from '../components/SEO';
 import Navbar from './components/Navbar';
 import AppFooter from '../components/AppFooter';
@@ -20,6 +21,9 @@ const getLocalizedText = (text: string | { ro: string; en: string }, language: '
 
 const QuizzesPage: React.FC = () => {
     const { t, language } = useLanguage();
+
+    // Auto scroll to top when navigating to quizzes page
+    useScrollToTop();
 
     return (
         <div className="quiz-page-futuristic">
@@ -43,7 +47,7 @@ const QuizzesPage: React.FC = () => {
 
                     <div className="quiz-grid">
                         {quizzes.map((quiz) => (
-                            <div key={quiz.id} className="quiz-card glass-card">
+                            <Link key={quiz.id} to={`/quiz/${quiz.id}`} className="quiz-card glass-card" style={{ textDecoration: 'none' }}>
                                 <div className="quiz-card-header">
                                     <div className="quiz-icon">
                                         <div className="icon-circle">{quiz.icon}</div>
@@ -60,10 +64,10 @@ const QuizzesPage: React.FC = () => {
                                     <span className="quiz-time">{t.quiz.minutes}</span>
                                 </div>
 
-                                <Link to={`/quiz/${quiz.id}`} className="btn-minimal primary">
+                                <div className="btn-minimal primary">
                                     {t.quiz.startQuiz}
-                                </Link>
-                            </div>
+                                </div>
+                            </Link>
                         ))}
                     </div>
 

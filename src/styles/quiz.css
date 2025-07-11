@@ -3,10 +3,12 @@
     min-height: 100vh;
     background: var(--background-light);
     padding-top: 70px;
+    scroll-behavior: smooth;
 }
 
 .quiz-main {
     padding: 80px 0;
+    scroll-margin-top: 70px;
 }
 
 .quiz-header {
@@ -44,6 +46,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.quiz-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-heavy);
 }
 
 .quiz-card-header {
@@ -148,6 +157,7 @@
 
     .quiz-main {
         padding: 60px 0;
+        scroll-margin-top: 60px;
     }
 
     .quiz-title {
@@ -165,6 +175,8 @@
 
     .quiz-card {
         padding: 32px 24px;
+        min-height: 300px;
+        touch-action: manipulation;
     }
 
     .quiz-icon .icon-circle {

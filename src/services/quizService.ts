@@ -63,6 +63,20 @@ export class QuizService {
     }
 
     /**
+     * Find quiz result object based on score
+     * 
+     * PATTERN: Strategy Pattern
+     * - Returns the complete result object for PDF generation
+     */
+    static findResultObject(quiz: QuizDef, score: number) {
+        const result = quiz.results.find(r =>
+            score >= r.minScore && score <= r.maxScore
+        );
+
+        return result || quiz.results[0];
+    }
+
+    /**
      * Validate quiz score
      * 
      * PATTERN: Validation Pattern

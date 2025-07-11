@@ -55,6 +55,7 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
     );
 
     const resultText = QuizService.findResult(quiz, quizState.score, language);
+    const quizResult = QuizService.findResultObject(quiz, quizState.score);
 
     /**
      * Handle answer selection
@@ -227,6 +228,8 @@ const Quiz: React.FC<QuizProps> = ({ quiz }) => {
                                 quizTitle={quizTitle}
                                 score={quizState.score}
                                 resultText={resultText}
+                                quizResult={quizResult}
+                                language={language}
                             />
 
                             <Button

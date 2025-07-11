@@ -183,7 +183,7 @@ const agingQuiz: QuizDef = {
             minScore: 0,
             maxScore: 30,
             text: {
-                ro: "🟠 Necesită Îmbunătățiri Semnificative\n\nPielea ta ar putea beneficia de schimbări majore în stilul de viață și rutina de îngrijire. Recomandăm:\n\n• Rutină de îngrijire completă cu SPF zilnic\n• Suplimente de colagen și antioxidanți\n• Reducerea stresului și îmbunătățirea somnului\n• Dietă bogată în antioxidanți și omega-3\n\n📚 Referințe științifice:\n• Journal of Clinical and Aesthetic Dermatology, 2023\n• International Journal of Cosmetic Science, 2022",
+                ro: "🟠 Necesită Îmbunătățiri Semnificative!\n\nPielea ta ar putea beneficia de schimbări majore în stilul de viață și rutina de îngrijire. Recomandăm:\n\n• Rutină de îngrijire completă cu SPF zilnic\n• Suplimente de colagen și antioxidanți\n• Reducerea stresului și îmbunătățirea somnului\n• Dietă bogată în antioxidanți și omega-3\n\n📚 Referințe științifice:\n• Journal of Clinical and Aesthetic Dermatology, 2023\n• International Journal of Cosmetic Science, 2022",
                 en: "🔴 Your skin may be aging faster than it should. Time to make changes!\n\nYour skin could benefit from major lifestyle and skincare routine changes. We recommend:\n\n• Complete skincare routine with daily SPF\n• Collagen and antioxidant supplements\n• Stress reduction and improved sleep\n• Diet rich in antioxidants and omega-3\n\n📚 Scientific references:\n• Journal of Clinical and Aesthetic Dermatology, 2023\n• International Journal of Cosmetic Science, 2022"
             }
         },
@@ -191,7 +191,7 @@ const agingQuiz: QuizDef = {
             minScore: 31,
             maxScore: 50,
             text: {
-                ro: "🟡 Îmbunătățiri Moderate Necesare\n\nPielea ta are o bază bună, dar câteva ajustări pot face diferența:\n\n• Implementarea unei rutine de îngrijire consistente\n• Protecție solară zilnică obligatorie\n• Suplimente de colagen și vitamina C\n• Optimizarea somnului și hidratării\n\n📚 Referințe științifice:\n• Dermatology Research and Practice, 2023\n• Journal of Dermatological Treatment, 2022",
+                ro: "🟡 Îmbunătățiri Moderate Necesare! \n\nPielea ta are o bază bună, dar câteva ajustări pot face diferența:\n\n• Implementarea unei rutine de îngrijire consistente\n• Protecție solară zilnică obligatorie\n• Suplimente de colagen și vitamina C\n• Optimizarea somnului și hidratării\n\n📚 Referințe științifice:\n• Dermatology Research and Practice, 2023\n• Journal of Dermatological Treatment, 2022",
                 en: "🟡 Normal aging – some lifestyle tweaks will help.\n\nYour skin has a good foundation, but a few adjustments can make a difference:\n\n• Implement a consistent skincare routine\n• Mandatory daily sun protection\n• Collagen and vitamin C supplements\n• Optimize sleep and hydration\n\n📚 Scientific references:\n• Dermatology Research and Practice, 2023\n• Journal of Dermatological Treatment, 2022"
             }
         },
@@ -199,7 +199,7 @@ const agingQuiz: QuizDef = {
             minScore: 51,
             maxScore: 70,
             text: {
-                ro: "🟢 Bună Îngrijire a Pielii\n\nPielea ta este bine îngrijită! Menține rutina actuală și consideră:\n\n• Produse anti-aging avansate (retinol, peptide)\n• Suplimente de colagen pentru întreținere\n• Exfoliere regulată și tratamente profesionale\n\n📚 Referințe științifice:\n• Journal of Drugs in Dermatology, 2023\n• Clinical, Cosmetic and Investigational Dermatology, 2022",
+                ro: "🟢 Bună Îngrijire a Pielii! \n\nPielea ta este bine îngrijită! Menține rutina actuală și consideră:\n\n• Produse anti-aging avansate (retinol, peptide)\n• Suplimente de colagen pentru întreținere\n• Exfoliere regulată și tratamente profesionale\n\n📚 Referințe științifice:\n• Journal of Drugs in Dermatology, 2023\n• Clinical, Cosmetic and Investigational Dermatology, 2022",
                 en: "🟢 Your skin is aging beautifully – keep it up!\n\nYour skin is well-cared for! Maintain your current routine and consider:\n\n• Advanced anti-aging products (retinol, peptides)\n• Collagen supplements for maintenance\n• Regular exfoliation and professional treatments\n\n📚 Scientific references:\n• Journal of Drugs in Dermatology, 2023\n• Clinical, Cosmetic and Investigational Dermatology, 2022"
             }
         },
@@ -207,7 +207,7 @@ const agingQuiz: QuizDef = {
             minScore: 71,
             maxScore: 100,
             text: {
-                ro: "🟢 Excelentă Îngrijire a Pielii\n\nFelicitări! Pielea ta este excepțional de bine îngrijită și menținută. Rutina ta este un model pentru îngrijirea preventivă a îmbătrânirii.\n\nPentru menținere:\n• Continuă rutina actuală\n• Consideră tratamente profesionale avansate\n• Monitorizează schimbările cu vârsta\n\n📚 Referințe științifice:\n• Journal of the American Academy of Dermatology, 2023\n• British Journal of Dermatology, 2022",
+                ro: "🟢 Excelentă Îngrijire a Pielii! \n\nFelicitări! Pielea ta este excepțional de bine îngrijită și menținută. Rutina ta este un model pentru îngrijirea preventivă a îmbătrânirii.\n\nPentru menținere:\n• Continuă rutina actuală\n• Consideră tratamente profesionale avansate\n• Monitorizează schimbările cu vârsta\n\n📚 Referințe științifice:\n• Journal of the American Academy of Dermatology, 2023\n• British Journal of Dermatology, 2022",
                 en: "🟢 Your skin is aging beautifully – keep it up!\n\nCongratulations! Your skin is exceptionally well-cared for and maintained. Your routine is a model for preventive aging care.\n\nFor maintenance:\n• Continue your current routine\n• Consider advanced professional treatments\n• Monitor changes with age\n\n📚 Scientific references:\n• Journal of the American Academy of Dermatology, 2023\n• British Journal of Dermatology, 2022"
             }
         },

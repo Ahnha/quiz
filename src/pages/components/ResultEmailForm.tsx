@@ -31,6 +31,12 @@ interface ResultEmailFormProps {
     quizTitle: string;
     score: number;
     resultText: string;
+    quizResult?: {
+        minScore: number;
+        maxScore: number;
+        text: string | { ro: string; en: string };
+    };
+    language?: 'ro' | 'en';
 }
 
 /**
@@ -52,7 +58,9 @@ interface ResultEmailFormProps {
 const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
     quizTitle,
     score,
-    resultText
+    resultText,
+    quizResult,
+    language = 'ro'
 }) => {
     // PATTERN: State Management - Organized by purpose
     const [formData, setFormData] = useState({
@@ -90,7 +98,7 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
         if (!formData.userName) {
             errors.push('Te rugăm să introduci numele tău.');
         } else if (!SecurityUtils.isValidName(formData.userName)) {
-            errors.push('Numele trebuie să conțină între 2 și 50 de caractere și să nu conțină caractere speciale.');
+            errors.push('Numele trebuie să conțină între 1 și 30 de caractere și să nu conțină caractere speciale.');
         }
 
         if (!SecurityUtils.isValidQuizScore(score)) {
@@ -126,7 +134,7 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
         setError('');
 
         try {
-            const pdfContent = generatePDFContent(quizTitle, score, resultText, formData.userName);
+            const pdfContent = generatePDFContent(quizTitle, score, resultText, formData.userName, quizResult, language);
 
             const pdfData: PDFData = {
                 userName: formData.userName,
@@ -137,6 +145,8 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
                 agingCategory: pdfContent.agingCategory,
                 skinRecommendation: pdfContent.skinRecommendation,
                 agingRecommendation: pdfContent.agingRecommendation,
+                quizResult,
+                language,
                 date: new Date().toLocaleDateString('ro-RO', {
                     year: 'numeric',
                     month: 'long',
@@ -245,13 +255,17 @@ const ResultEmailForm: React.FC<ResultEmailFormProps> = ({
                 <Box component="form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="form-content">
                     <TextField
                         fullWidth
-                        label="Numele tău"
+                        label={
+                            <span>
+                                Numele tău (prenume sau poreclă) <span style={{ color: 'red' }}>*</span>
+                            </span>
+                        }
                         value={formData.userName}
                         onChange={handleInputChange('userName')}
                         margin="normal"
                         required
                         error={!!error && !formData.userName}
-                        helperText={!formData.userName && error ? 'Numele este obligatoriu' : ''}
+                        helperText={!formData.userName && error ? 'Numele este obligatoriu' : 'Poți introduce doar prenumele sau o poreclă'}
                     />
 
                     <TextField

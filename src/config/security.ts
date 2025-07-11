@@ -118,9 +118,9 @@ export const SECURITY_CONFIG = {
             maxLength: 254
         },
         name: {
-            minLength: 2,
-            maxLength: 50,
-            // Regex for names with Romanian characters
+            minLength: 1,
+            maxLength: 30,
+            // Regex for names with Romanian characters - more flexible for nicknames
             pattern: /^[a-zA-ZăâîșțĂÂÎȘȚ\s-']+$/
         },
         quizScore: {

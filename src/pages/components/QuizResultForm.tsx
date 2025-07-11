@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import ReportGenerator from '../../utils/reportGenerator';
+import { PDFService, PDFData } from '../../services/pdfService';
+import { generatePDFContent } from '../../data/skinCareRecommendations';
 import { SecurityUtils, ErrorLogger } from '../../config/security';
 import '../../styles/quizResultForm.css';
 
@@ -19,6 +21,12 @@ interface QuizResultFormProps {
     quizName: string;
     score: number;
     result: string;
+    quizResult?: {
+        minScore: number;
+        maxScore: number;
+        text: string | { ro: string; en: string };
+    };
+    language?: 'ro' | 'en';
     onClose: () => void;
 }
 
@@ -34,7 +42,14 @@ interface QuizResultFormProps {
  * - Secure data handling
  * - Error logging and handling
  */
-const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result, onClose }) => {
+const QuizResultForm: React.FC<QuizResultFormProps> = ({
+    quizName,
+    score,
+    result,
+    quizResult,
+    language: propLanguage = 'ro',
+    onClose
+}) => {
     const { t, language } = useLanguage();
     const [userName, setUserName] = useState(''); // Add name state
     const [email, setEmail] = useState('');
@@ -68,7 +83,7 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
         if (!userName.trim()) {
             errors.push('Name is required');
         } else if (!SecurityUtils.isValidName(userName)) {
-            errors.push('Please enter a valid name (2-50 characters, no special characters)');
+            errors.push('Please enter a valid name (1-30 characters, letters only)');
         }
 
         if (!email) {
@@ -163,6 +178,37 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
         }
     };
 
+    const generateAndDownloadPDF = async () => {
+        try {
+            const pdfContent = generatePDFContent(quizName, score, result, userName, quizResult, propLanguage);
+
+            const pdfData: PDFData = {
+                userName: userName || 'User',
+                quizTitle: quizName,
+                score,
+                resultText: result,
+                skinType: pdfContent.skinType,
+                agingCategory: pdfContent.agingCategory,
+                skinRecommendation: pdfContent.skinRecommendation,
+                agingRecommendation: pdfContent.agingRecommendation,
+                quizResult,
+                language: propLanguage,
+                date: new Date().toLocaleDateString('ro-RO', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })
+            };
+
+            await PDFService.generatePDF(pdfData);
+            PDFService.downloadPDF(pdfData, `skin-care-report-${userName || 'user'}.pdf`);
+            setMessage('PDF generated successfully!');
+        } catch (error) {
+            ErrorLogger.log(error as Error, 'PDF Generation');
+            setMessage('Error generating PDF. Please try again.');
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -225,13 +271,13 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
 
                 <form onSubmit={handleSubmit} className="form-content">
                     <div className="form-group">
-                        <label htmlFor="name">Full Name</label>
+                        <label htmlFor="name">Name (first name or nickname) <span style={{ color: 'red' }}>*</span></label>
                         <input
                             type="text"
                             id="name"
                             value={userName}
                             onChange={handleNameChange}
-                            placeholder="Enter your full name"
+                            placeholder="Enter your first name or nickname"
                             required
                             className="form-input"
                         />
@@ -289,11 +335,19 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({ quizName, score, result
                     <div className="form-actions">
                         <button
                             type="button"
+                            onClick={generateAndDownloadPDF}
+                            className="btn-minimal secondary"
+                            disabled={isSubmitting}
+                        >
+                            📄 {t.quizResultForm?.downloadReport || 'Download PDF Report'}
+                        </button>
+                        <button
+                            type="button"
                             onClick={generateBeautifulReport}
                             className="btn-minimal secondary"
                             disabled={isSubmitting}
                         >
-                            📄 {t.quizResultForm?.downloadReport || 'Download Beautiful Report'}
+                            📊 {t.quizResultForm?.downloadReport || 'Download Beautiful Report'}
                         </button>
                         <button
                             type="button"

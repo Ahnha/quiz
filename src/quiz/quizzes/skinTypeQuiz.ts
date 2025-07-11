@@ -176,7 +176,7 @@ const skinTypeQuiz: QuizDef = {
             minScore: 0,
             maxScore: 30,
             text: {
-                ro: "🟢 Ten Uscat\n\nPielea ta are nevoie de hidratare intensă.\n\n✔ Săpunuri recomandate:\n• Săpun cu avocado\n• Săpun cu unt de shea\n• Săpun cu ovăz și miere\n\n📚 Referințe științifice:\n• Journal of Clinical and Aesthetic Dermatology, 2021\n• International Journal of Cosmetic Science, 2020",
+                ro: "🟢 Ten Uscat. \n\nPielea ta are nevoie de hidratare intensă.\n\n✔ Săpunuri recomandate:\n• Săpun cu avocado\n• Săpun cu unt de shea\n• Săpun cu ovăz și miere\n\n📚 Referințe științifice:\n• Journal of Clinical and Aesthetic Dermatology, 2021\n• International Journal of Cosmetic Science, 2020",
                 en: "🟢 Dry Skin\n\nYour skin needs intensive hydration.\n\n✔ Recommended soaps:\n• Avocado soap\n• Shea butter soap\n• Oatmeal and honey soap\n\n📚 Scientific references:\n• Journal of Clinical and Aesthetic Dermatology, 2021\n• International Journal of Cosmetic Science, 2020"
             }
         },
@@ -184,7 +184,7 @@ const skinTypeQuiz: QuizDef = {
             minScore: 31,
             maxScore: 50,
             text: {
-                ro: "🟡 Ten Gras\n\nPielea ta produce prea mult sebum și poate avea tendință acneică.\n\n✔ Săpunuri recomandate:\n• Săpun cu cărbune activ și arbore de ceai (absorbție de sebum și curățare profundă)\n• Săpun cu argilă verde și lămâiță (reglează producția de sebum)\n• Săpun cu sare de mare (exfoliere blândă și efect antiseptic)\n\n📚 Referințe științifice:\n• Journal of Dermatological Science, 2020\n• Clinical, Cosmetic and Investigational Dermatology, 2021",
+                ro: "🟡 Ten Gras. \n\nPielea ta produce prea mult sebum și poate avea tendință acneică.\n\n✔ Săpunuri recomandate:\n• Săpun cu cărbune activ și arbore de ceai (absorbție de sebum și curățare profundă)\n• Săpun cu argilă verde și lămâiță (reglează producția de sebum)\n• Săpun cu sare de mare (exfoliere blândă și efect antiseptic)\n\n📚 Referințe științifice:\n• Journal of Dermatological Science, 2020\n• Clinical, Cosmetic and Investigational Dermatology, 2021",
                 en: "🟡 Oily Skin\n\nYour skin produces too much sebum and may have acne-prone tendencies.\n\n✔ Recommended soaps:\n• Activated charcoal and tea tree soap (sebum absorption and deep cleansing)\n• Green clay and lemon soap (regulates sebum production)\n• Sea salt soap (gentle exfoliation and antiseptic effect)\n\n📚 Scientific references:\n• Journal of Dermatological Science, 2020\n• Clinical, Cosmetic and Investigational Dermatology, 2021"
             }
         },
@@ -192,7 +192,7 @@ const skinTypeQuiz: QuizDef = {
             minScore: 51,
             maxScore: 70,
             text: {
-                ro: "🔵 Ten Mixt\n\nPielea ta este grasă în zona T și uscată în alte zone.\n\n✔ Săpunuri recomandate:\n• Săpun cu lapte de capră și miere (hidratare echilibrată)\n• Săpun cu lavandă și ulei de jojoba (reglează sebumul fără a usca pielea)\n• Săpun cu cărbune activ și argilă roz (purificare delicată)\n\n📚 Referințe științifice:\n• Dermatology Research and Practice, 2021\n• Journal of Drugs in Dermatology, 2020",
+                ro: "🔵 Ten Mixt. \n\nPielea ta este grasă în zona T și uscată în alte zone.\n\n✔ Săpunuri recomandate:\n• Săpun cu lapte de capră și miere (hidratare echilibrată)\n• Săpun cu lavandă și ulei de jojoba (reglează sebumul fără a usca pielea)\n• Săpun cu cărbune activ și argilă roz (purificare delicată)\n\n📚 Referințe științifice:\n• Dermatology Research and Practice, 2021\n• Journal of Drugs in Dermatology, 2020",
                 en: "🔵 Combination Skin\n\nYour skin is oily in the T-zone and dry in other areas.\n\n✔ Recommended soaps:\n• Goat milk and honey soap (balanced hydration)\n• Lavender and jojoba oil soap (regulates sebum without drying)\n• Activated charcoal and pink clay soap (gentle purification)\n\n📚 Scientific references:\n• Dermatology Research and Practice, 2021\n• Journal of Drugs in Dermatology, 2020"
             }
         },
@@ -200,7 +200,7 @@ const skinTypeQuiz: QuizDef = {
             minScore: 71,
             maxScore: 90,
             text: {
-                ro: "🟠 Ten Sensibil\n\nPielea ta reacționează ușor la factori externi și are nevoie de îngrijire delicată.\n\n✔ Săpunuri recomandate:\n• Săpun cu gălbenele și mușețel (calmează iritațiile și roșeața)\n• Săpun cu aloe vera și castravete (efect răcoritor și hidratant)\n• Săpun cu unt de shea, fără parfum (fără iritanți, potrivit pentru pielea reactivă)\n\n📚 Referințe științifice:\n• Contact Dermatitis, 2021\n• Journal of the European Academy of Dermatology, 2020",
+                ro: "🟠 Ten Sensibil. \n\nPielea ta reacționează ușor la factori externi și are nevoie de îngrijire delicată.\n\n✔ Săpunuri recomandate:\n• Săpun cu gălbenele și mușețel (calmează iritațiile și roșeața)\n• Săpun cu aloe vera și castravete (efect răcoritor și hidratant)\n• Săpun cu unt de shea, fără parfum (fără iritanți, potrivit pentru pielea reactivă)\n\n📚 Referințe științifice:\n• Contact Dermatitis, 2021\n• Journal of the European Academy of Dermatology, 2020",
                 en: "🟠 Sensitive Skin\n\nYour skin reacts easily to external factors and needs gentle care.\n\n✔ Recommended soaps:\n• Calendula and chamomiles soap (soothes irritation and redness)\n• Aloe vera and cucumber soap (cooling and hydrating effect)\n• Shea butter soap, fragrance-free (no irritants, suitable for reactive skin)\n\n📚 Scientific references:\n• Contact Dermatitis, 2021\n• Journal of the European Academy of Dermatology, 2020"
             }
         },
@@ -208,7 +208,7 @@ const skinTypeQuiz: QuizDef = {
             minScore: 91,
             maxScore: 100,
             text: {
-                ro: "⚪ Ten Normal\n\nPielea ta este echilibrată și sănătoasă.\n\n✔ Săpunuri recomandate:\n• Săpun cu lapte de capră și miere (menține echilibrul pielii)\n• Săpun cu lavandă și ulei de măsline (curățare blândă și hrănire)\n• Săpun cu lapte de cocos și citrice (revitalizant și delicat parfumat)\n\n📚 Referințe științifice:\n• Journal of the American Academy of Dermatology, 2021\n• British Journal of Dermatology, 2020",
+                ro: "⚪ Ten Normal. \n\nPielea ta este echilibrată și sănătoasă.\n\n✔ Săpunuri recomandate:\n• Săpun cu lapte de capră și miere (menține echilibrul pielii)\n• Săpun cu lavandă și ulei de măsline (curățare blândă și hrănire)\n• Săpun cu lapte de cocos și citrice (revitalizant și delicat parfumat)\n\n📚 Referințe științifice:\n• Journal of the American Academy of Dermatology, 2021\n• British Journal of Dermatology, 2020",
                 en: "⚪ Normal Skin\n\nYour skin is balanced and healthy.\n\n✔ Recommended soaps:\n• Goat milk and honey soap (maintains skin balance)\n• Lavender and olive oil soap (gentle cleansing and nourishment)\n• Coconut milk and citrus soap (revitalizing and delicately scented)\n\n📚 Scientific references:\n• Journal of the American Academy of Dermatology, 2021\n• British Journal of Dermatology, 2020"
             }
         },
