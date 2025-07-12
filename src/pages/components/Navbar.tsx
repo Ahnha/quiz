@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
+import ThemeToggle from '../../components/ThemeToggle';
 import '../../styles/navbar.css';
 
 const Navbar: React.FC = () => {
@@ -14,16 +15,19 @@ const Navbar: React.FC = () => {
     return (
         <header className="navbar-futuristic">
             <div className="navbar-container">
-                <Link to="/" className="navbar-brand">
-                    <div className="brand-logo">
-                        <img
-                            src="/logo.png"
-                            alt="Skin Studio Logo"
-                            className="logo-image"
-                        />
-                    </div>
-                    <span className="brand-text">SKIN STUDIO</span>
-                </Link>
+                <div className="navbar-left">
+                    <Link to="/" className="navbar-brand">
+                        <div className="brand-logo">
+                            <img
+                                src="/logo.png"
+                                alt="Skin Studio Logo"
+                                className="logo-image"
+                            />
+                        </div>
+                        <span className="brand-text">SKIN STUDIO</span>
+                    </Link>
+                    <ThemeToggle />
+                </div>
 
                 <nav className={`navbar-nav ${isMenuOpen ? 'nav-open' : ''}`}>
                     <Link
@@ -39,20 +43,6 @@ const Navbar: React.FC = () => {
                         onClick={() => setIsMenuOpen(false)}
                     >
                         {t.nav.quiz}
-                    </Link>
-                    <Link
-                        to="/artisan"
-                        className={`nav-link ${isActive('/artisan') ? 'active' : ''}`}
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        {t.nav.artisan}
-                    </Link>
-                    <Link
-                        to="/blog"
-                        className={`nav-link ${isActive('/blog') ? 'active' : ''}`}
-                        onClick={() => setIsMenuOpen(false)}
-                    >
-                        {t.nav.blog}
                     </Link>
                 </nav>
 

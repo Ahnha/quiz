@@ -32,6 +32,51 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Button Styles */
+.btn-minimal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    background: transparent;
+    color: var(--text-color);
+    min-width: 160px;
+    text-align: center;
+}
+
+.btn-minimal.primary {
+    background: var(--gradient-primary);
+    color: var(--text-white);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-light);
+}
+
+.btn-minimal.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--primary-dark);
+}
+
+.btn-minimal.secondary {
+    background: transparent;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-minimal.secondary:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
 /* Utility Classes */
 .sr-only {
     position: absolute;

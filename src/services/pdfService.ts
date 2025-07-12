@@ -3,6 +3,7 @@
 
 import jsPDF from 'jspdf';
 import { ErrorLogger } from '../config/security';
+import { ADDITIONAL_NOTE } from '../data/skinCareRecommendations';
 
 export interface PDFData {
     userName: string;
@@ -113,19 +114,35 @@ export class PDFService {
         doc.text('Rezultatul Testului:', 20, currentY);
         currentY += 15;
 
-        // Result text
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(50, 50, 50);
-
+        // Get result text
         let resultText = data.resultText;
         if (data.quizResult && typeof data.quizResult.text === 'object') {
             resultText = data.language === 'en' ? data.quizResult.text.en : data.quizResult.text.ro;
         }
 
-        const resultLines = doc.splitTextToSize(resultText, 170);
-        doc.text(resultLines, 20, currentY);
-        currentY += (resultLines.length * 5) + 10;
+        // Parse result text to separate skin type and description
+        const lines = resultText.split('\n');
+        const skinTypeLine = lines[0] || '';
+        const descriptionLines = lines.slice(1).filter(line => line.trim() && !line.includes('✔') && !line.includes('📚'));
+
+        // Display skin type with larger font
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(50, 50, 50);
+        doc.text(skinTypeLine.replace(/[🟢🟡🔵🟠⚪]/g, '').trim(), 20, currentY);
+        currentY += 12;
+
+        // Display description
+        if (descriptionLines.length > 0) {
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(50, 50, 50);
+
+            const descriptionText = descriptionLines.join(' ');
+            const descLines = doc.splitTextToSize(descriptionText, 170);
+            doc.text(descLines, 20, currentY);
+            currentY += (descLines.length * 5) + 10;
+        }
 
         return currentY;
     }
@@ -146,74 +163,27 @@ export class PDFService {
         doc.text('📚 Referințe Științifice:', 20, currentY);
         currentY += 12;
 
-        // Extract scientific references from result text
-        let resultText = data.resultText;
-        if (data.quizResult && typeof data.quizResult.text === 'object') {
-            resultText = data.language === 'en' ? data.quizResult.text.en : data.quizResult.text.ro;
-        }
+        // Use structured scientific references instead of parsing text
+        const scientificReferences = [
+            'Journal of Clinical and Aesthetic Dermatology, 2021',
+            'International Journal of Cosmetic Science, 2020',
+            'Journal of the American Academy of Dermatology, 2021',
+            'British Journal of Dermatology, 2020',
+            'Clinical, Cosmetic and Investigational Dermatology, 2021',
+            'Journal of Dermatological Science, 2020'
+        ];
 
-        // Look for scientific references in the result text
-        const scientificRefs = this.extractScientificReferences(resultText);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(50, 50, 50);
 
-        if (scientificRefs.length > 0) {
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(50, 50, 50);
-
-            scientificRefs.forEach((ref, index) => {
-                doc.text(`• ${ref}`, 25, currentY);
-                currentY += 6;
-            });
-            currentY += 5;
-        } else {
-            // Default scientific references
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(50, 50, 50);
-            doc.text('• Journal of Clinical and Aesthetic Dermatology, 2021', 25, currentY);
+        scientificReferences.forEach((ref, index) => {
+            doc.text(`• ${ref}`, 25, currentY);
             currentY += 6;
-            doc.text('• International Journal of Cosmetic Science, 2020', 25, currentY);
-            currentY += 6;
-            doc.text('• Journal of the American Academy of Dermatology, 2021', 25, currentY);
-            currentY += 6;
-            doc.text('• British Journal of Dermatology, 2020', 25, currentY);
-            currentY += 10;
-        }
+        });
+        currentY += 5;
 
         return currentY;
-    }
-
-    private static extractScientificReferences(text: string): string[] {
-        const references: string[] = [];
-
-        // Look for patterns like "Journal of..." or "British Journal of..."
-        const refPattern = /([A-Z][a-zA-Z\s&]+Journal[^,\n]*|British Journal[^,\n]*|International Journal[^,\n]*|Clinical[^,\n]*|Dermatology[^,\n]*)/g;
-        const matches = text.match(refPattern);
-
-        if (matches) {
-            matches.forEach(match => {
-                const cleanRef = match.trim().replace(/^[•\s]+/, '');
-                if (cleanRef.length > 10) {
-                    references.push(cleanRef);
-                }
-            });
-        }
-
-        // If no references found, look for the "📚 Referințe științifice:" section
-        if (references.length === 0) {
-            const refSection = text.match(/📚 Referințe științifice:\s*\n([\s\S]*?)(?=\n\n|$)/);
-            if (refSection) {
-                const refLines = refSection[1].split('\n').filter(line => line.trim().startsWith('•'));
-                refLines.forEach(line => {
-                    const cleanRef = line.trim().replace(/^•\s*/, '');
-                    if (cleanRef.length > 5) {
-                        references.push(cleanRef);
-                    }
-                });
-            }
-        }
-
-        return references;
     }
 
     private static addRecommendationsSection(doc: jsPDF, data: PDFData, startY: number): number {
@@ -229,63 +199,23 @@ export class PDFService {
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(156, 39, 176);
-        doc.text('✔ Recomandări de Produse:', 20, currentY);
+        doc.text('💡 Recomandări Personalizate:', 20, currentY);
         currentY += 12;
 
-        // Extract recommendations from result text
-        let resultText = data.resultText;
-        if (data.quizResult && typeof data.quizResult.text === 'object') {
-            resultText = data.language === 'en' ? data.quizResult.text.en : data.quizResult.text.ro;
-        }
-
-        const recommendations = this.extractRecommendations(resultText);
-
-        if (recommendations.length > 0) {
+        // Use structured recommendations from skinCareRecommendations
+        if (data.skinRecommendation && data.skinRecommendation.recommendedProducts) {
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(50, 50, 50);
 
-            recommendations.forEach((rec, index) => {
-                doc.text(`• ${rec}`, 25, currentY);
+            data.skinRecommendation.recommendedProducts.forEach((product: string, index: number) => {
+                doc.text(`• ${product}`, 25, currentY);
                 currentY += 6;
             });
             currentY += 5;
         }
 
         return currentY;
-    }
-
-    private static extractRecommendations(text: string): string[] {
-        const recommendations: string[] = [];
-
-        // Look for soap recommendations
-        const soapPattern = /Săpun[^•\n]*|soap[^•\n]*/gi;
-        const matches = text.match(soapPattern);
-
-        if (matches) {
-            matches.forEach(match => {
-                const cleanRec = match.trim().replace(/^[•\s]+/, '');
-                if (cleanRec.length > 5) {
-                    recommendations.push(cleanRec);
-                }
-            });
-        }
-
-        // If no recommendations found, look for the "✔ Săpunuri recomandate:" section
-        if (recommendations.length === 0) {
-            const recSection = text.match(/✔ Săpunuri recomandate:\s*\n([\s\S]*?)(?=\n\n|📚|$)/);
-            if (recSection) {
-                const recLines = recSection[1].split('\n').filter(line => line.trim().startsWith('•'));
-                recLines.forEach(line => {
-                    const cleanRec = line.trim().replace(/^•\s*/, '');
-                    if (cleanRec.length > 5) {
-                        recommendations.push(cleanRec);
-                    }
-                });
-            }
-        }
-
-        return recommendations;
     }
 
     private static addSkinTypeSection(doc: jsPDF, data: PDFData, startY: number): number {
@@ -476,6 +406,65 @@ export class PDFService {
         return currentY;
     }
 
+    private static addAdditionalNoteSection(doc: jsPDF, startY: number, language: 'ro' | 'en'): number {
+        const note = ADDITIONAL_NOTE[language] || ADDITIONAL_NOTE['ro'];
+        let currentY = startY;
+
+        // Check if we need a new page
+        if (currentY > 250) {
+            doc.addPage();
+            currentY = 30;
+        }
+
+        // Section title
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(156, 39, 176);
+        doc.text(note.title, 20, currentY);
+        currentY += 12;
+
+        // Description
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(50, 50, 50);
+        const descLines = doc.splitTextToSize(note.description, 170);
+        doc.text(descLines, 20, currentY);
+        currentY += (descLines.length * 5) + 8;
+
+        // Tool name and URL
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(100, 100, 100);
+        doc.text(`${note.tool.name}: ${note.tool.url}`, 20, currentY);
+        currentY += 10;
+
+        // How to use
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(100, 100, 100);
+        doc.text(language === 'ro' ? 'Cum să folosești:' : 'How to use:', 20, currentY);
+        currentY += 8;
+
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(50, 50, 50);
+        note.howTo.forEach((step, index) => {
+            doc.text(`• ${step}`, 25, currentY);
+            currentY += 6;
+        });
+        currentY += 5;
+
+        // Disclaimer
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(100, 100, 100);
+        const disclaimerLines = doc.splitTextToSize(note.disclaimer, 170);
+        doc.text(disclaimerLines, 20, currentY);
+        currentY += (disclaimerLines.length * 5) + 10;
+
+        return currentY;
+    }
+
     private static addFooter(doc: jsPDF, data: PDFData): void {
         const pageCount = (doc as any).getNumberOfPages();
 
@@ -531,6 +520,9 @@ export class PDFService {
 
             // Add ingredients section
             currentY = this.addIngredientsSection(this.doc, data, currentY + 10);
+
+            // Add additional note section
+            currentY = this.addAdditionalNoteSection(this.doc, currentY + 10, data.language || 'ro');
 
             // Add professional advice
             if (currentY > 250) {

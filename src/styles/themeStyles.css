@@ -1,205 +1,112 @@
+/* Theme Variables - CSS Custom Properties */
 :root {
-  /* Color Palette - Teal/Cyan with Coral Accents */
-  --primary-color: #06B6D4;
-  --primary-light: #22D3EE;
-  --primary-dark: #0891B2;
-  --secondary-color: #F97316;
-  --accent-color: #FB7185;
+    /* Primary Colors */
+    --primary-color: #9c27b0;
+    --primary-dark: #7b1fa2;
+    --primary-light: #e1bee7;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%);
-  --gradient-secondary: linear-gradient(135deg, #F97316 0%, #FB7185 100%);
-  --gradient-accent: linear-gradient(135deg, #22D3EE 0%, #F97316 100%);
+    /* Secondary Colors */
+    --secondary-color: #ff9800;
+    --secondary-dark: #f57c00;
+    --secondary-light: #ffcc02;
 
-  /* Text Colors */
-  --text-color: #1F2937;
-  --text-light: #6B7280;
-  --text-muted: #9CA3AF;
-  --text-white: #FFFFFF;
+    /* Accent Colors */
+    --accent-color: #4caf50;
+    --accent-dark: #388e3c;
+    --accent-light: #81c784;
 
-  /* Background Colors */
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F9FAFB;
-  --bg-tertiary: #F3F4F6;
-  --bg-glass: rgba(255, 255, 255, 0.1);
-  --bg-glass-dark: rgba(0, 0, 0, 0.1);
+    /* Background Colors */
+    --background-light: #fafafa;
+    --background-dark: #121212;
+    --glass-bg: rgba(255, 255, 255, 0.1);
 
-  /* Border Colors */
-  --border-color: #E5E7EB;
-  --border-light: #F3F4F6;
-  --border-dark: #D1D5DB;
+    /* Text Colors */
+    --text-color: #333333;
+    --text-light: #666666;
+    --text-muted: #999999;
+    --text-white: #ffffff;
 
-  /* Shadow Colors */
-  --shadow-light: 0 4px 6px -1px rgba(6, 182, 212, 0.1), 0 2px 4px -1px rgba(6, 182, 212, 0.06);
-  --shadow-medium: 0 10px 15px -3px rgba(6, 182, 212, 0.1), 0 4px 6px -2px rgba(6, 182, 212, 0.05);
-  --shadow-heavy: 0 20px 25px -5px rgba(6, 182, 212, 0.1), 0 10px 10px -5px rgba(6, 182, 212, 0.04);
+    /* Border Colors */
+    --border-color: #e0e0e0;
+    --border-light: #f5f5f5;
+    --border-dark: #cccccc;
 
-  /* Glass Morphism */
-  --glass-bg: rgba(255, 255, 255, 0.25);
-  --glass-border: rgba(255, 255, 255, 0.18);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    /* Gradient Colors */
+    --gradient-primary: linear-gradient(135deg, #9c27b0, #7b1fa2);
+    --gradient-secondary: linear-gradient(135deg, #ff9800, #f57c00);
+    --gradient-accent: linear-gradient(135deg, #4caf50, #388e3c);
 
-  /* Spacing */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
-  --spacing-2xl: 48px;
-  --spacing-3xl: 64px;
+    /* Shadow Colors */
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.2);
 
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
 
-  /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-base: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 20px;
-  --font-size-2xl: 24px;
-  --font-size-3xl: 30px;
-  --font-size-4xl: 36px;
+    /* Border Radius */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
 
-  /* Transitions */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-slow: 0.5s ease;
+    /* Font Sizes */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-xxl: 1.5rem;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
 }
 
+/* Dark Theme Support - System Preference */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-light: #121212;
+        --text-color: #ffffff;
+        --text-light: #cccccc;
+        --text-muted: #999999;
+        --border-color: #333333;
+        --border-light: #222222;
+        --glass-bg: rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Manual Light Theme Override */
+[data-theme="light"] {
+    --background-light: #fafafa;
+    --text-color: #333333;
+    --text-light: #666666;
+    --text-muted: #999999;
+    --border-color: #e0e0e0;
+    --border-light: #f5f5f5;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* Manual Dark Theme Override */
+[data-theme="dark"] {
+    --background-light: #121212;
+    --text-color: #ffffff;
+    --text-light: #cccccc;
+    --text-muted: #999999;
+    --border-color: #333333;
+    --border-light: #222222;
+    --glass-bg: rgba(0, 0, 0, 0.2);
+}
+
+/* Apply theme to body */
 body {
-  margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background: var(--background-light);
-  color: var(--text-color);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Global Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  color: var(--text-color);
-}
-
-/* Glass Morphism Utility Classes */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-}
-
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  box-shadow: var(--shadow-light);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.glass-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-medium);
-  border-color: var(--primary-color);
-}
-
-/* Minimalist Button Styles */
-.btn-minimal {
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-minimal:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
-}
-
-.btn-minimal.primary {
-  background: var(--primary-color);
-  color: white;
-}
-
-.btn-minimal.primary:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-}
-
-/* Futuristic Container */
-.container-futuristic {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* Minimalist Section Spacing */
-.section-minimal {
-  padding: 80px 0;
-}
-
-.section-minimal.small {
-  padding: 40px 0;
-}
-
-/* Futuristic Grid */
-.grid-futuristic {
-  display: grid;
-  gap: 32px;
-}
-
-.grid-futuristic.cols-2 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.grid-futuristic.cols-3 {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-.grid-futuristic.cols-4 {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .container-futuristic {
-    padding: 0 16px;
-  }
-
-  .section-minimal {
-    padding: 60px 0;
-  }
-
-  .section-minimal.small {
-    padding: 30px 0;
-  }
-
-  .grid-futuristic {
-    gap: 24px;
-  }
+    background-color: var(--background-light);
+    color: var(--text-color);
+    transition: background-color var(--transition-normal), color var(--transition-normal);
 }

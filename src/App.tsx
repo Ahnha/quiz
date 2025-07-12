@@ -11,6 +11,7 @@ import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 // Custom imports - these are our own components and utilities
 // Similar to importing your own Java classes
 import { LanguageProvider } from './contexts/LanguageContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import ContentSecurityPolicy from './components/ContentSecurityPolicy';
 import SecurityAudit from './components/SecurityAudit';
@@ -20,8 +21,6 @@ import GDPRConsent from './components/GDPRConsent';
 // Similar to different JSP pages or Thymeleaf templates in Java
 import LandingPage from './pages/LandingPage';
 import QuizzesPage from './pages/QuizzesPage';
-import FeaturesPage from './pages/FeaturesPage';
-import BlogPage from './pages/BlogPage';
 import QuizPage from './pages/QuizPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 
@@ -29,6 +28,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 // Similar to including CSS files in your Java web app
 import './styles/global.css';
 import './styles/security.css';
+import './styles/themeStyles.css';
 
 /**
  * Main App Component - This is the root component of our application
@@ -70,42 +70,45 @@ const App: React.FC = () => {
       {/* Similar to security headers in Spring Security */}
       <ContentSecurityPolicy />
 
-      {/* LanguageProvider = provides language/translation context */}
-      {/* Similar to LocaleResolver in Spring MVC */}
-      <LanguageProvider>
+      {/* ThemeProvider = provides theme context */}
+      <ThemeProvider>
 
-        {/* Router = handles navigation between pages */}
-        {/* Similar to Spring MVC routing configuration */}
-        <Router>
+        {/* LanguageProvider = provides language/translation context */}
+        {/* Similar to LocaleResolver in Spring MVC */}
+        <LanguageProvider>
 
-          {/* Routes = container for all our page routes */}
-          {/* Similar to @RequestMapping annotations in Spring */}
-          <Routes>
+          {/* Router = handles navigation between pages */}
+          {/* Similar to Spring MVC routing configuration */}
+          <Router>
 
-            {/* Route = defines a URL path and what component to show */}
-            {/* path="/" = URL path (like @RequestMapping("/") in Spring) */}
-            {/* element={<Component />} = what component to render */}
-            {/* Similar to returning a view name in Spring MVC */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/quiz" element={<QuizzesPage />} />
-            <Route path="/quiz/:quizId" element={<QuizPage />} />
-            <Route path="/artisan" element={<FeaturesPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            {/* Routes = container for all our page routes */}
+            {/* Similar to @RequestMapping annotations in Spring */}
+            <Routes>
 
-          </Routes>
+              {/* Route = defines a URL path and what component to show */}
+              {/* path="/" = URL path (like @RequestMapping("/") in Spring) */}
+              {/* element={<Component />} = what component to render */}
+              {/* Similar to returning a view name in Spring MVC */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/quiz" element={<QuizzesPage />} />
+              <Route path="/quiz/:quizId" element={<QuizPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-          {/* GDPRConsent = cookie consent popup */}
-          {/* Similar to cookie consent in Java web apps */}
-          <GDPRConsent />
+            </Routes>
 
-          {/* SecurityAudit = security monitoring (development only) */}
-          {/* Similar to security logging in Java applications */}
-          <SecurityAudit />
+            {/* GDPRConsent = cookie consent popup */}
+            {/* Similar to cookie consent in Java web apps */}
+            <GDPRConsent />
 
-        </Router>
+            {/* SecurityAudit = security monitoring (development only) */}
+            {/* Similar to security logging in Java applications */}
+            <SecurityAudit />
 
-      </LanguageProvider>
+          </Router>
+
+        </LanguageProvider>
+
+      </ThemeProvider>
 
     </ErrorBoundary>
   );

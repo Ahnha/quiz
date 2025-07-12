@@ -15,6 +15,4 @@ Disallow: /api/
 
 # Allow important directories
 Allow: /quiz/
-Allow: /artisan/
-Allow: /blog/
 Allow: /privacy-policy/

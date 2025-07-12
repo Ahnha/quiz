@@ -55,6 +55,13 @@
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.hero-actions .btn-minimal {
+    margin: 0;
+    flex-shrink: 0;
 }
 
 /* Hero Visual */

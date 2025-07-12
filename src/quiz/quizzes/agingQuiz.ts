@@ -199,7 +199,7 @@ const agingQuiz: QuizDef = {
             minScore: 51,
             maxScore: 70,
             text: {
-                ro: "🟢 Bună Îngrijire a Pielii! \n\nPielea ta este bine îngrijită! Menține rutina actuală și consideră:\n\n• Produse anti-aging avansate (retinol, peptide)\n• Suplimente de colagen pentru întreținere\n• Exfoliere regulată și tratamente profesionale\n\n📚 Referințe științifice:\n• Journal of Drugs in Dermatology, 2023\n• Clinical, Cosmetic and Investigational Dermatology, 2022",
+                ro: "🟢Pielea ta este bine îngrijită! Menține rutina actuală și consideră:\n\n• Produse anti-aging avansate (retinol, peptide)\n• Suplimente de colagen pentru întreținere\n• Exfoliere regulată și tratamente profesionale\n\n📚 Referințe științifice:\n• Journal of Drugs in Dermatology, 2023\n• Clinical, Cosmetic and Investigational Dermatology, 2022",
                 en: "🟢 Your skin is aging beautifully – keep it up!\n\nYour skin is well-cared for! Maintain your current routine and consider:\n\n• Advanced anti-aging products (retinol, peptides)\n• Collagen supplements for maintenance\n• Regular exfoliation and professional treatments\n\n📚 Scientific references:\n• Journal of Drugs in Dermatology, 2023\n• Clinical, Cosmetic and Investigational Dermatology, 2022"
             }
         },

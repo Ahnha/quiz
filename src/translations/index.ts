@@ -5,8 +5,6 @@ export interface Translations {
     nav: {
         home: string;
         quiz: string;
-        artisan: string;
-        blog: string;
     };
 
     // Landing Page
@@ -106,30 +104,7 @@ export interface Translations {
         sentToOwner: string;
     };
 
-    // Artisan Page
-    artisan: {
-        title: string;
-        subtitle: string;
-        filters: string;
-        category: string;
-        skinType: string;
-        noProducts: string;
-        noProductsSubtitle: string;
-    };
 
-    // Blog Page
-    blog: {
-        title: string;
-        subtitle: string;
-        by: string;
-        readMore: string;
-        newsletter: {
-            title: string;
-            subtitle: string;
-            placeholder: string;
-            subscribe: string;
-        };
-    };
 
     // GDPR Consent
     gdpr: {
@@ -197,8 +172,6 @@ export const translations: Record<Language, Translations> = {
         nav: {
             home: 'Home',
             quiz: 'Quiz',
-            artisan: 'Artisan',
-            blog: 'Blog',
         },
         landing: {
             hero: {
@@ -300,27 +273,7 @@ export const translations: Record<Language, Translations> = {
             download: 'Download',
             sentToOwner: 'Sent to Owner',
         },
-        artisan: {
-            title: 'Handcrafted Natural Products',
-            subtitle: 'Discover our collection of lovingly made soaps and skincare products',
-            filters: 'Filters',
-            category: 'Category',
-            skinType: 'Skin Type',
-            noProducts: 'No products found',
-            noProductsSubtitle: 'Try adjusting your filters to see more products',
-        },
-        blog: {
-            title: 'Natural Beauty Blog',
-            subtitle: 'Discover insights, tips, and stories about natural skincare and beauty',
-            by: 'By',
-            readMore: 'Read More',
-            newsletter: {
-                title: 'Stay Updated',
-                subtitle: 'Get the latest natural beauty tips and product updates delivered to your inbox.',
-                placeholder: 'Enter your email address',
-                subscribe: 'Subscribe',
-            },
-        },
+
         gdpr: {
             title: 'Privacy Policy & Cookies',
             subtitle: 'We care about your privacy and use of cookies.',
@@ -382,8 +335,6 @@ export const translations: Record<Language, Translations> = {
         nav: {
             home: 'Acasă',
             quiz: 'Quiz',
-            artisan: 'Artizanal',
-            blog: 'Blog',
         },
         landing: {
             hero: {
@@ -485,27 +436,7 @@ export const translations: Record<Language, Translations> = {
             download: 'Descarcă',
             sentToOwner: 'Trimis către Proprietar',
         },
-        artisan: {
-            title: 'Produse Naturale Handmade',
-            subtitle: 'Descoperă colecția noastră de săpunuri și produse de îngrijire făcute cu dragoste',
-            filters: 'Filtre',
-            category: 'Categorie',
-            skinType: 'Tip Piele',
-            noProducts: 'Nu s-au găsit produse',
-            noProductsSubtitle: 'Încearcă să ajustezi filtrele pentru a vedea mai multe produse',
-        },
-        blog: {
-            title: 'Blog Frumusețe Naturală',
-            subtitle: 'Descoperă informații, sfaturi și povești despre îngrijirea naturală a pielii și frumusețe',
-            by: 'De',
-            readMore: 'Citește Mai Mult',
-            newsletter: {
-                title: 'Rămâi La Curent',
-                subtitle: 'Primește cele mai noi sfaturi de frumusețe naturală și actualizări de produse în inbox-ul tău.',
-                placeholder: 'Introdu adresa ta de email',
-                subscribe: 'Abonează-te',
-            },
-        },
+
         gdpr: {
             title: 'Politica de Confidențialitate & Cookie-uri',
             subtitle: 'Ne pasăm de confidențialitatea și utilizarea cookie-urilor.',

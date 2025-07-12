@@ -24,7 +24,7 @@
 - **Page Titles**: 
   - Home: "Skin Studio - Natural Skincare Quiz & Personalized Beauty Recommendations"
   - Quiz: "Skin Type Quiz - Discover Your Perfect Natural Skincare Routine | Skin Studio"
-  - Products: "Natural Artisan Skincare Products - Handcrafted Beauty Solutions | Skin Studio"
+  
   - Blog: "Natural Skincare Blog - Expert Beauty Tips & Skincare Advice | Skin Studio"
 
 - **Targeted Keywords**:

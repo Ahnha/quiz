@@ -21,8 +21,6 @@ const AppFooter: React.FC = () => {
                         <ul>
                             <li><Link to="/">{t.nav.home}</Link></li>
                             <li><Link to="/quiz">{t.nav.quiz}</Link></li>
-                            <li><Link to="/artisan">{t.nav.artisan}</Link></li>
-                            <li><Link to="/blog">{t.nav.blog}</Link></li>
                         </ul>
                     </div>
 
