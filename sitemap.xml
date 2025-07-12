@@ -34,21 +34,9 @@
     <priority>0.8</priority>
   </url>
   
-  <!-- Product Pages -->
-  <url>
-    <loc>https://skinstudio.app/artisan</loc>
-    <lastmod>2024-12-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
   
-  <!-- Blog Pages -->
-  <url>
-    <loc>https://skinstudio.app/blog</loc>
-    <lastmod>2024-12-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
+
   
   <!-- Legal Pages -->
   <url>
