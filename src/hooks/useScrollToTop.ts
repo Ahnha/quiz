@@ -13,9 +13,8 @@ export const useScrollToTop = () => {
     const location = useLocation();
 
     useEffect(() => {
-        // Scroll to top with offset for fixed navbar
+        // Scroll to top when route changes
         const scrollToTop = () => {
-            const navbarHeight = window.innerWidth <= 768 ? 60 : 70;
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
