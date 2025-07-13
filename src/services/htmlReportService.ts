@@ -801,8 +801,8 @@ export class HTMLReportService {
             document.getElementById('subscribeUpdates').checked = false; // Reset checkbox
         }
         
-        // eslint-disable-next-line no-useless-escape
         function isValidEmail(email) {
+            // eslint-disable-next-line no-useless-escape
             const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
             return emailRegex.test(email);
         }
