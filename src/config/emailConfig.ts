@@ -3,12 +3,12 @@
 
 export const EMAIL_CONFIG = {
     // EmailJS Configuration
-    EMAILJS_SERVICE_ID: 'your_service_id', // Replace with your EmailJS service ID
-    EMAILJS_TEMPLATE_ID: 'your_template_id', // Replace with your EmailJS template ID
-    EMAILJS_USER_ID: 'your_user_id', // Replace with your EmailJS user ID
+    EMAILJS_SERVICE_ID: 'service_b0eycgy', // Your actual Service ID
+    EMAILJS_TEMPLATE_ID: 'template_cursor', // ✅ Updated to your template name
+    EMAILJS_USER_ID: 'qpMdCwldZeAqODpQR', // ✅ Updated to your EmailJS user ID
 
     // Skin Studio Email
-    SKIN_STUDIO_EMAIL: 'skinstudio@example.com', // Replace with actual Skin Studio email
+    SKIN_STUDIO_EMAIL: 'a.m.stratulat@gmail.com', // ✅ Updated to your email
 
     // Email Templates
     TEMPLATES: {
@@ -24,13 +24,10 @@ export const EMAIL_CONFIG = {
 };
 
 // Instructions for setup:
-// 1. Sign up at https://www.emailjs.com/
-// 2. Create an email service (Gmail, Outlook, etc.)
-// 3. Create email templates for:
-//    - User reports (sending quiz results to users)
-//    - Contact form submissions (sending contact info to Skin Studio)
-//    - Quiz notifications (sending quiz results to Skin Studio)
-// 4. Get your Service ID, Template IDs, and User ID
+// 1. ✅ Service ID: service_b0eycgy (already set)
+// 2. Create the email template in EmailJS dashboard using the HTML above
+// 3. Copy the Template ID from EmailJS dashboard
+// 4. Get your User ID from EmailJS Account → API Keys
 // 5. Update the values above with your actual credentials
 // 6. Update the Skin Studio email address
 // 7. Update the EmailJS initialization in public/index.html with your User ID 

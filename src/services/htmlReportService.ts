@@ -155,10 +155,16 @@ export class HTMLReportService {
             }
         }
 
-        // Parse result text to separate skin type and description
+        // Parse result text to separate sections
         const lines = localizedResult.split('\n');
         const skinTypeLine = lines[0] || 'No skin type information available';
-        const descriptionLines = lines.slice(1).filter(line => line.trim() && !line.includes('✔') && !line.includes('📚'));
+
+        // Parse the result text into structured sections
+        const resultSections = this.parseResultText(localizedResult);
+
+        // Import translations for medical disclaimer and scientific references
+        const { translations } = require('../translations');
+        const currentTranslations = translations[data.language || 'ro'];
 
         const t = {
             ro: {
@@ -192,7 +198,17 @@ export class HTMLReportService {
                 sentError: 'Eroare la trimiterea raportului.',
                 emailRequired: 'Adresa de email este obligatorie.',
                 nameRequired: 'Numele este obligatoriu.',
-                contactInfoRequired: 'Informațiile de contact sunt obligatorii.'
+                contactInfoRequired: 'Informațiile de contact sunt obligatorii.',
+                recommendations: 'Recomandări Personalizate:',
+                naturalProducts: 'Produse Naturale Recomandate:',
+                dailyRoutine: 'Rutina Zilnică:',
+                lifestyleTips: 'Sfaturi pentru Stilul de Viață:',
+                ingredientsToAvoid: 'Ingrediente de Evitat:',
+                medicalDisclaimer: currentTranslations.quizResultForm.medicalDisclaimer.title,
+                medicalDisclaimerText: currentTranslations.quizResultForm.medicalDisclaimer.text,
+                scientificReferences: currentTranslations.quiz.scientificReferences.title,
+                agingStudies: currentTranslations.quiz.scientificReferences.agingStudies,
+                skinTypeStudies: currentTranslations.quiz.scientificReferences.skinTypeStudies
             },
             en: {
                 reportFor: 'Report for:',
@@ -225,7 +241,17 @@ export class HTMLReportService {
                 sentError: 'Error sending report.',
                 emailRequired: 'Email address is required.',
                 nameRequired: 'Name is required.',
-                contactInfoRequired: 'Contact information is required.'
+                contactInfoRequired: 'Contact information is required.',
+                recommendations: 'Personalized Recommendations:',
+                naturalProducts: 'Recommended Natural Products:',
+                dailyRoutine: 'Daily Routine:',
+                lifestyleTips: 'Lifestyle Tips:',
+                ingredientsToAvoid: 'Ingredients to Avoid:',
+                medicalDisclaimer: currentTranslations.quizResultForm.medicalDisclaimer.title,
+                medicalDisclaimerText: currentTranslations.quizResultForm.medicalDisclaimer.text,
+                scientificReferences: currentTranslations.quiz.scientificReferences.title,
+                agingStudies: currentTranslations.quiz.scientificReferences.agingStudies,
+                skinTypeStudies: currentTranslations.quiz.scientificReferences.skinTypeStudies
             }
         };
 
@@ -239,77 +265,171 @@ export class HTMLReportService {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Studio - ${data.quizTitle || 'Quiz'} Report</title>
+    
+    <!-- EmailJS for email functionality -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- reCAPTCHA for EmailJS security -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <script type="text/javascript">
+        (function () {
+            emailjs.init(window.EMAILJS_CONFIG.PUBLIC_KEY);
+        })();
+    </script>
+    
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
             max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+        
         .header {
             text-align: center;
-            border-bottom: 2px solid #9c27b0;
+            border-bottom: 2px solid #e0e0e0;
             padding-bottom: 20px;
             margin-bottom: 30px;
         }
+        
         .header h1 {
-            color: #9c27b0;
-            margin: 0;
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
+        
         .section {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
         }
+        
         .section h2 {
-            color: #9c27b0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5em;
         }
+        
+        .section h3 {
+            color: #34495e;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
         .info-box {
-            background-color: #f9f9f9;
+            background: white;
             padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #9c27b0;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
         }
+        
+        .result-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .recommendations-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #f39c12;
+        }
+        
+        .natural-products-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .lifestyle-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .scientific-refs {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+        
         .actions {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 2px solid #e0e0e0;
         }
+        
         .btn {
-            padding: 10px 20px;
-            margin: 0 10px;
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
+        
         .btn-primary {
-            background-color: #9c27b0;
+            background-color: #3498db;
             color: white;
         }
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
+        
         .btn-success {
-            background-color: #28a745;
+            background-color: #27ae60;
             color: white;
         }
+        
         .btn-info {
             background-color: #17a2b8;
             color: white;
         }
-        .btn:hover {
-            opacity: 0.8;
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
         }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
         .modal {
             display: none;
             position: fixed;
@@ -318,79 +438,107 @@ export class HTMLReportService {
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
         }
+        
         .modal-content {
             background-color: white;
-            margin: 15% auto;
+            margin: 5% auto;
             padding: 20px;
             border-radius: 10px;
             width: 80%;
             max-width: 500px;
+            position: relative;
         }
+        
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+        
         .close {
-            color: #aaa;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            color: #aaa;
         }
+        
         .close:hover {
             color: #000;
         }
+        
         .form-group {
             margin-bottom: 15px;
         }
+        
         .form-group label {
             display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            font-weight: 600;
         }
-        .form-group input, .form-group textarea {
+        
+        .form-group input,
+        .form-group textarea {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            box-sizing: border-box;
+            font-size: 14px;
         }
+        
         .form-group textarea {
             height: 100px;
             resize: vertical;
         }
+        
         .modal-actions {
             text-align: right;
             margin-top: 20px;
         }
-        .modal-actions .btn {
-            margin-left: 10px;
-        }
+        
         .message {
             padding: 10px;
             margin-bottom: 15px;
             border-radius: 4px;
-            text-align: center;
+            font-weight: 600;
         }
+        
         .message.success {
             background-color: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+        
         .message.error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
+        }
+        
+        @media print {
+            .actions, .modal {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Skin Studio</h1>
+            <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                <img src="/logo.png" alt="Skin Studio Logo" style="height: 60px; width: auto; margin-right: 15px;">
+                <h1 style="margin: 0;">Skin Studio</h1>
+            </div>
             <p>${currentT.subtitle}</p>
             <p>${currentT.date} ${data.date || new Date().toLocaleDateString()}</p>
         </div>
@@ -405,21 +553,54 @@ export class HTMLReportService {
 
         <div class="section">
             <h2>${currentT.testResult}</h2>
-            <div class="info-box">
+            
+            <!-- Skin Type Result -->
+            <div class="result-section">
                 <h3>${skinTypeLine}</h3>
-                ${descriptionLines.length > 0 ? `<p>${descriptionLines.join(' ')}</p>` : '<p>No detailed description available.</p>'}
+                ${resultSections.description ? `<p>${resultSections.description}</p>` : ''}
             </div>
+            
+            <!-- Recommendations from Quiz Result -->
+            ${resultSections.recommendations ? `
+            <div class="recommendations-section">
+                <h3>${currentT.recommendations}</h3>
+                <ul>
+                    ${resultSections.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                </ul>
+            </div>
+            ` : ''}
+            
+            <!-- Natural Products Recommendations (only for relevant quiz types) -->
+            ${this.generateNaturalProductsSection(data, currentT)}
+            
+            <!-- Scientific References from Quiz Result (only if not already in dedicated section) -->
+            ${resultSections.references && !this.shouldShowDedicatedScientificSection(data) ? `
+            <div class="scientific-refs">
+                <h3>${currentT.scientificRefs}</h3>
+                <ul>
+                    ${resultSections.references.map(ref => `<li>${ref}</li>`).join('')}
+                </ul>
+            </div>
+            ` : ''}
         </div>
 
+        <!-- Dedicated Scientific References Section (only for specific quiz types) -->
+        ${this.shouldShowDedicatedScientificSection(data) ? `
         <div class="section">
-            <h2>${currentT.scientificRefs}</h2>
+            <h2>${currentT.scientificReferences}</h2>
             <div class="info-box">
-                <ul>
-                    <li>Journal of Clinical and Aesthetic Dermatology, 2021</li>
-                    <li>International Journal of Cosmetic Science, 2020</li>
-                    <li>Journal of the American Academy of Dermatology, 2021</li>
-                    <li>British Journal of Dermatology, 2020</li>
-                </ul>
+                ${this.generateScientificReferencesSection(data, currentT)}
+            </div>
+        </div>
+        ` : ''}
+
+        <!-- Medical Disclaimer Section -->
+        <div class="section">
+            <h2>${currentT.medicalDisclaimer}</h2>
+            <div class="info-box" style="background-color: #fff3cd; border-left: 4px solid #ffc107;">
+                <p style="margin: 0; color: #856404; font-size: 0.95rem; line-height: 1.5;">
+                    ${currentT.medicalDisclaimerText}
+                </p>
             </div>
         </div>
 
@@ -461,6 +642,9 @@ export class HTMLReportService {
                         <input type="checkbox" id="sendReportToEmail"> ${data.language === 'ro' ? 'Trimite-mi raportul pe email' : 'Send me the report by email'}
                     </label>
                 </div>
+                <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="6Ld7ZTYUAAAAAGgBvCrSeiQrUBLw55jP8hetKuer"></div>
+                </div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">${currentT.closeWindow}</button>
                     <button type="submit" class="btn btn-primary">${currentT.sendButton}</button>
@@ -470,6 +654,13 @@ export class HTMLReportService {
     </div>
 
     <script>
+        // EmailJS Configuration
+        window.EMAILJS_CONFIG = {
+            SERVICE_ID: 'service_b0eycgy',
+            TEMPLATE_ID: 'template_cursor',
+            PUBLIC_KEY: 'qpMdCwldZeAqODpQR' // ✅ Updated to your EmailJS public key
+        };
+
         // Show Skin Studio modal
         function showSkinStudioModal() {
             document.getElementById('skinStudioModal').style.display = 'block';
@@ -480,6 +671,10 @@ export class HTMLReportService {
             document.getElementById('skinStudioModal').style.display = 'none';
             document.getElementById('modalMessage').innerHTML = '';
             document.getElementById('contactForm').reset();
+            // Reset reCAPTCHA
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
         }
 
         // Handle form submission
@@ -493,11 +688,11 @@ export class HTMLReportService {
             const sendReportToEmail = document.getElementById('sendReportToEmail').checked;
             
             if (!name || !email) {
-                showMessage('Please fill in all required fields.', 'error');
+                showMessage('${currentT.nameRequired}', 'error');
                 return;
             }
 
-            showMessage('Sending to Skin Studio...', 'success');
+            showMessage('${currentT.sending}', 'success');
             
             try {
                 // Prepare the data to send
@@ -524,7 +719,7 @@ export class HTMLReportService {
                     await sendReportToUser(email);
                 }
                 
-                showMessage('Message sent successfully to Skin Studio!' + (sendReportToEmail ? ' Report also sent to your email.' : ''), 'success');
+                showMessage('${currentT.sentSuccess}' + (sendReportToEmail ? ' ${currentT.sentSuccess}' : ''), 'success');
                 
                 setTimeout(() => {
                     closeModal();
@@ -532,52 +727,123 @@ export class HTMLReportService {
                 
             } catch (error) {
                 console.error('Error sending:', error);
-                showMessage('Error sending message. Please try again.', 'error');
+                showMessage('${currentT.sentError}', 'error');
             }
         });
 
         // Function to send contact to Skin Studio
         async function sendContactToSkinStudio(data) {
             try {
-                // Import the EmailService dynamically
-                const { EmailService } = await import('./emailService');
+                console.log('Starting to send contact to Skin Studio...');
+                console.log('EmailJS available:', typeof emailjs !== 'undefined');
+                console.log('EmailJS config:', window.EMAILJS_CONFIG);
                 
-                await EmailService.sendContactToSkinStudio(data);
-                console.log('Contact sent to Skin Studio successfully');
+                // Use EmailJS directly since we're in a generated HTML file
+                if (typeof emailjs === 'undefined') {
+                    throw new Error('EmailJS is not available. Please check if it is properly loaded.');
+                }
+
+                // Get reCAPTCHA response
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (!recaptchaResponse) {
+                    throw new Error('Please complete the reCAPTCHA verification.');
+                }
+
+                // Create a clean report content without scripts and unnecessary elements
+                const reportContent = document.querySelector('.container').innerHTML;
+                
+                const templateParams = {
+                    from_page: 'Skin Studio Quiz App',
+                    user_name: data.userName,
+                    from_email: data.email,
+                    quiz_title: data.quizTitle,
+                    quiz_score: data.score,
+                    quiz_result: reportContent,
+                    name: data.name,
+                    email: data.email,
+                    phone: data.phone || '',
+                    message: data.message || '',
+                    date: data.date,
+                    language: data.language || 'ro',
+                    'g-recaptcha-response': recaptchaResponse
+                };
+
+                console.log('Sending with template params:', templateParams);
+
+                const response = await emailjs.send(
+                    window.EMAILJS_CONFIG.SERVICE_ID,
+                    window.EMAILJS_CONFIG.TEMPLATE_ID,
+                    templateParams,
+                    window.EMAILJS_CONFIG.PUBLIC_KEY
+                );
+
+                console.log('EmailJS response:', response);
+                return response;
+
             } catch (error) {
-                console.error('Error sending contact to Skin Studio:', error);
-                throw error;
+                console.error('EmailJS error:', error);
+                throw new Error('Failed to send contact information: ' + error.message);
             }
         }
 
-        // Function to send report to user's email
+        // Function to send report to user email
         async function sendReportToUser(email) {
             try {
-                // Import the EmailService dynamically
-                const { EmailService } = await import('./emailService');
+                // Get reCAPTCHA response
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (!recaptchaResponse) {
+                    throw new Error('Please complete the reCAPTCHA verification.');
+                }
+
+                const reportContent = document.querySelector('.container').innerHTML;
                 
-                const emailData = {
-                    to: email,
-                    htmlContent: document.documentElement.outerHTML,
-                    userName: '${data.userName}',
-                    quizTitle: '${data.quizTitle}',
-                    score: ${data.score},
+                const templateParams = {
+                    from_page: 'Skin Studio Quiz App',
+                    user_name: '${data.userName}',
+                    from_email: 'noreply@skinstudio.app',
+                    to_email: email,
+                    quiz_title: '${data.quizTitle}',
+                    quiz_score: ${data.score},
+                    quiz_result: reportContent,
                     date: '${data.date}',
-                    language: '${data.language || 'ro'}'
+                    language: '${data.language || 'ro'}',
+                    'g-recaptcha-response': recaptchaResponse
                 };
-                
-                await EmailService.sendToUser(emailData);
-                console.log('Report sent to user email successfully');
+
+                const response = await emailjs.send(
+                    window.EMAILJS_CONFIG.SERVICE_ID,
+                    'template_user_report', // You'll need to create this template
+                    templateParams,
+                    window.EMAILJS_CONFIG.PUBLIC_KEY
+                );
+
+                console.log('Report sent to user:', response);
+                return response;
+
             } catch (error) {
                 console.error('Error sending report to user:', error);
-                throw error;
+                throw new Error('Failed to send report to user: ' + error.message);
             }
         }
 
-        // Show message in modal
-        function showMessage(text, type) {
+        // Function to show messages
+        function showMessage(message, type) {
             const messageDiv = document.getElementById('modalMessage');
-            messageDiv.innerHTML = '<div class="message ' + type + '">' + text + '</div>';
+            messageDiv.innerHTML = '<div class="message ' + type + '">' + message + '</div>';
+        }
+
+        // Function to download report as HTML
+        function downloadReport() {
+            const content = document.documentElement.outerHTML;
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'skin-studio-report-${data.userName}-${new Date().toISOString().split('T')[0]}.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         // Close modal when clicking outside
@@ -587,25 +853,231 @@ export class HTMLReportService {
                 closeModal();
             }
         }
-
-        // Download report as HTML file
-        function downloadReport() {
-            const htmlContent = document.documentElement.outerHTML;
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'skin-studio-report.html';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
     </script>
 </body>
-</html>
-        `;
+</html>`;
 
         return simpleTestHTML;
     }
+
+    /**
+     * Parse result text into structured sections
+     */
+    private static parseResultText(resultText: string): {
+        description: string;
+        recommendations: string[];
+        references: string[];
+    } {
+        const lines = resultText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+
+        let description = '';
+        const recommendations: string[] = [];
+        const references: string[] = [];
+
+        let currentSection = 'description';
+
+        for (const line of lines) {
+            if (line.includes('•') && !line.includes('📚')) {
+                // This is a recommendation
+                recommendations.push(line.replace(/^•\s*/, ''));
+            } else if (line.includes('📚') || line.includes('Scientific references') || line.includes('Referințe științifice')) {
+                currentSection = 'references';
+            } else if (currentSection === 'references' && line.includes('•')) {
+                // This is a reference
+                references.push(line.replace(/^•\s*/, ''));
+            } else if (currentSection === 'description' && !line.includes('📚') && !line.includes('Scientific references') && !line.includes('Referințe științifice')) {
+                // This is part of the description
+                if (description) {
+                    description += ' ' + line;
+                } else {
+                    description = line;
+                }
+            }
+        }
+
+        return {
+            description,
+            recommendations,
+            references
+        };
+    }
+
+    /**
+     * Generate natural products recommendations section
+     */
+    private static generateNaturalProductsSection(data: HTMLReportData, currentT: any): string {
+        // Import the recommendations data
+        const { SKIN_TYPE_RECOMMENDATIONS, AGING_RECOMMENDATIONS, getAgingCategoryFromScore } = require('../data/skinCareRecommendations');
+
+        let skinRecommendation = null;
+        let agingRecommendation = null;
+
+        // Determine quiz type and get appropriate recommendations
+        const isAgingQuiz = data.quizTitle?.toLowerCase().includes('aging') || data.quizTitle?.toLowerCase().includes('îmbătrânire');
+        const isSkinTypeQuiz = data.quizTitle?.toLowerCase().includes('skin type') || data.quizTitle?.toLowerCase().includes('tip de piele');
+
+        // Only show skin type recommendations for skin type quiz
+        if (isSkinTypeQuiz) {
+            const skinType = this.getSkinTypeFromResult(data.resultText);
+            skinRecommendation = SKIN_TYPE_RECOMMENDATIONS[skinType]?.[data.language || 'ro'];
+        }
+
+        // Only show aging recommendations for aging quiz
+        if (isAgingQuiz) {
+            const agingCategory = getAgingCategoryFromScore(data.score);
+            agingRecommendation = AGING_RECOMMENDATIONS[agingCategory]?.[data.language || 'ro'];
+        }
+
+        let html = '';
+
+        // Show skin type recommendations only for skin type quiz
+        if (skinRecommendation && isSkinTypeQuiz) {
+            html += `
+            <div class="natural-products-section">
+                <h3>${currentT.naturalProducts} - ${currentT.skinType}</h3>
+                
+                <div class="recommendations-section">
+                    <h4>${currentT.dailyRoutine}</h4>
+                    <ul>
+                        ${skinRecommendation.dailyRoutine.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="recommendations-section">
+                    <h4>${currentT.ingredients}</h4>
+                    <ul>
+                        ${skinRecommendation.ingredients.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="lifestyle-section">
+                    <h4>${currentT.lifestyleTips}</h4>
+                    <ul>
+                        ${skinRecommendation.lifestyleTips.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="lifestyle-section">
+                    <h4>${currentT.ingredientsToAvoid}</h4>
+                    <ul>
+                        ${skinRecommendation.avoidIngredients.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>`;
+        }
+
+        // Show aging recommendations only for aging quiz
+        if (agingRecommendation && isAgingQuiz) {
+            html += `
+            <div class="natural-products-section">
+                <h3>${currentT.naturalProducts} - ${currentT.aging}</h3>
+                
+                <div class="recommendations-section">
+                    <h4>${currentT.dailyRoutine}</h4>
+                    <ul>
+                        ${agingRecommendation.antiAgingRoutine.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="lifestyle-section">
+                    <h4>${currentT.lifestyleTips}</h4>
+                    <ul>
+                        ${agingRecommendation.lifestyleChanges.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                ${agingRecommendation.professionalTreatments ? `
+                <div class="lifestyle-section">
+                    <h4>${data.language === 'ro' ? 'Tratamente Profesionale' : 'Professional Treatments'}</h4>
+                    <ul>
+                        ${agingRecommendation.professionalTreatments.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+                
+                ${agingRecommendation.preventionTips ? `
+                <div class="lifestyle-section">
+                    <h4>${data.language === 'ro' ? 'Sfaturi de Prevenție' : 'Prevention Tips'}</h4>
+                    <ul>
+                        ${agingRecommendation.preventionTips.map((item: string) => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+            </div>`;
+        }
+
+        return html;
+    }
+
+    /**
+     * Generate scientific references section
+     */
+    private static generateScientificReferencesSection(data: HTMLReportData, currentT: any): string {
+        let html = '';
+
+        // Determine which studies to show based on quiz type
+        const isAgingQuiz = data.quizTitle?.toLowerCase().includes('aging') || data.quizTitle?.toLowerCase().includes('îmbătrânire');
+        const isSkinTypeQuiz = data.quizTitle?.toLowerCase().includes('skin type') || data.quizTitle?.toLowerCase().includes('tip de piele');
+
+        // Show aging studies only for aging quiz
+        if (isAgingQuiz) {
+            html += `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === 'ro' ? 'Studii de Îmbătrânire' : 'Aging Studies'}</h4>
+                <ul style="padding-left: 20px;">
+                    ${currentT.agingStudies.map((study: string) => `<li style="margin-bottom: 8px; color: #555;">${study}</li>`).join('')}
+                </ul>
+            </div>`;
+        }
+
+        // Show skin type studies only for skin type quiz
+        if (isSkinTypeQuiz) {
+            html += `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === 'ro' ? 'Studii de Tip de Piele' : 'Skin Type Studies'}</h4>
+                <ul style="padding-left: 20px;">
+                    ${currentT.skinTypeStudies.map((study: string) => `<li style="margin-bottom: 8px; color: #555;">${study}</li>`).join('')}
+                </ul>
+            </div>`;
+        }
+
+        // For other quiz types (like non-toxic), show a general scientific reference
+        if (!isAgingQuiz && !isSkinTypeQuiz) {
+            html += `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === 'ro' ? 'Studii Științifice' : 'Scientific Studies'}</h4>
+                <ul style="padding-left: 20px;">
+                    <li style="margin-bottom: 8px; color: #555;">${data.language === 'ro' ? 'Studii de siguranță a ingredientelor cosmetice' : 'Cosmetic ingredient safety studies'}</li>
+                    <li style="margin-bottom: 8px; color: #555;">${data.language === 'ro' ? 'Cercetări despre efectele ingredientelor naturale asupra pielii' : 'Research on natural ingredient effects on skin'}</li>
+                </ul>
+            </div>`;
+        }
+
+        return html;
+    }
+
+    /**
+     * Determine if a dedicated scientific references section should be shown.
+     * This is true if the quiz is an aging quiz or a skin type quiz.
+     */
+    private static shouldShowDedicatedScientificSection(data: HTMLReportData): boolean {
+        return data.quizTitle?.toLowerCase().includes('aging') || data.quizTitle?.toLowerCase().includes('îmbătrânire') ||
+            data.quizTitle?.toLowerCase().includes('skin type') || data.quizTitle?.toLowerCase().includes('tip de piele');
+    }
+
+    /**
+     * Get skin type from result text
+     */
+    private static getSkinTypeFromResult(resultText: string): string {
+        const lowerText = resultText.toLowerCase();
+
+        if (lowerText.includes('dry') || lowerText.includes('uscat')) return 'dry';
+        if (lowerText.includes('oily') || lowerText.includes('gras')) return 'oily';
+        if (lowerText.includes('combination') || lowerText.includes('mixt')) return 'normal-mixed';
+        if (lowerText.includes('sensitive') || lowerText.includes('sensibil')) return 'sensitive';
+        if (lowerText.includes('normal') || lowerText.includes('normal')) return 'normal-mixed';
+
+        return 'normal-mixed'; // default
+    }
+
 } 

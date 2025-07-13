@@ -3,15 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getQuizById } from '../quiz/quizzes';
 import { useScrollToTop } from '../hooks/useScrollToTop';
+import { HTMLReportService, HTMLReportData } from '../services/htmlReportService';
+import { generatePDFContent } from '../data/skinCareRecommendations';
+import { ErrorLogger } from '../config/security';
 import Navbar from './components/Navbar';
 import AppFooter from '../components/AppFooter';
-import QuizResultForm from './components/QuizResultForm';
-import '../styles/global.css';
 import '../styles/quizPage.css';
 
-/**
- * Helper function to get localized text
- */
+// Helper function to get localized text
 const getLocalizedText = (text: string | { ro: string; en: string }, language: 'en' | 'ro'): string => {
     if (typeof text === 'string') {
         return text;
@@ -31,7 +30,7 @@ const QuizPage: React.FC = () => {
     const [score, setScore] = useState(0);
     const [answers, setAnswers] = useState<number[]>([]);
     const [showResult, setShowResult] = useState(false);
-    const [showResultForm, setShowResultForm] = useState(false);
+    const [isGeneratingReport, setIsGeneratingReport] = useState(false);
 
     const quiz = getQuizById(quizId || '');
 
@@ -89,6 +88,40 @@ const QuizPage: React.FC = () => {
         setScore(0);
         setAnswers([]);
         setShowResult(false);
+    };
+
+    const openReport = async () => {
+        setIsGeneratingReport(true);
+
+        try {
+            const pdfContent = generatePDFContent(quizTitle, score, resultText, '', quizResult, language);
+
+            const reportData: HTMLReportData = {
+                userName: 'User', // Default name for report display
+                quizTitle: quizTitle,
+                score,
+                resultText: resultText,
+                skinType: pdfContent.skinType,
+                agingCategory: pdfContent.agingCategory,
+                skinRecommendation: pdfContent.skinRecommendation,
+                agingRecommendation: pdfContent.agingRecommendation,
+                quizResult,
+                language,
+                date: new Date().toLocaleDateString(language === 'ro' ? 'ro-RO' : 'en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })
+            };
+
+            // Generate and open the report
+            await HTMLReportService.generateReport(reportData);
+        } catch (error) {
+            ErrorLogger.log(error as Error, 'HTML Report Generation');
+            console.error('Error generating report:', error);
+        } finally {
+            setIsGeneratingReport(false);
+        }
     };
 
     const getResult = () => {
@@ -171,7 +204,7 @@ const QuizPage: React.FC = () => {
                     ) : (
                         <div className="result-container glass-card">
                             <div className="result-header">
-                                <h1 className="result-title">🎉 {t.quiz.resultTitle || 'Your Result'}</h1>
+                                <h1 className="result-title">{t.quiz.resultTitle || 'Your Result'}</h1>
                                 <div className="result-score">
                                     {t.quiz.score || 'Score'}: {score}
                                 </div>
@@ -184,9 +217,10 @@ const QuizPage: React.FC = () => {
                             <div className="result-actions">
                                 <button
                                     className="btn-minimal primary"
-                                    onClick={() => setShowResultForm(true)}
+                                    onClick={openReport}
+                                    disabled={isGeneratingReport}
                                 >
-                                    📧 {t.quizResultForm?.send || 'Send Results'}
+                                    {isGeneratingReport ? 'Opening Report...' : t.quizResultForm?.openReport || 'Open Report'}
                                 </button>
 
                                 <button
@@ -200,7 +234,7 @@ const QuizPage: React.FC = () => {
                                     className="btn-minimal"
                                     onClick={resetQuiz}
                                 >
-                                    🔄 {t.quiz.restart || 'Restart Quiz'}
+                                    {t.quiz.restart || 'Restart Quiz'}
                                 </button>
                             </div>
                         </div>
@@ -209,17 +243,6 @@ const QuizPage: React.FC = () => {
             </main>
 
             <AppFooter />
-
-            {showResultForm && (
-                <QuizResultForm
-                    quizName={quizTitle}
-                    score={score}
-                    result={resultText}
-                    quizResult={quizResult}
-                    language={language}
-                    onClose={() => setShowResultForm(false)}
-                />
-            )}
         </div>
     );
 };

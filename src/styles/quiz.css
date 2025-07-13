@@ -48,6 +48,23 @@
     justify-content: space-between;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.quiz-card:hover::before {
+    left: 100%;
 }
 
 .quiz-card:hover {
@@ -71,9 +88,87 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
     margin: 0 auto;
     box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-icon .icon-circle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quiz-card:hover .icon-circle::before {
+    opacity: 1;
+}
+
+.quiz-card:hover .icon-circle {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* SVG Icon Animations */
+.quiz-icon svg {
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.quiz-icon-circle {
+    animation: pulse 2s infinite;
+}
+
+.quiz-icon-fill {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.quiz-icon-stroke {
+    animation: drawLine 1s ease-out;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: scale(1.02);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes drawLine {
+    from {
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+    }
+
+    to {
+        stroke-dashoffset: 0;
+    }
 }
 
 .quiz-name {
@@ -81,6 +176,11 @@
     font-weight: 300;
     margin-bottom: 16px;
     color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+.quiz-card:hover .quiz-name {
+    color: var(--primary-color);
 }
 
 .quiz-description {
@@ -105,6 +205,17 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.quiz-card:hover .quiz-duration,
+.quiz-card:hover .quiz-time {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
 .quiz-info {
@@ -115,6 +226,24 @@
 .info-card {
     padding: 40px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.6s ease;
+}
+
+.info-card:hover::before {
+    transform: scaleX(1);
 }
 
 .info-card h3 {
@@ -139,14 +268,30 @@
     font-weight: 300;
     position: relative;
     padding-left: 24px;
+    transition: all 0.3s ease;
+}
+
+.info-card li:hover {
+    color: var(--text-color);
+    transform: translateX(4px);
 }
 
 .info-card li::before {
-    content: '✓';
+    content: '';
     position: absolute;
     left: 0;
-    color: var(--primary-color);
-    font-weight: bold;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.info-card li:hover::before {
+    transform: translateY(-50%) scale(1.2);
+    box-shadow: 0 0 10px rgba(127, 176, 105, 0.5);
 }
 
 /* Enhanced Quiz Result Styles */
@@ -227,6 +372,59 @@
     }
 }
 
+/* Medical Disclaimer Section */
+.medical-disclaimer-section {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px 0;
+}
+
+.medical-disclaimer-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.medical-disclaimer-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.medical-disclaimer-text h3 {
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+
+.medical-disclaimer-text p {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-weight: 300;
+    margin: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .quiz-page-futuristic {
@@ -253,14 +451,11 @@
 
     .quiz-card {
         padding: 32px 24px;
-        min-height: 300px;
-        touch-action: manipulation;
     }
 
     .quiz-icon .icon-circle {
         width: 60px;
         height: 60px;
-        font-size: 2rem;
     }
 
     .info-card {
@@ -271,21 +466,18 @@
         font-size: 1.5rem;
     }
 
-    /* Mobile Result Styles */
     .quiz-result .MuiTypography-h2 {
-        font-size: 2.5rem !important;
+        font-size: 2rem;
     }
 
     .quiz-result .MuiBox-root[style*="width: 80px"] {
         width: 60px !important;
         height: 60px !important;
-        font-size: 1.2rem !important;
     }
 
     .quiz-result .MuiBox-root[style*="width: 60px"] {
         width: 50px !important;
         height: 50px !important;
-        font-size: 1.5rem !important;
     }
 
     .quiz-result .MuiBox-root[style*="padding: 2rem"] {
@@ -293,7 +485,29 @@
     }
 
     .quiz-result .MuiTypography-h4 {
-        font-size: 1.5rem !important;
+        font-size: 1.2rem;
+    }
+
+    .medical-disclaimer-section {
+        padding: 32px 0;
+    }
+
+    .medical-disclaimer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+
+    .medical-disclaimer-icon {
+        align-self: center;
+    }
+
+    .medical-disclaimer-text h3 {
+        font-size: 1.2rem;
+    }
+
+    .medical-disclaimer-text p {
+        font-size: 0.9rem;
     }
 }
 
@@ -310,7 +524,6 @@
     .quiz-icon .icon-circle {
         width: 50px;
         height: 50px;
-        font-size: 1.5rem;
     }
 
     .info-card {
@@ -321,9 +534,8 @@
         font-size: 1.3rem;
     }
 
-    /* Small Mobile Result Styles */
     .quiz-result .MuiTypography-h2 {
-        font-size: 2rem !important;
+        font-size: 1.8rem;
     }
 
     .quiz-result .MuiBox-root[style*="padding: 2rem"] {
@@ -335,94 +547,19 @@
     }
 
     .quiz-result .MuiTypography-h4 {
-        font-size: 1.3rem !important;
+        font-size: 1.1rem;
     }
 
     .quiz-result .MuiTypography-body1 {
-        font-size: 1rem !important;
-    }
-}
-
-/* Medical Disclaimer Section - Same as landing page */
-.medical-disclaimer-section {
-    padding: 40px 0;
-    background: var(--background-color);
-    border-top: 1px solid var(--border-color);
-}
-
-.medical-disclaimer-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    background: rgba(255, 193, 7, 0.1);
-    border: 2px solid rgba(255, 193, 7, 0.3);
-    border-radius: 12px;
-    padding: 24px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.medical-disclaimer-icon {
-    font-size: 2rem;
-    color: #ff6b35;
-    flex-shrink: 0;
-    margin-top: 4px;
-}
-
-.medical-disclaimer-text h3 {
-    color: #856404;
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.medical-disclaimer-text p {
-    color: #856404;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0;
-    font-weight: 400;
-}
-
-/* Mobile responsive for medical disclaimer */
-@media (max-width: 768px) {
-    .medical-disclaimer-section {
-        padding: 30px 0;
+        font-size: 0.9rem;
     }
 
     .medical-disclaimer-content {
-        flex-direction: column;
-        gap: 16px;
-        padding: 20px;
-        margin: 0 16px;
-    }
-
-    .medical-disclaimer-icon {
-        font-size: 1.5rem;
-        margin-top: 0;
+        padding: 0 20px;
     }
 
     .medical-disclaimer-text h3 {
         font-size: 1.1rem;
-        margin-bottom: 10px;
-    }
-
-    .medical-disclaimer-text p {
-        font-size: 0.9rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .medical-disclaimer-content {
-        padding: 16px;
-        margin: 0 12px;
-    }
-
-    .medical-disclaimer-text h3 {
-        font-size: 1rem;
     }
 
     .medical-disclaimer-text p {

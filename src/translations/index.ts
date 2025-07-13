@@ -89,6 +89,7 @@ export interface Translations {
         sending: string;
         download: string;
         downloadReport: string;
+        openReport: string;
         preview: string;
         quizName: string;
         score: string;
@@ -214,7 +215,7 @@ export const translations: Record<Language, Translations> = {
                 button: 'Take the Quiz',
             },
             medicalDisclaimer: {
-                title: 'Medical Disclaimer',
+                title: 'Disclaimer Medical',
                 text: 'This information is based on my own research and does not represent medical advice. The recommendations provided are for educational purposes only and should not replace professional medical consultation. Always consult with a qualified healthcare provider or dermatologist for medical concerns, skin conditions, or before starting any new skincare routine.',
             },
         },
@@ -250,7 +251,7 @@ export const translations: Record<Language, Translations> = {
                 ],
             },
             medicalDisclaimer: {
-                title: 'Medical Disclaimer',
+                title: 'Disclaimer Medical',
                 text: 'This information is based on my own research and does not represent medical advice. The recommendations provided are for educational purposes only and should not replace professional medical consultation. Always consult with a qualified healthcare provider or dermatologist for medical concerns, skin conditions, or before starting any new skincare routine.',
             },
         },
@@ -273,12 +274,13 @@ export const translations: Record<Language, Translations> = {
             sending: 'Sending...',
             download: 'Download Data',
             downloadReport: 'Download Report',
+            openReport: 'Open Report',
             preview: 'Preview',
             quizName: 'Quiz',
             score: 'Score',
             result: 'Result',
             medicalDisclaimer: {
-                title: 'Medical Disclaimer',
+                title: 'Disclaimer Medical',
                 text: 'This information is based on my own research and does not represent medical advice. The recommendations provided are for educational purposes only and should not replace professional medical consultation. Always consult with a qualified healthcare provider or dermatologist for medical concerns, skin conditions, or before starting any new skincare routine.',
             },
         },
@@ -389,7 +391,7 @@ export const translations: Record<Language, Translations> = {
                 button: 'Fă Quiz-ul',
             },
             medicalDisclaimer: {
-                title: '⚠️ Disclaimer Medical',
+                title: 'Disclaimer Medical',
                 text: 'Această informație se bazează pe propria mea cercetare și nu reprezintă sfaturi medicale. Recomandările furnizate sunt doar în scop educațional și nu ar trebui să înlocuiască consultația medicală profesională. Consultă întotdeauna cu un furnizor de îngrijire medicală calificat sau dermatolog pentru probleme medicale, afecțiuni ale pielii sau înainte de a începe orice rutină nouă de îngrijire a pielii.',
             },
         },
@@ -425,7 +427,7 @@ export const translations: Record<Language, Translations> = {
                 ],
             },
             medicalDisclaimer: {
-                title: '⚠️ Disclaimer Medical',
+                title: 'Disclaimer Medical',
                 text: 'Această informație se bazează pe propria mea cercetare și nu reprezintă sfaturi medicale. Recomandările furnizate sunt doar în scop educațional și nu ar trebui să înlocuiască consultația medicală profesională. Consultă întotdeauna cu un furnizor de îngrijire medicală calificat sau dermatolog pentru probleme medicale, afecțiuni ale pielii sau înainte de a începe orice rutină nouă de îngrijire a pielii.',
             },
         },
@@ -448,12 +450,13 @@ export const translations: Record<Language, Translations> = {
             sending: 'Trimitere...',
             download: 'Descarcă Date',
             downloadReport: 'Descarcă Raport',
+            openReport: 'Deschide Raportul',
             preview: 'Previzualizare',
             quizName: 'Quiz',
             score: 'Scor',
             result: 'Rezultat',
             medicalDisclaimer: {
-                title: '⚠️ Disclaimer Medical',
+                title: 'Disclaimer Medical',
                 text: 'Această informație se bazează pe propria mea cercetare și nu reprezintă sfaturi medicale. Recomandările furnizate sunt doar în scop educațional și nu ar trebui să înlocuiască consultația medicală profesională. Consultă întotdeauna cu un furnizor de îngrijire medicală calificat sau dermatolog pentru probleme medicale, afecțiuni ale pielii sau înainte de a începe orice rutină nouă de îngrijire a pielii.',
             },
         },

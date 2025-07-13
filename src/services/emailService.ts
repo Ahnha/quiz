@@ -87,18 +87,44 @@ export class EmailService {
             throw new Error('Recipient email is required');
         }
 
-        const userData: EmailData = {
-            to: data.to,
-            subject: `${data.language === 'ro' ? 'Raportul tău de îngrijire a pielii' : 'Your Skin Care Report'} - Skin Studio`,
-            htmlContent: data.htmlContent,
-            userName: data.userName,
-            quizTitle: data.quizTitle,
-            score: data.score,
-            date: data.date,
-            language: data.language
+        // Use the direct EmailJS template with the correct variables
+        if (typeof window === 'undefined' || !(window as any).emailjs) {
+            throw new Error('EmailJS is not available. Please check if it is properly loaded.');
+        }
+
+        const emailjs = (window as any).emailjs;
+
+        const templateParams = {
+            from_page: 'Skin Studio Quiz App',
+            user_name: data.userName || 'User',
+            from_email: data.to,
+            quiz_title: data.quizTitle || 'Quiz',
+            quiz_score: data.score || 0,
+            quiz_result: data.htmlContent, // This will contain the full report HTML
+            name: data.userName || 'User',
+            email: data.to,
+            phone: '',
+            message: '',
+            date: data.date || new Date().toLocaleDateString(),
+            language: data.language || 'ro'
         };
 
-        await this.sendEmail(userData);
+        return new Promise((resolve, reject) => {
+            emailjs.send(
+                this.EMAILJS_SERVICE_ID,
+                this.EMAILJS_TEMPLATE_ID,
+                templateParams,
+                this.EMAILJS_USER_ID
+            )
+                .then((response: any) => {
+                    console.log('Report sent to user successfully:', response);
+                    resolve();
+                })
+                .catch((error: any) => {
+                    console.error('Report sending failed:', error);
+                    reject(new Error(`Report sending failed: ${error.text || error.message || 'Unknown error'}`));
+                });
+        });
     }
 
     /**
@@ -118,18 +144,44 @@ export class EmailService {
         language?: 'ro' | 'en';
         htmlContent: string;
     }): Promise<void> {
-        const skinStudioData: EmailData = {
-            to: this.SKIN_STUDIO_EMAIL,
-            subject: `Contact Form - ${data.name} - ${data.quizTitle}`,
-            htmlContent: this.generateContactEmailHTML(data),
-            userName: data.userName,
-            quizTitle: data.quizTitle,
-            score: data.score,
+        // Use the direct EmailJS template with the correct variables
+        if (typeof window === 'undefined' || !(window as any).emailjs) {
+            throw new Error('EmailJS is not available. Please check if it is properly loaded.');
+        }
+
+        const emailjs = (window as any).emailjs;
+
+        const templateParams = {
+            from_page: 'Skin Studio Quiz App',
+            user_name: data.userName,
+            from_email: data.email,
+            quiz_title: data.quizTitle,
+            quiz_score: data.score,
+            quiz_result: data.htmlContent, // This will contain the full report HTML
+            name: data.name,
+            email: data.email,
+            phone: data.phone || '',
+            message: data.message || '',
             date: data.date,
-            language: data.language
+            language: data.language || 'ro'
         };
 
-        await this.sendEmail(skinStudioData);
+        return new Promise((resolve, reject) => {
+            emailjs.send(
+                this.EMAILJS_SERVICE_ID,
+                this.EMAILJS_TEMPLATE_ID,
+                templateParams,
+                this.EMAILJS_USER_ID
+            )
+                .then((response: any) => {
+                    console.log('Contact sent to Skin Studio successfully:', response);
+                    resolve();
+                })
+                .catch((error: any) => {
+                    console.error('Contact sending failed:', error);
+                    reject(new Error(`Contact sending failed: ${error.text || error.message || 'Unknown error'}`));
+                });
+        });
     }
 
     /**
@@ -283,7 +335,7 @@ export class EmailService {
     </div>
 
     <div class="footer">
-        <p>© 2024 Skin Studio. ${isRomanian ? 'Toate drepturile rezervate.' : 'All rights reserved.'}</p>
+        <p>© 2025 Skin Studio. ${isRomanian ? 'Toate drepturile rezervate.' : 'All rights reserved.'}</p>
         <p>${isRomanian ? 'Acest email a fost generat automat din formularul de contact al aplicației.' : 'This email was automatically generated from the application contact form.'}</p>
     </div>
 </body>
