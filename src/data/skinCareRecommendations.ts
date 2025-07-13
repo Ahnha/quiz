@@ -40,13 +40,18 @@ export interface SkinCareRecommendation {
     en: SkinCareRecommendationEntry;
 }
 
-export interface AgingRecommendation {
+export interface AgingRecommendationEntry {
     title: string;
     description: string;
     antiAgingRoutine: string[];
     lifestyleChanges: string[];
     professionalTreatments: string[];
     preventionTips: string[];
+}
+
+export interface AgingRecommendation {
+    ro: AgingRecommendationEntry;
+    en: AgingRecommendationEntry;
 }
 
 // Common additional note for ingredient checking
@@ -538,106 +543,214 @@ export const SKIN_TYPE_RECOMMENDATIONS: Record<string, SkinCareRecommendation> =
 // Aging Recommendations
 export const AGING_RECOMMENDATIONS: Record<string, AgingRecommendation> = {
     'young': {
-        title: 'Piele Tânără - Menține Vitalitatea',
-        description: 'Felicitări! Pielea ta arată mai tânără decât vârsta reală. Continuă obiceiurile sănătoase!',
-        antiAgingRoutine: [
-            'Curățare delicată zilnică',
-            'Ser cu vitamina C dimineața',
-            'Cremă hidratantă cu SPF 30+',
-            'Ser cu retinol seara (începe cu concentrații mici)',
-            'Mască hidratantă de 1-2 ori pe săptămână',
-            'Exfoliere delicată săptămânal'
-        ],
-        lifestyleChanges: [
-            'Continuă să folosești protecție solară zilnic',
-            'Menține o dietă bogată în antioxidanți',
-            'Fă exerciții fizice regulat',
-            'Dormi 7-8 ore pe noapte',
-            'Bea suficientă apă',
-            'Evită fumatul și alcoolul în exces'
-        ],
-        professionalTreatments: [
-            'Consultatii regulate cu dermatologul',
-            'Tratamente preventive cu laser',
-            'Mascări profesionale ocazionale',
-            'Peeling-uri chimice ușoare'
-        ],
-        preventionTips: [
-            'Protejează-te de soare încă de acum',
-            'Folosește produse cu antioxidanți',
-            'Menține o rutină consistentă',
-            'Monitorizează schimbările pielii',
-            'Investește în produse de calitate'
-        ]
+        ro: {
+            title: 'Piele Tânără - Menține Vitalitatea',
+            description: 'Felicitări! Pielea ta arată mai tânără decât vârsta reală. Continuă obiceiurile sănătoase!',
+            antiAgingRoutine: [
+                'Curățare delicată zilnică',
+                'Ser cu vitamina C dimineața',
+                'Cremă hidratantă cu SPF 30+',
+                'Ser cu retinol seara (începe cu concentrații mici)',
+                'Mască hidratantă de 1-2 ori pe săptămână',
+                'Exfoliere delicată săptămânal'
+            ],
+            lifestyleChanges: [
+                'Continuă să folosești protecție solară zilnic',
+                'Menține o dietă bogată în antioxidanți',
+                'Fă exerciții fizice regulat',
+                'Dormi 7-8 ore pe noapte',
+                'Bea suficientă apă',
+                'Evită fumatul și alcoolul în exces'
+            ],
+            professionalTreatments: [
+                'Consultatii regulate cu dermatologul',
+                'Tratamente preventive cu laser',
+                'Mascări profesionale ocazionale',
+                'Peeling-uri chimice ușoare'
+            ],
+            preventionTips: [
+                'Protejează-te de soare încă de acum',
+                'Folosește produse cu antioxidanți',
+                'Menține o rutină consistentă',
+                'Monitorizează schimbările pielii',
+                'Investește în produse de calitate'
+            ]
+        },
+        en: {
+            title: 'Young Skin - Maintain Vitality',
+            description: 'Congratulations! Your skin looks younger than your actual age. Keep up the healthy habits!',
+            antiAgingRoutine: [
+                'Daily gentle cleansing',
+                'Vitamin C serum in the morning',
+                'Moisturizer with SPF 30+',
+                'Retinol serum in the evening (start with low concentrations)',
+                'Hydrating mask 1-2 times per week',
+                'Gentle weekly exfoliation'
+            ],
+            lifestyleChanges: [
+                'Continue using daily sun protection',
+                'Maintain an antioxidant-rich diet',
+                'Exercise regularly',
+                'Sleep 7-8 hours per night',
+                'Drink enough water',
+                'Avoid smoking and excessive alcohol'
+            ],
+            professionalTreatments: [
+                'Regular consultations with dermatologist',
+                'Preventive laser treatments',
+                'Occasional professional facials',
+                'Light chemical peels'
+            ],
+            preventionTips: [
+                'Protect yourself from the sun starting now',
+                'Use products with antioxidants',
+                'Maintain a consistent routine',
+                'Monitor skin changes',
+                'Invest in quality products'
+            ]
+        }
     },
     'normal-aging': {
-        title: 'Îmbătrânire Normală - Optimizează Rutina',
-        description: 'Pielea ta arată conform vârstei tale. Iată cum să optimizezi rutina pentru un aspect mai tânăr.',
-        antiAgingRoutine: [
-            'Curățare cu un cleanser hidratant',
-            'Ser cu vitamina C dimineața',
-            'Cremă hidratantă cu SPF 30+',
-            'Ser cu retinol seara',
-            'Cremă hidratantă bogată seara',
-            'Mască anti-aging săptămânal'
-        ],
-        lifestyleChanges: [
-            'Începe să folosești protecție solară zilnic',
-            'Îmbunătățește dieta cu mai multe legume și fructe',
-            'Fă exerciții fizice de 3-4 ori pe săptămână',
-            'Încearcă să dormi mai mult',
-            'Bea mai multă apă',
-            'Reduce stresul prin meditație sau yoga'
-        ],
-        professionalTreatments: [
-            'Consultatii cu dermatologul',
-            'Peeling-uri chimice',
-            'Tratamente cu laser pentru riduri fine',
-            'Injectări cu acid hialuronic (dacă e necesar)'
-        ],
-        preventionTips: [
-            'Nu e prea târziu să începi protecția solară',
-            'Folosește produse anti-aging',
-            'Menține o rutină consistentă',
-            'Protejează-te de stresul oxidativ',
-            'Investește în produse de calitate'
-        ]
+        ro: {
+            title: 'Îmbătrânire Normală - Optimizează Rutina',
+            description: 'Pielea ta arată conform vârstei tale. Iată cum să optimizezi rutina pentru un aspect mai tânăr.',
+            antiAgingRoutine: [
+                'Curățare cu un cleanser hidratant',
+                'Ser cu vitamina C dimineața',
+                'Cremă hidratantă cu SPF 30+',
+                'Ser cu retinol seara',
+                'Cremă hidratantă bogată seara',
+                'Mască anti-aging săptămânal'
+            ],
+            lifestyleChanges: [
+                'Începe să folosești protecție solară zilnic',
+                'Îmbunătățește dieta cu mai multe legume și fructe',
+                'Fă exerciții fizice de 3-4 ori pe săptămână',
+                'Încearcă să dormi mai mult',
+                'Bea mai multă apă',
+                'Reduce stresul prin meditație sau yoga'
+            ],
+            professionalTreatments: [
+                'Consultatii cu dermatologul',
+                'Peeling-uri chimice',
+                'Tratamente cu laser pentru riduri fine',
+                'Injectări cu acid hialuronic (dacă e necesar)'
+            ],
+            preventionTips: [
+                'Nu e prea târziu să începi protecția solară',
+                'Folosește produse anti-aging',
+                'Menține o rutină consistentă',
+                'Protejează-te de stresul oxidativ',
+                'Investește în produse de calitate'
+            ]
+        },
+        en: {
+            title: 'Normal Aging - Optimize Your Routine',
+            description: 'Your skin looks appropriate for your age. Here\'s how to optimize your routine for a younger appearance.',
+            antiAgingRoutine: [
+                'Cleanse with a hydrating cleanser',
+                'Vitamin C serum in the morning',
+                'Moisturizer with SPF 30+',
+                'Retinol serum in the evening',
+                'Rich moisturizer in the evening',
+                'Weekly anti-aging mask'
+            ],
+            lifestyleChanges: [
+                'Start using daily sun protection',
+                'Improve diet with more vegetables and fruits',
+                'Exercise 3-4 times per week',
+                'Try to sleep more',
+                'Drink more water',
+                'Reduce stress through meditation or yoga'
+            ],
+            professionalTreatments: [
+                'Consultations with dermatologist',
+                'Chemical peels',
+                'Laser treatments for fine lines',
+                'Hyaluronic acid injections (if needed)'
+            ],
+            preventionTips: [
+                'It\'s not too late to start sun protection',
+                'Use anti-aging products',
+                'Maintain a consistent routine',
+                'Protect yourself from oxidative stress',
+                'Invest in quality products'
+            ]
+        }
     },
     'accelerated-aging': {
-        title: 'Îmbătrânire Accelerată - Acțiune Imediată',
-        description: 'Semne de îmbătrânire accelerată. E timpul să schimbi rutina și stilul de viață pentru a-ți proteja pielea!',
-        antiAgingRoutine: [
-            'Curățare delicată cu un cleanser hidratant',
-            'Ser cu vitamina C dimineața',
-            'Cremă hidratantă cu SPF 50+',
-            'Ser cu retinol seara (începe cu concentrații mici)',
-            'Cremă hidratantă bogată seara',
-            'Mască hidratantă de 2-3 ori pe săptămână'
-        ],
-        lifestyleChanges: [
-            'Începe imediat să folosești protecție solară zilnic',
-            'Schimbă dieta - mai multe legume, fructe, proteine',
-            'Începe un program de exerciții fizice',
-            'Încearcă să dormi 7-8 ore pe noapte',
-            'Bea cel puțin 2L de apă zilnic',
-            'Reduce stresul și fumatul',
-            'Evită alcoolul în exces'
-        ],
-        professionalTreatments: [
-            'Consultatii urgente cu dermatologul',
-            'Tratamente profesionale anti-aging',
-            'Peeling-uri chimice intensive',
-            'Tratamente cu laser',
-            'Injectări cu acid hialuronic',
-            'Tratamente cu toxina botulinică (dacă e necesar)'
-        ],
-        preventionTips: [
-            'Nu e prea târziu să faci schimbări',
-            'Începe cu schimbările de stil de viață',
-            'Investește în produse anti-aging de calitate',
-            'Fii consistent cu rutina',
-            'Monitorizează progresul lunar'
-        ]
+        ro: {
+            title: 'Îmbătrânire Accelerată - Acțiune Imediată',
+            description: 'Semne de îmbătrânire accelerată. E timpul să schimbi rutina și stilul de viață pentru a-ți proteja pielea!',
+            antiAgingRoutine: [
+                'Curățare delicată cu un cleanser hidratant',
+                'Ser cu vitamina C dimineața',
+                'Cremă hidratantă cu SPF 50+',
+                'Ser cu retinol seara (începe cu concentrații mici)',
+                'Cremă hidratantă bogată seara',
+                'Mască hidratantă de 2-3 ori pe săptămână'
+            ],
+            lifestyleChanges: [
+                'Începe imediat să folosești protecție solară zilnic',
+                'Schimbă dieta - mai multe legume, fructe, proteine',
+                'Începe un program de exerciții fizice',
+                'Încearcă să dormi 7-8 ore pe noapte',
+                'Bea cel puțin 2L de apă zilnic',
+                'Reduce stresul și fumatul',
+                'Evită alcoolul în exces'
+            ],
+            professionalTreatments: [
+                'Consultatii urgente cu dermatologul',
+                'Tratamente profesionale anti-aging',
+                'Peeling-uri chimice intensive',
+                'Tratamente cu laser',
+                'Injectări cu acid hialuronic',
+                'Tratamente cu toxina botulinică (dacă e necesar)'
+            ],
+            preventionTips: [
+                'Nu e prea târziu să faci schimbări',
+                'Începe cu schimbările de stil de viață',
+                'Investește în produse anti-aging de calitate',
+                'Fii consistent cu rutina',
+                'Monitorizează progresul lunar'
+            ]
+        },
+        en: {
+            title: 'Accelerated Aging - Immediate Action Required',
+            description: 'Signs of accelerated aging. It\'s time to change your routine and lifestyle to protect your skin!',
+            antiAgingRoutine: [
+                'Gentle cleansing with a hydrating cleanser',
+                'Vitamin C serum in the morning',
+                'Moisturizer with SPF 50+',
+                'Retinol serum in the evening (start with low concentrations)',
+                'Rich moisturizer in the evening',
+                'Hydrating mask 2-3 times per week'
+            ],
+            lifestyleChanges: [
+                'Start using daily sun protection immediately',
+                'Change diet - more vegetables, fruits, protein',
+                'Start an exercise program',
+                'Try to sleep 7-8 hours per night',
+                'Drink at least 2L of water daily',
+                'Reduce stress and smoking',
+                'Avoid excessive alcohol'
+            ],
+            professionalTreatments: [
+                'Urgent consultations with dermatologist',
+                'Professional anti-aging treatments',
+                'Intensive chemical peels',
+                'Laser treatments',
+                'Hyaluronic acid injections',
+                'Botulinum toxin treatments (if needed)'
+            ],
+            preventionTips: [
+                'It\'s not too late to make changes',
+                'Start with lifestyle changes',
+                'Invest in quality anti-aging products',
+                'Be consistent with your routine',
+                'Monitor progress monthly'
+            ]
+        }
     }
 };
 

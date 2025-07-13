@@ -32,6 +32,37 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Add margin to main content areas */
+.landing-futuristic,
+.quiz-page,
+.quizzes-page,
+.privacy-policy-page {
+    padding: 0 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Responsive margins */
+@media (max-width: 768px) {
+
+    .landing-futuristic,
+    .quiz-page,
+    .quizzes-page,
+    .privacy-policy-page {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .landing-futuristic,
+    .quiz-page,
+    .quizzes-page,
+    .privacy-policy-page {
+        padding: 0 12px;
+    }
+}
+
 /* Button Styles */
 .btn-minimal {
     display: inline-flex;

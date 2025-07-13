@@ -78,7 +78,7 @@
 
 .option-button:hover {
     border-color: var(--primary-color);
-    background: white;
+    background: var(--background-color);
     color: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-light);
@@ -86,9 +86,6 @@
 
 .option-button:active,
 .option-button:focus {
-    color: white;
-    background: var(--primary-light);
-    border-color: var(--primary-dark);
     outline: none;
 }
 
@@ -141,6 +138,8 @@
     color: var(--text-light);
     line-height: 1.6;
     font-weight: 300;
+    text-align: left;
+    white-space: pre-line;
 }
 
 .result-actions {

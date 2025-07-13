@@ -23,6 +23,7 @@ import LandingPage from './pages/LandingPage';
 import QuizzesPage from './pages/QuizzesPage';
 import QuizPage from './pages/QuizPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 // CSS imports - styles for the application
 // Similar to including CSS files in your Java web app
@@ -93,6 +94,7 @@ const App: React.FC = () => {
               <Route path="/quiz" element={<QuizzesPage />} />
               <Route path="/quiz/:quizId" element={<QuizPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
 
             </Routes>
 

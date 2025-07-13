@@ -42,6 +42,11 @@ export class PDFService {
     private static pageHeight: number;
     private static margin: number = 20;
 
+    // Helper method to set font with diacritics support
+    private static setFont(doc: jsPDF, style: 'normal' | 'bold' | 'italic' = 'normal'): void {
+        doc.setFont('times', style);
+    }
+
     private static formatDate(): string {
         const now = new Date();
         return now.toLocaleDateString('ro-RO', {
@@ -51,18 +56,13 @@ export class PDFService {
         });
     }
 
+    // Embed logo as base64 data URL (truncated for brevity)
+    private static LOGO_BASE64 = "data:image/png;base64,/9j/4AAQSkZJRgABAQAASABIAAD/4QCMRXhpZgAATU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAfSgAwAEAAAAAQAAAfQAAAAA/+0AOFBob3Rvc2hvcCAzLjAAOEJJTQQEAAAAAAAAOEJJTQQlAAAAAAAQ1B2M2Y8AsgTpgAmY7PhCfv/AABEIAfQB9AMBIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1EAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHBFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/xAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2wBDAAICAgICAgQCAgQGBAQEBggGBgYGCAoICAgICAoMCgoKCgoKDAwMDAwMDAwODg4ODg4QEBAQEBISEhISEhISEhL/2wBDAQMDAwUEBQgEBAgTDQsNExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExP/3QAEACD/2gAMAwEAAhEDEQA/AP38ooooAKSlooAKKKKACkpaKACiiigApKWigAK...";
+
     private static async addHeader(doc: jsPDF, data: PDFData): Promise<void> {
         try {
-            // Load and add the logo
-            const logoResponse = await fetch('/logo.png');
-            const logoBlob = await logoResponse.blob();
-            const logoUrl = URL.createObjectURL(logoBlob);
-
-            // Add logo image (40x40 pixels)
-            doc.addImage(logoUrl, 'PNG', 20, 20, 40, 40);
-
-            // Clean up the URL
-            URL.revokeObjectURL(logoUrl);
+            // Add logo image (40x40 pixels) from base64
+            doc.addImage(PDFService.LOGO_BASE64, 'PNG', 20, 20, 40, 40);
         } catch (error) {
             // Fallback to colored rectangle if logo loading fails
             doc.setFillColor(156, 39, 176);
@@ -71,17 +71,19 @@ export class PDFService {
 
         doc.setTextColor(156, 39, 176);
         doc.setFontSize(24);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.text('Skin Studio', 70, 35);
 
         // Add subtitle
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(100, 100, 100);
-        doc.text('Raport Personalizat de Îngrijire a Pielii', 70, 45);
+        const subtitle = data.language === 'en' ? 'Personalized Skin Care Report' : 'Raport Personalizat de Îngrijire a Pielii';
+        doc.text(subtitle, 70, 45);
 
         // Add date
-        doc.text(`Data: ${data.date}`, 70, 55);
+        const dateLabel = data.language === 'en' ? 'Date: ' : 'Data: ';
+        doc.text(`${dateLabel}${data.date}`, 70, 55);
 
         // Add line separator
         doc.setDrawColor(156, 39, 176);
@@ -91,15 +93,18 @@ export class PDFService {
 
     private static addUserInfo(doc: jsPDF, data: PDFData): number {
         doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(50, 50, 50);
-        doc.text(`Raport pentru: ${data.userName}`, 20, 90);
+        const reportFor = data.language === 'en' ? 'Report for: ' : 'Raport pentru: ';
+        doc.text(`${reportFor}${data.userName}`, 20, 90);
 
         doc.setFontSize(12);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(100, 100, 100);
-        doc.text(`Test completat: ${data.quizTitle}`, 20, 105);
-        doc.text(`Scor obținut: ${data.score}`, 20, 115);
+        const testCompleted = data.language === 'en' ? 'Test completed: ' : 'Test completat: ';
+        doc.text(`${testCompleted}${data.quizTitle}`, 20, 105);
+        const scoreObtained = data.language === 'en' ? 'Score obtained: ' : 'Scor obținut: ';
+        doc.text(`${scoreObtained}${data.score}`, 20, 115);
 
         return 125; // Return the Y position after user info
     }
@@ -109,9 +114,10 @@ export class PDFService {
 
         // Section title
         doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(156, 39, 176);
-        doc.text('Rezultatul Testului:', 20, currentY);
+        const testResult = data.language === 'en' ? 'Test Result:' : 'Rezultatul Testului:';
+        doc.text(testResult, 20, currentY);
         currentY += 15;
 
         // Get result text
@@ -127,7 +133,7 @@ export class PDFService {
 
         // Display skin type with larger font
         doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(50, 50, 50);
         doc.text(skinTypeLine.replace(/[🟢🟡🔵🟠⚪]/g, '').trim(), 20, currentY);
         currentY += 12;
@@ -135,7 +141,7 @@ export class PDFService {
         // Display description
         if (descriptionLines.length > 0) {
             doc.setFontSize(11);
-            doc.setFont('helvetica', 'normal');
+            this.setFont(doc, 'normal');
             doc.setTextColor(50, 50, 50);
 
             const descriptionText = descriptionLines.join(' ');
@@ -158,9 +164,10 @@ export class PDFService {
 
         // Section title
         doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(156, 39, 176);
-        doc.text('📚 Referințe Științifice:', 20, currentY);
+        const scientificRefs = data.language === 'en' ? '📚 Scientific References:' : '📚 Referințe Științifice:';
+        doc.text(scientificRefs, 20, currentY);
         currentY += 12;
 
         // Use structured scientific references instead of parsing text
@@ -174,7 +181,7 @@ export class PDFService {
         ];
 
         doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(50, 50, 50);
 
         scientificReferences.forEach((ref, index) => {
@@ -197,15 +204,16 @@ export class PDFService {
 
         // Section title
         doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(156, 39, 176);
-        doc.text('💡 Recomandări Personalizate:', 20, currentY);
+        const personalizedRecs = data.language === 'en' ? '💡 Personalized Recommendations:' : '💡 Recomandări Personalizate:';
+        doc.text(personalizedRecs, 20, currentY);
         currentY += 12;
 
         // Use structured recommendations from skinCareRecommendations
         if (data.skinRecommendation && data.skinRecommendation.recommendedProducts) {
             doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
+            this.setFont(doc, 'normal');
             doc.setTextColor(50, 50, 50);
 
             data.skinRecommendation.recommendedProducts.forEach((product: string, index: number) => {
@@ -228,50 +236,77 @@ export class PDFService {
             currentY = 30;
         }
 
+        // Validate skinRec exists and has required properties
+        if (!skinRec || !skinRec.title || !skinRec.description) {
+            // Fallback content if skin recommendation is missing
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(156, 39, 176);
+            doc.text('Skin Care Recommendations', 20, currentY);
+            currentY += 15;
+
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(50, 50, 50);
+            doc.text('Personalized skin care recommendations based on your quiz results.', 20, currentY);
+            currentY += 20;
+            return currentY;
+        }
+
         // Section title
         doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(156, 39, 176);
-        doc.text(skinRec.title, 20, currentY);
+        doc.text(skinRec.title || 'Skin Care Recommendations', 20, currentY);
         currentY += 15;
 
         // Description
         doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(50, 50, 50);
-        const descLines = doc.splitTextToSize(skinRec.description, 170);
+        const descLines = doc.splitTextToSize(skinRec.description || 'Personalized recommendations for your skin type.', 170);
         doc.text(descLines, 20, currentY);
         currentY += (descLines.length * 5) + 10;
 
         // Daily routine
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Rutina Zilnică:', 20, currentY);
-        currentY += 10;
+        if (skinRec.dailyRoutine && Array.isArray(skinRec.dailyRoutine) && skinRec.dailyRoutine.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const dailyRoutine = data.language === 'en' ? 'Daily Routine:' : 'Rutina Zilnică:';
+            doc.text(dailyRoutine, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        skinRec.dailyRoutine.forEach((step: string, index: number) => {
-            doc.text(`• ${step}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            skinRec.dailyRoutine.forEach((step: string, index: number) => {
+                if (step && typeof step === 'string') {
+                    doc.text(`• ${step}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         // Recommended products
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Produse Recomandate:', 20, currentY);
-        currentY += 10;
+        if (skinRec.recommendedProducts && Array.isArray(skinRec.recommendedProducts) && skinRec.recommendedProducts.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const recommendedProducts = data.language === 'en' ? 'Recommended Products:' : 'Produse Recomandate:';
+            doc.text(recommendedProducts, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        skinRec.recommendedProducts.forEach((product: string, index: number) => {
-            doc.text(`• ${product}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            skinRec.recommendedProducts.forEach((product: string, index: number) => {
+                if (product && typeof product === 'string') {
+                    doc.text(`• ${product}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         return currentY;
     }
@@ -286,35 +321,57 @@ export class PDFService {
             currentY = 30;
         }
 
+        // Validate agingRec exists and has required properties
+        if (!agingRec || !agingRec.title || !agingRec.description) {
+            // Fallback content if aging recommendation is missing
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(156, 39, 176);
+            doc.text('Anti-Aging Recommendations', 20, currentY);
+            currentY += 15;
+
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(50, 50, 50);
+            doc.text('Personalized anti-aging recommendations based on your quiz results.', 20, currentY);
+            currentY += 20;
+            return currentY;
+        }
+
         // Section title
         doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(156, 39, 176);
-        doc.text(agingRec.title, 20, currentY);
+        doc.text(agingRec.title || 'Anti-Aging Recommendations', 20, currentY);
         currentY += 15;
 
         // Description
         doc.setFontSize(11);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(50, 50, 50);
-        const descLines = doc.splitTextToSize(agingRec.description, 170);
+        const descLines = doc.splitTextToSize(agingRec.description || 'Personalized anti-aging recommendations.', 170);
         doc.text(descLines, 20, currentY);
         currentY += (descLines.length * 5) + 10;
 
         // Anti-aging routine
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Rutina Anti-Îmbătrânire:', 20, currentY);
-        currentY += 10;
+        if (agingRec.antiAgingRoutine && Array.isArray(agingRec.antiAgingRoutine) && agingRec.antiAgingRoutine.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const antiAgingRoutine = data.language === 'en' ? 'Anti-Aging Routine:' : 'Rutina Anti-Îmbătrânire:';
+            doc.text(antiAgingRoutine, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        agingRec.antiAgingRoutine.forEach((step: string, index: number) => {
-            doc.text(`• ${step}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            agingRec.antiAgingRoutine.forEach((step: string, index: number) => {
+                if (step && typeof step === 'string') {
+                    doc.text(`• ${step}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         return currentY;
     }
@@ -331,34 +388,44 @@ export class PDFService {
         }
 
         // Lifestyle tips
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Sfaturi de Stil de Viață:', 20, currentY);
-        currentY += 10;
+        if (skinRec && skinRec.lifestyleTips && Array.isArray(skinRec.lifestyleTips) && skinRec.lifestyleTips.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const lifestyleTips = data.language === 'en' ? 'Lifestyle Tips:' : 'Sfaturi de Stil de Viață:';
+            doc.text(lifestyleTips, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        skinRec.lifestyleTips.forEach((tip: string, index: number) => {
-            doc.text(`• ${tip}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            skinRec.lifestyleTips.forEach((tip: string, index: number) => {
+                if (tip && typeof tip === 'string') {
+                    doc.text(`• ${tip}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         // Lifestyle changes for aging
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Schimbări de Stil de Viață:', 20, currentY);
-        currentY += 10;
+        if (agingRec && agingRec.lifestyleChanges && Array.isArray(agingRec.lifestyleChanges) && agingRec.lifestyleChanges.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const lifestyleChanges = data.language === 'en' ? 'Lifestyle Changes:' : 'Schimbări de Stil de Viață:';
+            doc.text(lifestyleChanges, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        agingRec.lifestyleChanges.forEach((change: string, index: number) => {
-            doc.text(`• ${change}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            agingRec.lifestyleChanges.forEach((change: string, index: number) => {
+                if (change && typeof change === 'string') {
+                    doc.text(`• ${change}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         return currentY;
     }
@@ -374,34 +441,44 @@ export class PDFService {
         }
 
         // Good ingredients
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Ingrediente Benefice:', 20, currentY);
-        currentY += 10;
+        if (skinRec && skinRec.ingredients && Array.isArray(skinRec.ingredients) && skinRec.ingredients.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const beneficialIngredients = data.language === 'en' ? 'Beneficial Ingredients:' : 'Ingrediente Benefice:';
+            doc.text(beneficialIngredients, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        skinRec.ingredients.forEach((ingredient: string, index: number) => {
-            doc.text(`• ${ingredient}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            skinRec.ingredients.forEach((ingredient: string, index: number) => {
+                if (ingredient && typeof ingredient === 'string') {
+                    doc.text(`• ${ingredient}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         // Avoid ingredients
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(100, 100, 100);
-        doc.text('Ingrediente de Evitat:', 20, currentY);
-        currentY += 10;
+        if (skinRec && skinRec.avoidIngredients && Array.isArray(skinRec.avoidIngredients) && skinRec.avoidIngredients.length > 0) {
+            doc.setFontSize(13);
+            this.setFont(doc, 'bold');
+            doc.setTextColor(100, 100, 100);
+            const avoidIngredients = data.language === 'en' ? 'Ingredients to Avoid:' : 'Ingrediente de Evitat:';
+            doc.text(avoidIngredients, 20, currentY);
+            currentY += 10;
 
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        skinRec.avoidIngredients.forEach((ingredient: string, index: number) => {
-            doc.text(`• ${ingredient}`, 25, currentY);
-            currentY += 6;
-        });
-        currentY += 5;
+            doc.setFontSize(10);
+            this.setFont(doc, 'normal');
+            skinRec.avoidIngredients.forEach((ingredient: string, index: number) => {
+                if (ingredient && typeof ingredient === 'string') {
+                    doc.text(`• ${ingredient}`, 25, currentY);
+                    currentY += 6;
+                }
+            });
+            currentY += 5;
+        }
 
         return currentY;
     }
@@ -418,14 +495,14 @@ export class PDFService {
 
         // Section title
         doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(156, 39, 176);
         doc.text(note.title, 20, currentY);
         currentY += 12;
 
         // Description
         doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(50, 50, 50);
         const descLines = doc.splitTextToSize(note.description, 170);
         doc.text(descLines, 20, currentY);
@@ -433,20 +510,20 @@ export class PDFService {
 
         // Tool name and URL
         doc.setFontSize(11);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(100, 100, 100);
         doc.text(`${note.tool.name}: ${note.tool.url}`, 20, currentY);
         currentY += 10;
 
         // How to use
         doc.setFontSize(11);
-        doc.setFont('helvetica', 'bold');
+        this.setFont(doc, 'bold');
         doc.setTextColor(100, 100, 100);
         doc.text(language === 'ro' ? 'Cum să folosești:' : 'How to use:', 20, currentY);
         currentY += 8;
 
         doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
+        this.setFont(doc, 'normal');
         doc.setTextColor(50, 50, 50);
         note.howTo.forEach((step, index) => {
             doc.text(`• ${step}`, 25, currentY);
@@ -456,7 +533,7 @@ export class PDFService {
 
         // Disclaimer
         doc.setFontSize(9);
-        doc.setFont('helvetica', 'italic');
+        this.setFont(doc, 'italic');
         doc.setTextColor(100, 100, 100);
         const disclaimerLines = doc.splitTextToSize(note.disclaimer, 170);
         doc.text(disclaimerLines, 20, currentY);
@@ -478,10 +555,12 @@ export class PDFService {
 
             // Footer text
             doc.setFontSize(8);
-            doc.setFont('helvetica', 'normal');
+            this.setFont(doc, 'normal');
             doc.setTextColor(100, 100, 100);
-            doc.text('Skin Studio - Raport Personalizat de Îngrijire a Pielii', 20, 290);
-            doc.text(`Pagina ${i} din ${pageCount}`, 150, 290);
+            const footerText = data.language === 'en' ? 'Skin Studio - Personalized Skin Care Report' : 'Skin Studio - Raport Personalizat de Îngrijire a Pielii';
+            doc.text(footerText, 20, 290);
+            const pageText = data.language === 'en' ? `Page ${i} of ${pageCount}` : `Pagina ${i} din ${pageCount}`;
+            doc.text(pageText, 150, 290);
         }
     }
 
@@ -525,22 +604,25 @@ export class PDFService {
             currentY = this.addAdditionalNoteSection(this.doc, currentY + 10, data.language || 'ro');
 
             // Add professional advice
-            if (currentY > 250) {
-                this.doc.addPage();
-                currentY = 30;
+            if (data.skinRecommendation && data.skinRecommendation.professionalAdvice) {
+                if (currentY > 250) {
+                    this.doc.addPage();
+                    currentY = 30;
+                }
+
+                this.doc.setFontSize(13);
+                this.setFont(this.doc, 'bold');
+                this.doc.setTextColor(100, 100, 100);
+                const professionalAdvice = data.language === 'en' ? 'Professional Advice:' : 'Sfaturi Profesionale:';
+                this.doc.text(professionalAdvice, 20, currentY);
+                currentY += 10;
+
+                this.doc.setFontSize(10);
+                this.setFont(this.doc, 'normal');
+                this.doc.setTextColor(50, 50, 50);
+                const adviceLines = this.doc.splitTextToSize(data.skinRecommendation.professionalAdvice || 'Consult with a dermatologist for personalized advice.', 170);
+                this.doc.text(adviceLines, 20, currentY);
             }
-
-            this.doc.setFontSize(13);
-            this.doc.setFont('helvetica', 'bold');
-            this.doc.setTextColor(100, 100, 100);
-            this.doc.text('Sfaturi Profesionale:', 20, currentY);
-            currentY += 10;
-
-            this.doc.setFontSize(10);
-            this.doc.setFont('helvetica', 'normal');
-            this.doc.setTextColor(50, 50, 50);
-            const adviceLines = this.doc.splitTextToSize(data.skinRecommendation.professionalAdvice, 170);
-            this.doc.text(adviceLines, 20, currentY);
 
             // Add footer
             this.addFooter(this.doc, data);

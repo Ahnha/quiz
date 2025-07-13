@@ -1,20 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { PDFService, PDFData } from '../../services/pdfService';
-import { generatePDFContent } from '../../data/skinCareRecommendations';
+import { HTMLReportService, HTMLReportData } from '../../services/htmlReportService';
+import { generatePDFContent, ADDITIONAL_NOTE } from '../../data/skinCareRecommendations';
 import { SecurityUtils, ErrorLogger } from '../../config/security';
 import '../../styles/quizResultForm.css';
-import { ADDITIONAL_NOTE } from '../../data/skinCareRecommendations';
-
-interface QuizResultData {
-    id: string;
-    timestamp: string;
-    quizName: string;
-    score: number;
-    result: string;
-    sendToSkinStudio: boolean;
-    skinStudioEmail: string;
-}
 
 interface QuizResultFormProps {
     quizName: string;
@@ -33,8 +22,8 @@ interface QuizResultFormProps {
  * Quiz Result Form Component
  * 
  * PATTERN: Single Responsibility Principle
- * - Handles quiz result submission and email sending
- * - Manages CAPTCHA validation and PDF generation
+ * - Handles quiz result display and PDF generation
+ * - Manages CAPTCHA validation for PDF generation
  * 
  * PATTERN: Security First
  * - Input validation and sanitization
@@ -50,16 +39,13 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({
     onClose
 }) => {
     const { t } = useLanguage();
-    const [skinStudioEmail, setSkinStudioEmail] = useState('');
-    const [sendToSkinStudio, setSendToSkinStudio] = useState(false);
+    const [userName, setUserName] = useState('');
     const [captchaValue, setCaptchaValue] = useState('');
-    const [userCaptcha, setUserCaptcha] = useState('');
     const [userCaptchaDownload, setUserCaptchaDownload] = useState('');
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [message, setMessage] = useState('');
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
     const [downloadMessage, setDownloadMessage] = useState('');
-    const [sendCaptchaError, setSendCaptchaError] = useState('');
     const [downloadCaptchaError, setDownloadCaptchaError] = useState('');
+    const [downloadedSuccessfully, setDownloadedSuccessfully] = useState(false);
 
     // Generate a simple math CAPTCHA
     const generateCaptcha = useCallback(() => {
@@ -78,58 +64,55 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({
         setCaptchaQuestion(question);
     }, [generateCaptcha]);
 
-    // PATTERN: Input Validation - Centralized validation
-    const validateForm = (): { isValid: boolean; errors: string[] } => {
-        const errors: string[] = [];
-
-        // Validate Skin Studio email if checkbox is checked
-        if (sendToSkinStudio && !skinStudioEmail) {
-            errors.push('Please enter your email address for Skin Studio recommendations');
-        } else if (sendToSkinStudio && !SecurityUtils.isValidEmail(skinStudioEmail)) {
-            errors.push('Please enter a valid email address for Skin Studio recommendations');
-        }
-
-        if (!userCaptcha) {
-            errors.push(t.quizResultForm?.fillAllFields || 'Please fill all fields');
-        } else if (userCaptcha !== captchaValue) {
-            errors.push(t.quizResultForm?.captchaError || 'Incorrect CAPTCHA answer');
-        }
-
-        if (!SecurityUtils.isValidQuizScore(score)) {
-            errors.push('Invalid quiz score');
-        }
-
-        return {
-            isValid: errors.length === 0,
-            errors
+    // Prevent background scroll when modal is open
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = '';
         };
-    };
+    }, []);
 
     // PATTERN: Event Handlers - Clean and focused
-    const handleSkinStudioEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const sanitizedEmail = SecurityUtils.sanitizeInput(e.target.value);
-        setSkinStudioEmail(sanitizedEmail);
-        setMessage(''); // Clear error when user starts typing
-    };
-
-    const handleCaptchaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const sanitizedCaptcha = SecurityUtils.sanitizeInput(e.target.value);
-        setUserCaptcha(sanitizedCaptcha);
-        setMessage(''); // Clear error when user starts typing
-    };
-
     const handleCaptchaDownloadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const sanitizedCaptcha = SecurityUtils.sanitizeInput(e.target.value);
         setUserCaptchaDownload(sanitizedCaptcha);
-        setMessage(''); // Clear error when user starts typing
+    };
+
+    const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const sanitizedName = SecurityUtils.sanitizeInput(e.target.value);
+        setUserName(sanitizedName);
+        setDownloadMessage(''); // Clear error when user starts typing
     };
 
     const generateAndDownloadPDF = async () => {
+        // Validate name is required
+        if (!userName || userName.trim() === '') {
+            setDownloadMessage('Please enter your name to generate the report.');
+            return;
+        }
+
+        // Validate CAPTCHA for download
+        if (!userCaptchaDownload) {
+            setDownloadCaptchaError('Please complete the security check');
+            return;
+        }
+        if (userCaptchaDownload !== captchaValue) {
+            setDownloadCaptchaError('Incorrect CAPTCHA answer');
+            setUserCaptchaDownload('');
+            const question = generateCaptcha();
+            setCaptchaQuestion(question);
+            return;
+        }
+
+        setIsGeneratingPDF(true);
+        setDownloadMessage('');
+        setDownloadCaptchaError('');
+
         try {
             const pdfContent = generatePDFContent(quizName, score, result, '', quizResult, propLanguage);
 
-            const pdfData: PDFData = {
-                userName: '', // No longer needed
+            const reportData: HTMLReportData = {
+                userName: userName.trim(),
                 quizTitle: quizName,
                 score,
                 resultText: result,
@@ -143,15 +126,45 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({
                     year: 'numeric',
                     month: 'long',
                     day: 'numeric'
-                })
+                }),
+                // Add your logo here - choose one of the options below:
+                // Option 1: Base64 encoded logo (recommended)
+                // logoUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...', // Replace with your base64 string
+                // logoAlt: 'Skin Studio Logo',
+
+                // Option 2: URL to logo file in public folder
+                // logoUrl: '/logo.png', // Place your logo in the public folder
+                // logoAlt: 'Skin Studio Logo',
+
+                // Option 3: External URL (not recommended for offline reports)
+                // logoUrl: 'https://yourdomain.com/logo.png',
+                // logoAlt: 'Skin Studio Logo'
             };
 
-            await PDFService.generatePDF(pdfData);
-            PDFService.downloadPDF(pdfData, `skin-care-report-${quizName}.pdf`);
-            setDownloadMessage('PDF generated successfully!');
+            // Generate and open the report
+            await HTMLReportService.generateReport(reportData);
+
+            // Also send the report to Skin Studio
+            try {
+                await HTMLReportService.sendToSkinStudio(reportData);
+                setDownloadMessage('Report opened successfully and sent to Skin Studio!');
+            } catch (skinStudioError) {
+                // If sending to Skin Studio fails, still show success for opening the report
+                console.warn('Failed to send to Skin Studio:', skinStudioError);
+                setDownloadMessage('Report opened successfully! (Note: Could not send to Skin Studio)');
+            }
+
+            setDownloadedSuccessfully(true);
+
+            // Clear CAPTCHA after successful generation
+            setUserCaptchaDownload('');
+            const question = generateCaptcha();
+            setCaptchaQuestion(question);
         } catch (error) {
-            ErrorLogger.log(error as Error, 'PDF Generation');
-            setDownloadMessage('Error generating PDF. Please try again.');
+            ErrorLogger.log(error as Error, 'HTML Report Generation');
+            setDownloadMessage('Error generating report. Please try again.');
+        } finally {
+            setIsGeneratingPDF(false);
         }
     };
 
@@ -164,215 +177,61 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({
             // [main, marker, refs]
             return { main: parts[0].trim(), references: parts[2].trim() };
         }
-        return { main: text, references: '' };
+        return { main: text.trim(), references: '' };
     }
 
-    // Get localized result text
-    let localizedResult = result;
-    if (quizResult && quizResult.text) {
-        if (typeof quizResult.text === 'string') {
-            localizedResult = quizResult.text;
-        } else {
-            localizedResult = quizResult.text[propLanguage] || result;
-        }
-    }
-    const { main: resultMain, references: resultReferences } = parseResultText(localizedResult);
-
-    const handleSubmit = async (e?: React.FormEvent) => {
-        if (e) {
-            e.preventDefault();
-        }
-
-        const validation = validateForm();
-
-        if (!validation.isValid) {
-            setMessage(validation.errors.join(' '));
-            if (validation.errors.some(err => err.includes('CAPTCHA'))) {
-                setUserCaptcha('');
-                setUserCaptchaDownload('');
-                const question = generateCaptcha();
-                setCaptchaQuestion(question);
-            }
-            return;
-        }
-
-        setIsSubmitting(true);
-        setMessage('');
-
-        try {
-            // Create result data with secure ID
-            const resultData: QuizResultData = {
-                id: SecurityUtils.generateSecureId(),
-                timestamp: new Date().toISOString(),
-                quizName,
-                score,
-                result,
-                sendToSkinStudio,
-                skinStudioEmail: sendToSkinStudio ? skinStudioEmail : '',
-            };
-
-            // Simulate API call with timeout
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // Store in localStorage using secure utilities
-            const existingResults = SecurityUtils.safeLocalStorageGet('quizResults', []);
-            existingResults.push(resultData);
-            SecurityUtils.safeLocalStorageSet('quizResults', existingResults);
-
-            setMessage(t.quizResultForm?.successMessage || 'Results sent successfully!');
-            setTimeout(() => {
-                onClose();
-            }, 2000);
-        } catch (error) {
-            const errorMessage = t.quizResultForm?.errorMessage || 'Error sending results. Please try again.';
-            setMessage(errorMessage);
-            ErrorLogger.log(error as Error, 'Quiz Result Submission');
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+    const { main: resultMain, references: resultReferences } = parseResultText(result);
 
     return (
-        <div className="quiz-result-form-overlay">
-            <div className="quiz-result-form glass-card">
-                <div className="form-header">
-                    <h2>{t.quizResultForm?.title || 'Send Quiz Results'}</h2>
-                    <button className="close-button" onClick={onClose}>×</button>
+        <div className="quiz-result-form-overlay theme-modal-overlay">
+            <div className="quiz-result-form-modal glass-card theme-modal">
+                <div className="quiz-result-form-header">
+                    <h2>{t.quizResultForm?.title || 'Quiz Results'}</h2>
+                    <button
+                        className="close-button theme-modal-close"
+                        onClick={onClose}
+                        aria-label="Close"
+                        type="button"
+                    >
+                        ×
+                    </button>
                 </div>
+                <div className="quiz-result-form-content modal-scrollable-content">
+                    {/* Section 1: Open Report */}
+                    <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: 'var(--background-light)', borderRadius: '8px' }}>
+                        <div style={{ marginBottom: '16px' }}>
+                            <strong style={{ color: 'var(--primary-color)', fontSize: '1.1rem' }}>
+                                📄 Open Report
+                            </strong>
+                        </div>
+                        <div style={{ color: 'var(--text-light)', fontSize: '0.9rem', marginBottom: '16px' }}>
+                            Open your quiz results as a printable report in a new tab.
+                        </div>
 
-                <form onSubmit={(e) => e.preventDefault()} className="form-content">
-                    {/* Section 1: Get Future Recommendations */}
-                    <div className="form-section">
-                        <h3 style={{ marginBottom: '16px', color: 'var(--primary-color)', fontSize: '1.1rem' }}>
-                            🌟 Get Future Recommendations from Skin Studio
-                        </h3>
-                        <p style={{ marginBottom: '16px', color: 'var(--text-light)', fontSize: '0.9rem' }}>
-                            Receive personalized skincare recommendations and updates based on your quiz results.
-                        </p>
-
-                        <label className="checkbox-label">
+                        {/* Name Input (Required) */}
+                        <div className="form-group">
+                            <label htmlFor="userName" style={{ color: 'var(--text-color)', fontSize: '0.9rem', marginBottom: '4px' }}>
+                                Your Name <span style={{ color: 'red' }}>*</span>
+                            </label>
                             <input
-                                type="checkbox"
-                                checked={sendToSkinStudio}
-                                onChange={(e) => setSendToSkinStudio(e.target.checked)}
-                                className="checkbox-input"
+                                type="text"
+                                id="userName"
+                                value={userName}
+                                onChange={handleUserNameChange}
+                                placeholder="Enter your name for the PDF report"
+                                required
+                                className="form-input"
+                                style={{ marginTop: '4px', backgroundColor: 'var(--background-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)' }}
                             />
-                            <span className="checkbox-text">
-                                Send my results to Skin Studio for future recommendations
-                            </span>
-                        </label>
-
-                        {sendToSkinStudio && (
-                            <div style={{ marginTop: '12px' }}>
-                                <label htmlFor="skinStudioEmail">Email for recommendations <span style={{ color: 'red' }}>*</span></label>
-                                <input
-                                    type="email"
-                                    id="skinStudioEmail"
-                                    value={skinStudioEmail}
-                                    onChange={handleSkinStudioEmailChange}
-                                    placeholder="Enter your email for future recommendations"
-                                    required={sendToSkinStudio}
-                                    className="form-input"
-                                    style={{ marginTop: '8px' }}
-                                />
-                            </div>
-                        )}
-
-                        {/* Security Check for Send */}
-                        <div className="form-group" style={{ marginTop: '16px' }}>
-                            <label htmlFor="captcha-send">Security Check <span style={{ color: 'red' }}>*</span></label>
-                            <div className="captcha-container">
-                                <span className="captcha-question">{captchaQuestion}</span>
-                                <input
-                                    type="text"
-                                    id="captcha-send"
-                                    value={userCaptcha}
-                                    onChange={handleCaptchaChange}
-                                    placeholder="Enter answer"
-                                    required
-                                    className="form-input captcha-input"
-                                />
-                            </div>
-                            {sendCaptchaError && (
-                                <div className="message error" style={{ marginTop: '8px', fontSize: '0.9rem' }}>
-                                    {sendCaptchaError}
-                                </div>
-                            )}
                         </div>
-
-                        {/* Send Button */}
-                        <div className="form-actions" style={{ marginTop: '20px' }}>
-                            <button
-                                type="button"
-                                className="btn-minimal primary"
-                                disabled={isSubmitting}
-                                onClick={() => {
-                                    // Validate form fields
-                                    const errors: string[] = [];
-                                    setSendCaptchaError('');
-
-                                    // Validate Skin Studio email if checkbox is checked
-                                    if (sendToSkinStudio && !skinStudioEmail) {
-                                        errors.push('Please enter your email address for Skin Studio recommendations');
-                                    } else if (sendToSkinStudio && !SecurityUtils.isValidEmail(skinStudioEmail)) {
-                                        errors.push('Please enter a valid email address for Skin Studio recommendations');
-                                    }
-
-                                    if (!userCaptcha) {
-                                        setSendCaptchaError('Please complete the security check');
-                                        errors.push('Please complete the security check');
-                                    } else if (userCaptcha !== captchaValue) {
-                                        setSendCaptchaError('Incorrect CAPTCHA answer');
-                                        errors.push('Incorrect CAPTCHA answer');
-                                    }
-
-                                    if (!SecurityUtils.isValidQuizScore(score)) {
-                                        errors.push('Invalid quiz score');
-                                    }
-
-                                    if (errors.length > 0) {
-                                        setMessage(errors.join(' '));
-                                        if (errors.some(err => err.includes('CAPTCHA'))) {
-                                            setUserCaptcha('');
-                                            const question = generateCaptcha();
-                                            setCaptchaQuestion(question);
-                                        }
-                                        return;
-                                    }
-
-                                    // If validation passes, submit the form
-                                    handleSubmit();
-                                }}
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <span className="spinner"></span>
-                                        {t.quizResultForm?.sending || 'Sending...'}
-                                    </>
-                                ) : (
-                                    'Send Results to Skin Studio'
-                                )}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Section Divider */}
-                    <div className="form-section-divider" style={{ margin: '32px 0', borderTop: '2px solid #eee' }}></div>
-
-                    {/* Section 2: Download Report */}
-                    <div className="form-section">
-                        <h3 style={{ marginBottom: '16px', color: 'var(--primary-color)', fontSize: '1.1rem' }}>
-                            📄 Download Your Results
-                        </h3>
-                        <p style={{ marginBottom: '16px', color: 'var(--text-light)', fontSize: '0.9rem' }}>
-                            Download your quiz results as a PDF report for your own records.
-                        </p>
 
                         {/* Security Check for Download */}
                         <div className="form-group">
-                            <label htmlFor="captcha-download">Security Check <span style={{ color: 'red' }}>*</span></label>
+                            <label htmlFor="captcha-download" style={{ color: 'var(--text-color)', fontSize: '0.9rem', marginBottom: '4px' }}>
+                                Security Check <span style={{ color: 'red' }}>*</span>
+                            </label>
                             <div className="captcha-container">
-                                <span className="captcha-question">{captchaQuestion}</span>
+                                <span className="captcha-question" style={{ color: 'var(--text-color)', fontSize: '0.9rem' }}>{captchaQuestion}</span>
                                 <input
                                     type="text"
                                     id="captcha-download"
@@ -381,127 +240,145 @@ const QuizResultForm: React.FC<QuizResultFormProps> = ({
                                     placeholder="Enter answer"
                                     required
                                     className="form-input captcha-input"
+                                    style={{ backgroundColor: 'var(--background-color)', border: '1px solid var(--border-color)', color: 'var(--text-color)' }}
                                 />
                             </div>
                             {downloadCaptchaError && (
-                                <div className="message error" style={{ marginTop: '8px', fontSize: '0.9rem' }}>
+                                <div className="message error" style={{ marginTop: '8px', fontSize: '0.9rem', backgroundColor: 'rgba(255,107,107,0.1)', color: '#ff6b6b', border: '1px solid rgba(255,107,107,0.3)', padding: '8px', borderRadius: '4px' }}>
                                     {downloadCaptchaError}
                                 </div>
                             )}
-                            {downloadMessage && downloadMessage.includes('successfully') && (
-                                <div className={`message success`} style={{ marginTop: '8px' }}>
+                            {downloadMessage && (
+                                <div className={`message ${downloadMessage.includes('successfully') ? 'success' : 'error'}`} style={{
+                                    marginTop: '8px',
+                                    fontSize: '0.9rem',
+                                    backgroundColor: downloadMessage.includes('successfully') ? 'rgba(127,176,105,0.1)' : 'rgba(255,107,107,0.1)',
+                                    color: downloadMessage.includes('successfully') ? 'var(--primary-color)' : '#ff6b6b',
+                                    border: `1px solid ${downloadMessage.includes('successfully') ? 'rgba(127,176,105,0.3)' : 'rgba(255,107,107,0.3)'}`,
+                                    padding: '8px',
+                                    borderRadius: '4px'
+                                }}>
                                     {downloadMessage}
                                 </div>
                             )}
                         </div>
 
                         {/* Download Button */}
-                        <div className="form-actions" style={{ marginTop: '20px' }}>
-                            <button
-                                type="button"
-                                className="btn-minimal secondary"
-                                disabled={isSubmitting}
-                                onClick={() => {
-                                    // Validate download CAPTCHA
-                                    setDownloadCaptchaError('');
-                                    if (!userCaptchaDownload) {
-                                        setDownloadCaptchaError('Please complete the security check to download');
-                                        return;
-                                    } else if (userCaptchaDownload !== captchaValue) {
-                                        setDownloadCaptchaError('Incorrect CAPTCHA answer');
-                                        return;
-                                    }
-                                    setDownloadMessage('');
-                                    generateAndDownloadPDF();
-                                }}
-                            >
-                                📄 {t.quizResultForm?.downloadReport || 'Download PDF Report'}
-                            </button>
-                        </div>
-
-                        {/* Result Preview */}
-                        <div className="quiz-result-preview" style={{ marginTop: '24px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-                            <div className="quiz-result-main">
-                                <strong>{t.quizResultForm?.result || 'Result'}:</strong>
-                                <div style={{ marginTop: 8 }}>
-                                    {/* Skin Type Title */}
-                                    <div style={{ fontWeight: 500, fontSize: '1.1rem', color: 'var(--text-color)', marginBottom: 8 }}>
-                                        {resultMain.split('\n')[0]}
-                                    </div>
-                                    {/* Description */}
-                                    <div style={{ color: 'var(--text-color)', fontWeight: 300, marginBottom: 12 }}>
-                                        {resultMain.split('\n').slice(1).join(' ')}
-                                    </div>
-                                    {/* Recommendations */}
-                                    {resultMain.includes('✔') && (() => {
-                                        const recommendations = resultMain.split('✔')[1]?.split('📚')[0] || '';
-                                        const lines = recommendations.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                                        const intro = lines.find(line => !line.startsWith('•'));
-                                        const bullets = lines.filter(line => line.startsWith('•'));
-                                        return (
-                                            <div style={{ margin: '12px 0', padding: '12px', background: 'rgba(127,176,105,0.07)', borderRadius: 8 }}>
-                                                <div style={{ fontWeight: 500, color: 'var(--primary-color)', marginBottom: 4 }}>💡 {propLanguage === 'ro' ? 'Recomandări personalizate' : 'Personalized Recommendations'}:</div>
-                                                {intro && <div style={{ color: 'var(--text-color)', fontWeight: 300, marginBottom: bullets.length ? 4 : 0 }}>{intro}</div>}
-                                                {bullets.length > 0 && (
-                                                    <ul style={{ paddingLeft: '1.2em', margin: 0 }}>
-                                                        {bullets.map((item, idx) => (
-                                                            <li key={idx} style={{ color: 'var(--text-color)', fontSize: '1rem', marginBottom: 2, fontWeight: 400 }}>{item.replace(/^•\s*/, '')}</li>
-                                                        ))}
-                                                    </ul>
-                                                )}
-                                            </div>
-                                        );
-                                    })()}
-                                    {/* Scientific References */}
-                                    {resultReferences && (
-                                        <div style={{ margin: '12px 0', padding: '12px', background: 'rgba(156,39,176,0.07)', borderRadius: 8 }}>
-                                            <div style={{ fontWeight: 500, color: 'var(--accent-color)', marginBottom: 4 }}>📚 {propLanguage === 'ro' ? 'Bazat pe cercetări științifice' : 'Based on Scientific Research'}:</div>
-                                            <ul style={{ paddingLeft: '1.2em', margin: 0 }}>
-                                                {resultReferences.split('\n').map((ref, idx) => (
-                                                    ref.trim() && (
-                                                        <li key={idx} style={{ color: 'var(--text-light)', fontSize: '0.98rem', marginBottom: 2, fontWeight: 400 }}>
-                                                            <span style={{ marginRight: 6, fontSize: '1.1em' }}>📖</span>{ref.trim()}
-                                                        </li>
-                                                    )
-                                                ))}
-                                            </ul>
-                                        </div>
+                        <div style={{ marginTop: '16px' }}>
+                            {!downloadedSuccessfully ? (
+                                <button
+                                    type="button"
+                                    className="btn-minimal secondary"
+                                    disabled={isGeneratingPDF || !userName.trim()}
+                                    onClick={generateAndDownloadPDF}
+                                    style={{
+                                        backgroundColor: 'var(--primary-color)',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '10px 20px',
+                                        borderRadius: '6px',
+                                        fontSize: '0.9rem',
+                                        cursor: 'pointer',
+                                        opacity: (isGeneratingPDF || !userName.trim()) ? 0.6 : 1
+                                    }}
+                                >
+                                    {isGeneratingPDF ? (
+                                        <>
+                                            <span className="spinner"></span>
+                                            Opening Report...
+                                        </>
+                                    ) : (
+                                        'Open Report'
                                     )}
+                                </button>
+                            ) : (
+                                <div className="downloaded-confirmation-animation" style={{
+                                    color: 'var(--success-color)',
+                                    fontWeight: 600,
+                                    fontSize: '1rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    backgroundColor: 'rgba(127,176,105,0.1)',
+                                    padding: '12px',
+                                    borderRadius: '6px',
+                                    border: '1px solid rgba(127,176,105,0.3)'
+                                }}>
+                                    <span className="downloaded-checkmark" style={{ fontSize: '1.5rem' }}>📄</span>
+                                    Report opened successfully!
                                 </div>
-                            </div>
-                        </div>
-                        <div className="additional-note" style={{ marginTop: 24, padding: 16, background: '#f3f0fa', borderRadius: 8 }}>
-                            <div style={{ fontWeight: 600, color: 'var(--accent-color)', marginBottom: 8 }}>
-                                {ADDITIONAL_NOTE[propLanguage].title}
-                            </div>
-                            <div style={{ color: 'var(--text-color)', marginBottom: 8 }}>
-                                {ADDITIONAL_NOTE[propLanguage].description}
-                            </div>
-                            <div style={{ color: 'var(--primary-color)', fontWeight: 500, marginBottom: 4 }}>
-                                <a href={ADDITIONAL_NOTE[propLanguage].tool.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-color)', textDecoration: 'underline' }}>
-                                    {ADDITIONAL_NOTE[propLanguage].tool.name}
-                                </a>
-                            </div>
-                            <div style={{ fontWeight: 500, marginBottom: 4 }}>
-                                {propLanguage === 'ro' ? 'Cum să folosești:' : 'How to use:'}
-                            </div>
-                            <ul style={{ paddingLeft: '1.2em', margin: 0, marginBottom: 8 }}>
-                                {ADDITIONAL_NOTE[propLanguage].howTo.map((step, idx) => (
-                                    <li key={idx} style={{ color: 'var(--text-color)', fontSize: '0.98rem', marginBottom: 2 }}>{step}</li>
-                                ))}
-                            </ul>
-                            <div style={{ color: 'var(--text-light)', fontSize: '0.95rem', fontStyle: 'italic' }}>
-                                {ADDITIONAL_NOTE[propLanguage].disclaimer}
-                            </div>
+                            )}
                         </div>
                     </div>
 
-                    {message && (
-                        <div className={`message ${message.includes('Error') ? 'error' : 'success'}`}>
-                            {message}
+                    {/* Result Preview */}
+                    <div className="quiz-result-preview" style={{ marginTop: '24px', padding: '16px', backgroundColor: 'var(--background-light)', borderRadius: '8px' }}>
+                        <div className="quiz-result-main">
+                            <strong>{t.quizResultForm?.result || 'Result'}:</strong>
+                            <div style={{ marginTop: 8 }}>
+                                {/* Skin Type Title */}
+                                <div style={{ fontWeight: 500, fontSize: '1.1rem', color: 'var(--text-color)', marginBottom: 8 }}>
+                                    {resultMain.split('\n')[0]}
+                                </div>
+                                {/* Description */}
+                                <div style={{ color: 'var(--text-color)', fontWeight: 300, marginBottom: 12 }}>
+                                    {resultMain.split('\n').slice(1).join(' ')}
+                                </div>
+                                {/* Recommendations */}
+                                {resultMain.includes('✔') && (() => {
+                                    const recommendations = resultMain.split('✔')[1]?.split('📚')[0] || '';
+                                    const lines = recommendations.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                                    const intro = lines.find(line => !line.startsWith('•'));
+                                    const bullets = lines.filter(line => line.startsWith('•'));
+                                    return (
+                                        <div style={{ margin: '12px 0', padding: '12px', background: 'rgba(127,176,105,0.07)', borderRadius: 8 }}>
+                                            <div style={{ fontWeight: 500, color: 'var(--primary-color)', marginBottom: 4 }}>💡 {propLanguage === 'ro' ? 'Recomandări personalizate' : 'Personalized Recommendations'}:</div>
+                                            {intro && <div style={{ color: 'var(--text-color)', fontWeight: 300, marginBottom: bullets.length ? 4 : 0 }}>{intro}</div>}
+                                            {bullets.length > 0 && (
+                                                <ul style={{ paddingLeft: '1.2em', margin: 0 }}>
+                                                    {bullets.map((item, idx) => (
+                                                        <li key={idx} style={{ color: 'var(--text-color)', fontSize: '1rem', marginBottom: 2, fontWeight: 400 }}>{item.replace(/^•\s*/, '')}</li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </div>
+                                    );
+                                })()}
+                                {/* Scientific References */}
+                                {resultReferences && (
+                                    <div style={{ margin: '12px 0', padding: '12px', background: 'rgba(156,39,176,0.07)', borderRadius: 8 }}>
+                                        <div style={{ fontWeight: 500, color: 'var(--accent-color)', marginBottom: 4 }}>📚 {propLanguage === 'ro' ? 'Bazat pe cercetări științifice' : 'Based on Scientific Research'}:</div>
+                                        <ul style={{ paddingLeft: '1.2em', margin: 0 }}>
+                                            {resultReferences.split('\n').map((ref, idx) => (
+                                                ref.trim() && (
+                                                    <li key={idx} style={{ color: 'var(--text-light)', fontSize: '0.98rem', marginBottom: 2, fontWeight: 400 }}>
+                                                        <span style={{ marginRight: 6, fontSize: '1.1em' }}>📖</span>{ref.trim()}
+                                                    </li>
+                                                )
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
-                </form>
+                    </div>
+                    <div className="additional-note" style={{ marginTop: 24, padding: 16, background: 'var(--background-light)', borderRadius: 8 }}>
+                        <div style={{ fontWeight: 600, color: 'var(--accent-color)', marginBottom: 8 }}>
+                            {ADDITIONAL_NOTE[propLanguage].title}
+                        </div>
+                        <div style={{ color: 'var(--text-color)', marginBottom: 8 }}>
+                            {ADDITIONAL_NOTE[propLanguage].description}
+                        </div>
+                        <div style={{ color: 'var(--primary-color)', fontWeight: 500, marginBottom: 4 }}>
+                            <a href={ADDITIONAL_NOTE[propLanguage].tool.url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--primary-color)', textDecoration: 'underline' }}>
+                                {ADDITIONAL_NOTE[propLanguage].tool.name}
+                            </a>
+                        </div>
+                        <div style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>
+                            {ADDITIONAL_NOTE[propLanguage].disclaimer}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

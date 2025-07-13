@@ -28,7 +28,7 @@ const AppFooter: React.FC = () => {
                         <h4>{t.footer.legal}</h4>
                         <ul>
                             <li><Link to="/privacy-policy">{t.footer.privacyPolicy}</Link></li>
-                            <li><Link to="/terms">{t.footer.termsOfService}</Link></li>
+                            <li><Link to="/terms-of-service">{t.footer.termsOfService}</Link></li>
                         </ul>
                     </div>
 

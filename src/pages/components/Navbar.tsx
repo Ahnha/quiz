@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
@@ -9,8 +9,45 @@ const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
     const { t } = useLanguage();
+    const menuRef = useRef<HTMLDivElement>(null);
+    const hamburgerRef = useRef<HTMLButtonElement>(null);
 
     const isActive = (path: string) => location.pathname === path;
+
+    // Close menu when location changes
+    useEffect(() => {
+        setIsMenuOpen(false);
+    }, [location]);
+
+    // Handle clicks outside the menu
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                isMenuOpen &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target as Node) &&
+                hamburgerRef.current &&
+                !hamburgerRef.current.contains(event.target as Node)
+            ) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        if (isMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.body.style.overflow = 'unset';
+        };
+    }, [isMenuOpen]);
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
 
     return (
         <header className="navbar-futuristic">
@@ -29,7 +66,10 @@ const Navbar: React.FC = () => {
                     <ThemeToggle />
                 </div>
 
-                <nav className={`navbar-nav ${isMenuOpen ? 'nav-open' : ''}`}>
+                <nav
+                    ref={menuRef}
+                    className={`navbar-nav ${isMenuOpen ? 'nav-open' : ''}`}
+                >
                     <Link
                         to="/"
                         className={`nav-link ${isActive('/') ? 'active' : ''}`}
@@ -49,8 +89,9 @@ const Navbar: React.FC = () => {
                 <div className="navbar-actions">
                     <LanguageSwitcher />
                     <button
+                        ref={hamburgerRef}
                         className={`hamburger ${isMenuOpen ? 'open' : ''}`}
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        onClick={toggleMenu}
                         aria-label="Toggle menu"
                     >
                         <span></span>
@@ -59,6 +100,14 @@ const Navbar: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            {/* Backdrop overlay for mobile menu */}
+            {isMenuOpen && (
+                <div
+                    className="menu-backdrop"
+                    onClick={() => setIsMenuOpen(false)}
+                />
+            )}
         </header>
     );
 };

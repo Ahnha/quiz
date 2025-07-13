@@ -36,6 +36,10 @@ export interface Translations {
             subtitle: string;
             button: string;
         };
+        medicalDisclaimer: {
+            title: string;
+            text: string;
+        };
     };
 
     // Quiz Page
@@ -58,6 +62,10 @@ export interface Translations {
             title: string;
             agingStudies: string[];
             skinTypeStudies: string[];
+        };
+        medicalDisclaimer: {
+            title: string;
+            text: string;
         };
     };
 
@@ -85,6 +93,10 @@ export interface Translations {
         quizName: string;
         score: string;
         result: string;
+        medicalDisclaimer: {
+            title: string;
+            text: string;
+        };
     };
 
     // Owner Dashboard
@@ -176,7 +188,7 @@ export const translations: Record<Language, Translations> = {
         landing: {
             hero: {
                 title: 'Discover Your Natural Beauty',
-                subtitle: 'Experience the art of handmade skincare with our personalized approach to natural beauty',
+                subtitle: 'I believe in skincare that\'s informed, personalized, and gentle. The quizzes I\'ve designed help you better understand your skin\'s needs and discover natural solutions that match your lifestyle.',
                 startJourney: 'Start Your Journey',
                 exploreProducts: 'Explore Products',
             },
@@ -200,6 +212,10 @@ export const translations: Record<Language, Translations> = {
                 title: 'Ready to Transform Your Skincare?',
                 subtitle: 'Take our personalized quiz and discover your perfect natural routine',
                 button: 'Take the Quiz',
+            },
+            medicalDisclaimer: {
+                title: 'Medical Disclaimer',
+                text: 'This information is based on my own research and does not represent medical advice. The recommendations provided are for educational purposes only and should not replace professional medical consultation. Always consult with a qualified healthcare provider or dermatologist for medical concerns, skin conditions, or before starting any new skincare routine.',
             },
         },
         quiz: {
@@ -233,6 +249,10 @@ export const translations: Record<Language, Translations> = {
                     'Aging Studies: The impact of age on skin health and appearance.',
                 ],
             },
+            medicalDisclaimer: {
+                title: 'Medical Disclaimer',
+                text: 'This information is based on my own research and does not represent medical advice. The recommendations provided are for educational purposes only and should not replace professional medical consultation. Always consult with a qualified healthcare provider or dermatologist for medical concerns, skin conditions, or before starting any new skincare routine.',
+            },
         },
         quizResultForm: {
             title: 'Send Quiz Results',
@@ -257,6 +277,10 @@ export const translations: Record<Language, Translations> = {
             quizName: 'Quiz',
             score: 'Score',
             result: 'Result',
+            medicalDisclaimer: {
+                title: 'Medical Disclaimer',
+                text: 'This information is based on my own research and does not represent medical advice. The recommendations provided are for educational purposes only and should not replace professional medical consultation. Always consult with a qualified healthcare provider or dermatologist for medical concerns, skin conditions, or before starting any new skincare routine.',
+            },
         },
         ownerDashboard: {
             title: 'Owner Dashboard',
@@ -309,7 +333,7 @@ export const translations: Record<Language, Translations> = {
             consentVersion: 'Consent Version',
         },
         footer: {
-            description: 'Discover the art of handmade skincare with our personalized approach to natural beauty.',
+            description: 'I created Skin Studio to bring more clarity, gentleness, and simplicity to skincare. Everything you\'ll find here is designed to help you understand what truly suits your skin.',
             quickLinks: 'Quick Links',
             legal: 'Legal',
             privacyPolicy: 'Privacy Policy',
@@ -339,7 +363,7 @@ export const translations: Record<Language, Translations> = {
         landing: {
             hero: {
                 title: 'Descoperă Frumusețea Ta Naturală',
-                subtitle: 'Experimentează arta îngrijirii pielii cu abordarea noastră personalizată pentru frumusețea naturală',
+                subtitle: 'Cred într-o îngrijire a pielii informată, personalizată și blândă. Chestionarele pe care le-am creat te ajută să înțelegi mai bine nevoile pielii tale și să descoperi soluții naturale potrivite stilului tău de viață.',
                 startJourney: 'Începe Călătoria',
                 exploreProducts: 'Explorează Produsele',
             },
@@ -363,6 +387,10 @@ export const translations: Record<Language, Translations> = {
                 title: 'Gata Să-ți Transformi Îngrijirea Pielii?',
                 subtitle: 'Fă quiz-ul nostru personalizat și descoperă rutina ta naturală perfectă',
                 button: 'Fă Quiz-ul',
+            },
+            medicalDisclaimer: {
+                title: '⚠️ Disclaimer Medical',
+                text: 'Această informație se bazează pe propria mea cercetare și nu reprezintă sfaturi medicale. Recomandările furnizate sunt doar în scop educațional și nu ar trebui să înlocuiască consultația medicală profesională. Consultă întotdeauna cu un furnizor de îngrijire medicală calificat sau dermatolog pentru probleme medicale, afecțiuni ale pielii sau înainte de a începe orice rutină nouă de îngrijire a pielii.',
             },
         },
         quiz: {
@@ -396,6 +424,10 @@ export const translations: Record<Language, Translations> = {
                     'Studii de îmbătrânire: Impactul vârstei asupra sănătății și aspectului pielii.',
                 ],
             },
+            medicalDisclaimer: {
+                title: '⚠️ Disclaimer Medical',
+                text: 'Această informație se bazează pe propria mea cercetare și nu reprezintă sfaturi medicale. Recomandările furnizate sunt doar în scop educațional și nu ar trebui să înlocuiască consultația medicală profesională. Consultă întotdeauna cu un furnizor de îngrijire medicală calificat sau dermatolog pentru probleme medicale, afecțiuni ale pielii sau înainte de a începe orice rutină nouă de îngrijire a pielii.',
+            },
         },
         quizResultForm: {
             title: 'Trimite Rezultatele Quizului',
@@ -420,6 +452,10 @@ export const translations: Record<Language, Translations> = {
             quizName: 'Quiz',
             score: 'Scor',
             result: 'Rezultat',
+            medicalDisclaimer: {
+                title: '⚠️ Disclaimer Medical',
+                text: 'Această informație se bazează pe propria mea cercetare și nu reprezintă sfaturi medicale. Recomandările furnizate sunt doar în scop educațional și nu ar trebui să înlocuiască consultația medicală profesională. Consultă întotdeauna cu un furnizor de îngrijire medicală calificat sau dermatolog pentru probleme medicale, afecțiuni ale pielii sau înainte de a începe orice rutină nouă de îngrijire a pielii.',
+            },
         },
         ownerDashboard: {
             title: 'Tabloul de Comandă',
@@ -472,7 +508,7 @@ export const translations: Record<Language, Translations> = {
             consentVersion: 'Versiunea Consimțământului',
         },
         footer: {
-            description: 'Descoperă arta îngrijirii pielii cu abordarea noastră personalizată pentru frumusețea naturală.',
+            description: 'Am creat Skin Studio din dorința de a aduce mai multă claritate, blândețe și naturalețe în îngrijirea pielii. Tot ce găsești aici e gândit cu grijă, ca să te ajute să înțelegi mai bine ce i se potrivește pielii tale.',
             quickLinks: 'Link-uri Rapide',
             legal: 'Legal',
             privacyPolicy: 'Politica de Confidențialitate',

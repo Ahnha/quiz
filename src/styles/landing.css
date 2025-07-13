@@ -6,6 +6,12 @@
     /* Account for fixed navbar */
 }
 
+.container-futuristic {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
 /* Hero Section */
 .hero-section {
     min-height: calc(100vh - 70px);
@@ -192,6 +198,93 @@
     font-weight: 300;
 }
 
+/* Medical Disclaimer Section */
+.medical-disclaimer-section {
+    padding: 40px 0;
+    background: var(--background-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.medical-disclaimer-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: rgba(255, 193, 7, 0.1);
+    border: 2px solid rgba(255, 193, 7, 0.3);
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.medical-disclaimer-icon {
+    font-size: 2rem;
+    color: #ff6b35;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.medical-disclaimer-text h3 {
+    color: #856404;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.medical-disclaimer-text p {
+    color: #856404;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Mobile responsive for medical disclaimer */
+@media (max-width: 768px) {
+    .medical-disclaimer-section {
+        padding: 30px 0;
+    }
+
+    .medical-disclaimer-content {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+        margin: 0 16px;
+    }
+
+    .medical-disclaimer-icon {
+        font-size: 1.5rem;
+        margin-top: 0;
+    }
+
+    .medical-disclaimer-text h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .medical-disclaimer-text p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .medical-disclaimer-content {
+        padding: 16px;
+        margin: 0 12px;
+    }
+
+    .medical-disclaimer-text h3 {
+        font-size: 1rem;
+    }
+
+    .medical-disclaimer-text p {
+        font-size: 0.85rem;
+    }
+}
+
 /* Features Section */
 .features-section {
     background: var(--background-white);
@@ -281,6 +374,10 @@
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+    .container-futuristic {
+        padding: 0 20px;
+    }
+
     .hero-content {
         grid-template-columns: 1fr;
         gap: 60px;
@@ -302,6 +399,10 @@
 }
 
 @media (max-width: 768px) {
+    .container-futuristic {
+        padding: 0 16px;
+    }
+
     .landing-futuristic {
         padding-top: 60px;
     }
@@ -363,6 +464,10 @@
 }
 
 @media (max-width: 480px) {
+    .container-futuristic {
+        padding: 0 12px;
+    }
+
     .hero-actions {
         flex-direction: column;
         align-items: center;

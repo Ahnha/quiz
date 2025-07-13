@@ -84,6 +84,19 @@ const QuizzesPage: React.FC = () => {
                 </div>
             </main>
 
+            {/* Medical Disclaimer Section */}
+            <section className="medical-disclaimer-section">
+                <div className="container-futuristic">
+                    <div className="medical-disclaimer-content">
+                        <div className="medical-disclaimer-icon">⚠️</div>
+                        <div className="medical-disclaimer-text">
+                            <h3>{t.quiz.medicalDisclaimer?.title || '⚠️ Medical Disclaimer'}</h3>
+                            <p>{t.quiz.medicalDisclaimer?.text || 'This information is based on my own research and does not represent medical advice. Always consult with a qualified healthcare provider or dermatologist for medical concerns.'}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <AppFooter />
         </div>
     );
