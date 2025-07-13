@@ -342,7 +342,7 @@ export class HTMLReportService {
             padding: 15px;
             background: white;
             border-radius: 6px;
-            border-left: 4px solid #27ae60;
+            border: 1px solid #e0e0e0;
         }
         
         .recommendations-section {
@@ -350,7 +350,7 @@ export class HTMLReportService {
             padding: 15px;
             background: white;
             border-radius: 6px;
-            border-left: 4px solid #f39c12;
+            border: 1px solid #e0e0e0;
         }
         
         .natural-products-section {
@@ -358,7 +358,7 @@ export class HTMLReportService {
             padding: 15px;
             background: white;
             border-radius: 6px;
-            border-left: 4px solid #9b59b6;
+            border: 1px solid #e0e0e0;
         }
         
         .lifestyle-section {
@@ -366,7 +366,7 @@ export class HTMLReportService {
             padding: 15px;
             background: white;
             border-radius: 6px;
-            border-left: 4px solid #e74c3c;
+            border: 1px solid #e0e0e0;
         }
         
         .scientific-refs {
@@ -374,7 +374,7 @@ export class HTMLReportService {
             padding: 15px;
             background: white;
             border-radius: 6px;
-            border-left: 4px solid #3498db;
+            border: 1px solid #e0e0e0;
         }
         
         .actions {
@@ -443,11 +443,13 @@ export class HTMLReportService {
         
         .modal-content {
             background-color: white;
-            margin: 5% auto;
+            margin: 2% auto;
             padding: 20px;
             border-radius: 10px;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
             position: relative;
         }
         
@@ -493,6 +495,30 @@ export class HTMLReportService {
             resize: vertical;
         }
         
+        .checkbox-group {
+            margin: 15px 0;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .checkbox-text {
+            color: #333;
+        }
+        
         .modal-actions {
             text-align: right;
             margin-top: 20px;
@@ -528,6 +554,46 @@ export class HTMLReportService {
             
             .container {
                 box-shadow: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .section h2 {
+                font-size: 1.3em;
+            }
+            
+            .section h3 {
+                font-size: 1.1em;
+            }
+            
+            .result-section,
+            .recommendations-section,
+            .natural-products-section,
+            .lifestyle-section,
+            .scientific-refs {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+                padding: 15px;
+                font-size: 16px;
             }
         }
     </style>
@@ -637,9 +703,10 @@ export class HTMLReportService {
                     <label for="contactMessage">${currentT.messageLabel}</label>
                     <textarea id="contactMessage" placeholder="Tell us about your skin care needs..."></textarea>
                 </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="sendReportToEmail"> ${data.language === 'ro' ? 'Trimite-mi raportul pe email' : 'Send me the report by email'}
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="subscribeUpdates">
+                        <span class="checkbox-text">${data.language === 'ro' ? 'Accept să primesc conținut personalizat de la Skin Studio' : 'I accept to receive personalized content from Skin Studio'}</span>
                     </label>
                 </div>
                 <div class="form-group">
@@ -685,7 +752,7 @@ export class HTMLReportService {
             const email = document.getElementById('contactEmail').value;
             const phone = document.getElementById('contactPhone').value;
             const message = document.getElementById('contactMessage').value;
-            const sendReportToEmail = document.getElementById('sendReportToEmail').checked;
+            const subscribeUpdates = document.getElementById('subscribeUpdates').checked;
             
             if (!name || !email) {
                 showMessage('${currentT.nameRequired}', 'error');
@@ -701,7 +768,7 @@ export class HTMLReportService {
                     email: email,
                     phone: phone,
                     message: message,
-                    subscribeUpdates: false,
+                    subscribeUpdates: subscribeUpdates,
                     userName: '${data.userName}',
                     quizTitle: '${data.quizTitle}',
                     score: ${data.score},
@@ -713,13 +780,7 @@ export class HTMLReportService {
                 // Send contact information to Skin Studio
                 await sendContactToSkinStudio(contactData);
                 
-                // If user requested the report by email, send it
-                if (sendReportToEmail) {
-                    showMessage('Sending report to your email...', 'success');
-                    await sendReportToUser(email);
-                }
-                
-                showMessage('${currentT.sentSuccess}' + (sendReportToEmail ? ' ${currentT.sentSuccess}' : ''), 'success');
+                showMessage('${currentT.sentSuccess}', 'success');
                 
                 setTimeout(() => {
                     closeModal();
@@ -746,7 +807,8 @@ export class HTMLReportService {
                 // Get reCAPTCHA response
                 const recaptchaResponse = grecaptcha.getResponse();
                 if (!recaptchaResponse) {
-                    throw new Error('Please complete the reCAPTCHA verification.');
+                    showMessage(data.language === 'ro' ? 'Vă rugăm să completați verificarea reCAPTCHA' : 'Please complete the reCAPTCHA verification', 'error');
+                    return;
                 }
 
                 // Create a clean report content without scripts and unnecessary elements
@@ -765,10 +827,12 @@ export class HTMLReportService {
                     message: data.message || '',
                     date: data.date,
                     language: data.language || 'ro',
+                    user_accepts_subscription: data.subscribeUpdates,
                     'g-recaptcha-response': recaptchaResponse
                 };
 
                 console.log('Sending with template params:', templateParams);
+                console.log('User accepts subscription:', data.subscribeUpdates);
 
                 const response = await emailjs.send(
                     window.EMAILJS_CONFIG.SERVICE_ID,
