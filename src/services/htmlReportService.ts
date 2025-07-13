@@ -802,9 +802,10 @@ export class HTMLReportService {
         }
         
         function isValidEmail(email) {
-            // eslint-disable-next-line no-useless-escape
-            const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
-            return emailRegex.test(email);
+            // Simple email validation without regex escaping issues
+            const atIndex = email.indexOf('@');
+            const dotIndex = email.lastIndexOf('.');
+            return atIndex > 0 && dotIndex > atIndex && dotIndex < email.length - 1;
         }
         
         async function sendToSkinStudio() {
