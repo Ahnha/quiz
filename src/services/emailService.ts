@@ -347,6 +347,7 @@ export class EmailService {
      * @param email - Email address to validate
      * @returns boolean
      */
+    // eslint-disable-next-line no-useless-escape
     public static isValidEmail(email: string): boolean {
         const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
         return emailRegex.test(email);
