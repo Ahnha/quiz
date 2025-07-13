@@ -2,6 +2,7 @@
 // Handles email sending functionality for reports and notifications
 
 import { ErrorLogger } from '../config/security';
+import { EMAIL_CONFIG } from '../config/emailConfig';
 
 export interface EmailData {
     to: string;
@@ -26,11 +27,11 @@ export interface EmailData {
  * - Graceful fallbacks for email sending issues
  */
 export class EmailService {
-    // EmailJS configuration (you'll need to set these up)
-    private static readonly EMAILJS_SERVICE_ID = 'your_service_id'; // Replace with your EmailJS service ID
-    private static readonly EMAILJS_TEMPLATE_ID = 'your_template_id'; // Replace with your EmailJS template ID
-    private static readonly EMAILJS_USER_ID = 'your_user_id'; // Replace with your EmailJS user ID
-    private static readonly SKIN_STUDIO_EMAIL = 'skinstudio@example.com'; // Replace with actual Skin Studio email
+    // EmailJS configuration from config file
+    private static readonly EMAILJS_SERVICE_ID = EMAIL_CONFIG.EMAILJS_SERVICE_ID;
+    private static readonly EMAILJS_TEMPLATE_ID = EMAIL_CONFIG.EMAILJS_TEMPLATE_ID;
+    private static readonly EMAILJS_USER_ID = EMAIL_CONFIG.EMAILJS_USER_ID;
+    private static readonly SKIN_STUDIO_EMAIL = EMAIL_CONFIG.SKIN_STUDIO_EMAIL;
 
     /**
      * Send email using EmailJS
@@ -38,6 +39,13 @@ export class EmailService {
      */
     public static async sendEmail(data: EmailData): Promise<void> {
         try {
+            // Check if EmailJS is configured
+            if (this.EMAILJS_SERVICE_ID === 'your_service_id' ||
+                this.EMAILJS_TEMPLATE_ID === 'your_template_id' ||
+                this.EMAILJS_USER_ID === 'your_user_id') {
+                throw new Error('EmailJS is not configured. Please update src/config/emailConfig.ts with your EmailJS credentials.');
+            }
+
             // Check if EmailJS is available
             if (typeof window !== 'undefined' && (window as any).emailjs) {
                 await this.sendWithEmailJS(data);
@@ -288,6 +296,11 @@ export class EmailService {
      * @param data - Email data
      */
     private static async sendWithEmailJS(data: EmailData): Promise<void> {
+        // Check if EmailJS is available
+        if (typeof window === 'undefined' || !(window as any).emailjs) {
+            throw new Error('EmailJS is not available. Please check if it is properly loaded.');
+        }
+
         const emailjs = (window as any).emailjs;
 
         const templateParams = {
@@ -314,7 +327,7 @@ export class EmailService {
                 })
                 .catch((error: any) => {
                     console.error('Email sending failed:', error);
-                    reject(error);
+                    reject(new Error(`Email sending failed: ${error.text || error.message || 'Unknown error'}`));
                 });
         });
     }
