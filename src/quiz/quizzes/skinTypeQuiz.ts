@@ -4,12 +4,12 @@ const skinTypeQuiz: QuizDef = {
     icon: "",
     id: "skin-type",
     title: {
-        ro: 'Ce tip de piele ai?',
-        en: 'What Is Your Skin Type?'
+        ro: "Ce tip de piele ai?",
+        en: "What Is Your Skin Type?"
     },
     description: {
-        ro: "Acest chestionar te ajută să îți identifici tipul real de piele, analizând nivelul de hidratare, producția de sebum, sensibilitatea și reacția la factori externi.",
-        en: "This quiz helps you identify your true skin type based on hydration, oil production, sensitivity, and reactions to environment."
+        ro: "Acest chestionar te ajută să îți identifici tipul real de piele, analizând nivelul de hidratare, producția de sebum, sensibilitatea și reacția la factori externi. Nu înlocuiește consultul dermatologic.",
+        en: "This quiz helps you identify your true skin type based on hydration, oil production, sensitivity, and environmental reactivity. It is not a substitute for professional diagnosis."
     },
     questions: [
         {
@@ -21,9 +21,9 @@ const skinTypeQuiz: QuizDef = {
                 { text: { ro: "Strânsă și uscată", en: "Tight and dry" }, score: 0 },
                 { text: { ro: "Puțin uscată, dar își revine după aplicarea cremei", en: "Slightly dry" }, score: 2 },
                 { text: { ro: "Normală, confortabilă", en: "Comfortable" }, score: 4 },
-                { text: { ro: "Ușor lucioasă", en: "Slightly oily" }, score: 5 },
-                { text: { ro: "Foarte grasă, uleioasă", en: "Very oily" }, score: 5 },
-            ],
+                { text: { ro: "Ușor lucioasă", en: "Slightly oily" }, score: 4 },
+                { text: { ro: "Foarte grasă, uleioasă", en: "Very oily" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -34,8 +34,8 @@ const skinTypeQuiz: QuizDef = {
                 { text: { ro: "Da, tot timpul", en: "Often" }, score: 0 },
                 { text: { ro: "Uneori, iarna", en: "Sometimes" }, score: 2 },
                 { text: { ro: "Rar", en: "Rarely" }, score: 4 },
-                { text: { ro: "Niciodată", en: "Never" }, score: 5 },
-            ],
+                { text: { ro: "Niciodată", en: "Never" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -46,8 +46,8 @@ const skinTypeQuiz: QuizDef = {
                 { text: { ro: "Imediat, parcă dispare în piele", en: "Instantly" }, score: 0 },
                 { text: { ro: "Se absoarbe bine, dar trebuie să reaplic uneori", en: "Absorbs but I need to reapply" }, score: 2 },
                 { text: { ro: "Se simte hidratată pentru mult timp", en: "Feels hydrated long after" }, score: 4 },
-                { text: { ro: "Crema rămâne la suprafață și pielea se simte uleioasă", en: "It sits on my skin, feels greasy" }, score: 5 },
-            ],
+                { text: { ro: "Crema rămâne la suprafață și pielea se simte uleioasă", en: "It sits on my skin, feels greasy" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -57,9 +57,9 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Foarte uscată, strânsă", en: "Dry" }, score: 0 },
                 { text: { ro: "Confortabilă", en: "Comfortable" }, score: 4 },
-                { text: { ro: "Ușor lucioasă în zona T", en: "Shiny in T-zone" }, score: 5 },
-                { text: { ro: "Foarte grasă peste tot", en: "Very oily all over" }, score: 5 },
-            ],
+                { text: { ro: "Ușor lucioasă în zona T", en: "Shiny in T-zone" }, score: 4 },
+                { text: { ro: "Foarte grasă peste tot", en: "Very oily all over" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -69,8 +69,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Niciodată", en: "Never" }, score: 0 },
                 { text: { ro: "O dată sau de două ori pe zi", en: "Once/twice a day" }, score: 4 },
-                { text: { ro: "De mai multe ori pe zi", en: "Multiple times a day" }, score: 5 },
-            ],
+                { text: { ro: "De mai multe ori pe zi", en: "Multiple times a day" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -81,8 +81,8 @@ const skinTypeQuiz: QuizDef = {
                 { text: { ro: "Aproape invizibili", en: "Barely visible" }, score: 0 },
                 { text: { ro: "Mici și rafinați", en: "Small" }, score: 3 },
                 { text: { ro: "Destul de vizibili în zona T", en: "Noticeable in T-zone" }, score: 4 },
-                { text: { ro: "Mari și evidenți pe toată fața", en: "Large everywhere" }, score: 5 },
-            ],
+                { text: { ro: "Mari și evidenți pe toată fața", en: "Large everywhere" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -92,8 +92,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Se irită, apare roșeața sau coșuri", en: "Always irritated" }, score: 0 },
                 { text: { ro: "Uneori mă irită puțin", en: "Sometimes sensitive" }, score: 3 },
-                { text: { ro: "Nu am niciodată reacții negative", en: "Never" }, score: 5 },
-            ],
+                { text: { ro: "Nu am niciodată reacții negative", en: "Never" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -103,8 +103,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Foarte des, chiar și din cauza vremii", en: "Yes" }, score: 0 },
                 { text: { ro: "Uneori, dar nu este extrem", en: "Occasionally" }, score: 3 },
-                { text: { ro: "Foarte rar", en: "Rarely" }, score: 5 },
-            ],
+                { text: { ro: "Foarte rar", en: "Rarely" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -114,8 +114,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Mereu", en: "Yes" }, score: 0 },
                 { text: { ro: "Uneori", en: "Sometimes" }, score: 3 },
-                { text: { ro: "Niciodată", en: "Never" }, score: 5 },
-            ],
+                { text: { ro: "Niciodată", en: "Never" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -125,8 +125,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Și mai uscată", en: "Drier" }, score: 0 },
                 { text: { ro: "Confortabilă", en: "Comfortable" }, score: 4 },
-                { text: { ro: "Lucioasă, uleioasă", en: "Oily" }, score: 5 },
-            ],
+                { text: { ro: "Lucioasă, uleioasă", en: "Oily" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -136,8 +136,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Se usucă extrem de tare, crăpă", en: "Very dry/cracked" }, score: 0 },
                 { text: { ro: "Trebuie să aplic cremă mai des", en: "Needs extra moisture" }, score: 3 },
-                { text: { ro: "Nu observ nicio schimbare", en: "Unchanged" }, score: 5 },
-            ],
+                { text: { ro: "Nu observ nicio schimbare", en: "Unchanged" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -147,8 +147,8 @@ const skinTypeQuiz: QuizDef = {
             options: [
                 { text: { ro: "Da, de fiecare dată", en: "Yes" }, score: 0 },
                 { text: { ro: "Uneori", en: "Sometimes" }, score: 3 },
-                { text: { ro: "Niciodată", en: "Never" }, score: 5 },
-            ],
+                { text: { ro: "Niciodată", en: "Never" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -157,8 +157,8 @@ const skinTypeQuiz: QuizDef = {
             },
             options: [
                 { text: { ro: "Da", en: "Yes" }, score: 0 },
-                { text: { ro: "Nu", en: "No" }, score: 5 },
-            ],
+                { text: { ro: "Nu", en: "No" }, score: 5 }
+            ]
         },
         {
             question: {
@@ -167,51 +167,51 @@ const skinTypeQuiz: QuizDef = {
             },
             options: [
                 { text: { ro: "Da, pielea devine mai grasă/uscată", en: "Yes" }, score: 0 },
-                { text: { ro: "Nu observ nicio schimbare", en: "No" }, score: 5 },
-            ],
-        },
+                { text: { ro: "Nu observ nicio schimbare", en: "No" }, score: 5 }
+            ]
+        }
     ],
     results: [
         {
             minScore: 0,
             maxScore: 30,
             text: {
-                ro: "Ten Uscat\n\nPielea ta are nevoie de hidratare intensă.\n\nSăpunuri recomandate:\n• Săpun cu avocado\n• Săpun cu unt de shea\n• Săpun cu ovăz și miere\n\nReferințe științifice:\n• Journal of Clinical and Aesthetic Dermatology, 2021\n• International Journal of Cosmetic Science, 2020",
-                en: "Dry Skin\n\nYour skin needs intensive hydration.\n\nRecommended soaps:\n• Avocado soap\n• Shea butter soap\n• Oatmeal and honey soap\n\nScientific references:\n• Journal of Clinical and Aesthetic Dermatology, 2021\n• International Journal of Cosmetic Science, 2020"
+                ro: "Ten Uscat\n\nPielea ta are tendința de a pierde rapid hidratarea, se poate simți aspră, strânsă sau descuamată. Este important să o protejezi de factorii de mediu și să o hidratezi constant.\n\nReferințe științifice:\n• Skin Hydration by Natural Moisturizing Factors..., 2021, • The Skin Barrier and Moisturization: Function, Disruption, and Repair, 2022",
+                en: "Dry Skin\n\nYour skin tends to lose moisture quickly and may feel tight, rough, or flaky. It’s important to protect it from environmental stressors and keep it consistently hydrated.\n\nScientific references:\n• Skin Hydration by Natural Moisturizing Factors..., 2021, • The Skin Barrier and Moisturization: Function, Disruption, and Repair, 2022"
             }
         },
         {
             minScore: 31,
             maxScore: 50,
             text: {
-                ro: "Ten Gras\n\nPielea ta produce prea mult sebum și poate avea tendință acneică.\n\nSăpunuri recomandate:\n• Săpun cu cărbune activ și arbore de ceai (absorbție de sebum și curățare profundă)\n• Săpun cu argilă verde și lămâiță (reglează producția de sebum)\n• Săpun cu sare de mare (exfoliere blândă și efect antiseptic)\n\nReferințe științifice:\n• Journal of Dermatological Science, 2020\n• Clinical, Cosmetic and Investigational Dermatology, 2021",
-                en: "Oily Skin\n\nYour skin produces too much sebum and may have acne-prone tendencies.\n\nRecommended soaps:\n• Activated charcoal and tea tree soap (sebum absorption and deep cleansing)\n• Green clay and lemon soap (regulates sebum production)\n• Sea salt soap (gentle exfoliation and antiseptic effect)\n\nScientific references:\n• Journal of Dermatological Science, 2020\n• Clinical, Cosmetic and Investigational Dermatology, 2021"
+                ro: "Ten Gras\n\nPielea ta produce exces de sebum, ceea ce poate duce la luciu persistent, pori dilatați și potențial acnee. Echilibrul este cheia pentru a menține pielea curată și sănătoasă.\n\nReferințe științifice:\n• Sebum Production and Acne: A Comprehensive Review, 2020,• A Comprehensive Classification and Analysis of Oily Sensitive Facial Skin, 2024",
+                en: "Oily Skin\n\nYour skin produces excess sebum, leading to shine, enlarged pores, and possibly acne. Balance is key to keeping oily skin healthy and clear.\n\nScientific references:\n• Sebum Production and Acne: A Comprehensive Review, 2020,\n• A Comprehensive Classification and Analysis of Oily Sensitive Facial Skin, 2024"
             }
         },
         {
             minScore: 51,
             maxScore: 70,
             text: {
-                ro: "Ten Mixt\n\nPielea ta este grasă în zona T și uscată în alte zone.\n\nSăpunuri recomandate:\n• Săpun cu lapte de capră și miere (hidratare echilibrată)\n• Săpun cu lavandă și ulei de jojoba (reglează sebumul fără a usca pielea)\n• Săpun cu cărbune activ și argilă roz (purificare delicată)\n\nReferințe științifice:\n• Dermatology Research and Practice, 2021\n• Journal of Drugs in Dermatology, 2020",
-                en: "Combination Skin\n\nYour skin is oily in the T-zone and dry in other areas.\n\nRecommended soaps:\n• Goat milk and honey soap (balanced hydration)\n• Lavender and jojoba oil soap (regulates sebum without drying)\n• Activated charcoal and pink clay soap (gentle purification)\n\nScientific references:\n• Dermatology Research and Practice, 2021\n• Journal of Drugs in Dermatology, 2020"
+                ro: "Ten Mixt\n\nPielea ta este o combinație de zone uscate și grase, cel mai adesea grasă în zona T și normală sau uscată pe obraji. Necesită o îngrijire echilibrată și adaptată.\n\nReferințe științifice:\n• Skin Type Classifications: Does the Perfect Assessment Exist?, 2024\n• An Overview of Methods to Characterize Skin Type..., 2022",
+                en: "Combination Skin\n\nYour skin has both oily and dry areas—typically an oily T-zone with dry or normal cheeks. It requires balanced and targeted care.\n\nScientific references:\n• Skin Type Classifications: Does the Perfect Assessment Exist?, 2024\n• An Overview of Methods to Characterize Skin Type..., 2022"
             }
         },
         {
             minScore: 71,
             maxScore: 90,
             text: {
-                ro: "Ten Sensibil\n\nPielea ta reacționează ușor la factori externi și are nevoie de îngrijire delicată.\n\nSăpunuri recomandate:\n• Săpun cu gălbenele și mușețel (calmează iritațiile și roșeața)\n• Săpun cu aloe vera și castravete (efect răcoritor și hidratant)\n• Săpun cu unt de shea, fără parfum (fără iritanți, potrivit pentru pielea reactivă)\n\nReferințe științifice:\n• Contact Dermatitis, 2021\n• Journal of the European Academy of Dermatology, 2020",
-                en: "Sensitive Skin\n\nYour skin reacts easily to external factors and needs gentle care.\n\nRecommended soaps:\n• Calendula and chamomiles soap (soothes irritation and redness)\n• Aloe vera and cucumber soap (cooling and hydrating effect)\n• Shea butter soap, fragrance-free (no irritants, suitable for reactive skin)\n\nScientific references:\n• Contact Dermatitis, 2021\n• Journal of the European Academy of Dermatology, 2020"
+                ro: "Ten Sensibil\n\nPielea ta reacționează ușor la produse sau factori de mediu, fiind predispusă la roșeață, senzații de usturime sau mâncărime. Are nevoie de produse blânde și protecție constantă.\n\nReferințe științifice:\n• Sensitive Skin and Irritation Triggers: A Review, 2021\n• Fragrance‑Free Skincare: Benefits for Sensitive Skin, 2020",
+                en: "Sensitive Skin\n\nYour skin reacts easily to products or environmental factors and may experience redness, stinging, or itching. It needs gentle products and ongoing protection.\n\nScientific references:\n• Sensitive Skin and Irritation Triggers, 2021\n• Fragrance-Free Skincare, 2020"
             }
         },
         {
             minScore: 91,
             maxScore: 100,
             text: {
-                ro: "Ten Normal\n\nPielea ta este echilibrată și sănătoasă.\n\nSăpunuri recomandate:\n• Săpun cu lapte de capră și miere (menține echilibrul pielii)\n• Săpun cu lavandă și ulei de măsline (curățare blândă și hrănire)\n• Săpun cu lapte de cocos și citrice (revitalizant și delicat parfumat)\n\nReferințe științifice:\n• Journal of the American Academy of Dermatology, 2021\n• British Journal of Dermatology, 2020",
-                en: "Normal Skin\n\nYour skin is balanced and healthy.\n\nRecommended soaps:\n• Goat milk and honey soap (maintains skin balance)\n• Lavender and olive oil soap (gentle cleansing and nourishment)\n• Coconut milk and citrus soap (revitalizing and delicately scented)\n\nScientific references:\n• Journal of the American Academy of Dermatology, 2021\n• British Journal of Dermatology, 2020"
+                ro: "Ten Normal\n\nPielea ta este echilibrată, fără zone extrem de uscate sau grase, și nu reacționează ușor la factori externi. Este important să menții acest echilibru cu o rutină blândă.\n\nReferințe științifice:\n• Skin Homeostasis and Maintenance Mechanisms, 2021\n• What Are Skin Types? A Practical Summary, 2020",
+                en: "Normal Skin\n\nYour skin is balanced, neither too oily nor too dry, and does not react easily to external triggers. Maintaining this balance with a gentle routine is essential.\n\nScientific references:\n• Skin Homeostasis and Maintenance Mechanisms, 2021\n• What Are Skin Types? A Practical Summary, 2020"
             }
-        },
+        }
     ],
 };
 
