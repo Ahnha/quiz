@@ -39,12 +39,12 @@ const UserComponent: React.FC<UserProps> = ({ name, age }) => {
 public class UserComponent {
     private String name;
     private int age;
-    
+
     public UserComponent(String name, int age) {
         this.name = name;
         this.age = age;
     }
-    
+
     public String render() {
         return name + " is " + age + " years old";
     }
@@ -57,7 +57,7 @@ public class UserComponent {
 // React State with useState
 const Counter: React.FC = () => {
     const [count, setCount] = useState(0); // Like private int count = 0;
-    
+
     return (
         <div>
             <p>Count: {count}</p>
@@ -69,11 +69,11 @@ const Counter: React.FC = () => {
 // Java Equivalent
 public class Counter {
     private int count = 0;
-    
+
     public void increment() {
         count++;
     }
-    
+
     public String render() {
         return "<div><p>Count: " + count + "</p><button>Increment</button></div>";
     }
@@ -154,7 +154,7 @@ public void setName(String name) { this.name = name; }
 useEffect(() => {
     // Runs after component mounts (like @PostConstruct)
     console.log("Component mounted");
-    
+
     return () => {
         // Cleanup (like @PreDestroy)
         console.log("Component will unmount");
@@ -230,7 +230,7 @@ const MyComponent = () => {
 public class MyComponent {
     @Autowired
     private ThemeService themeService;
-    
+
     public String render() {
         return "Theme: " + themeService.getTheme();
     }
@@ -256,10 +256,10 @@ public class MyComponent {
 public class UserController {
     @GetMapping("/")
     public String home() { return "home"; }
-    
+
     @GetMapping("/users")
     public String users() { return "users"; }
-    
+
     @GetMapping("/users/{id}")
     public String userDetail(@PathVariable String id) { return "userDetail"; }
 }
@@ -308,7 +308,7 @@ const validateUser = (user: UserForm): boolean => {
 public class UserForm {
     @Email
     private String email;
-    
+
     @Min(18)
     private int age;
 }
@@ -322,7 +322,7 @@ class ErrorBoundary extends Component {
     componentDidCatch(error: Error) {
         console.error("Error caught:", error);
     }
-    
+
     render() {
         if (this.state.hasError) {
             return <div>Something went wrong</div>;
@@ -383,6 +383,7 @@ public Button(ButtonProps props) {
 ## 🎯 **Best Practices**
 
 ### **1. Component Structure**
+
 ```typescript
 // Good: Single responsibility
 const UserProfile: React.FC<UserProps> = ({ user }) => {
@@ -398,6 +399,7 @@ public class UserProfile {
 ```
 
 ### **2. Type Safety**
+
 ```typescript
 // Good: Explicit types
 interface Props {
@@ -413,6 +415,7 @@ public class Props {
 ```
 
 ### **3. Error Handling**
+
 ```typescript
 // Good: Error boundaries
 <ErrorBoundary>
@@ -430,16 +433,19 @@ try {
 ## 🔧 **Development Tools**
 
 ### **TypeScript Compiler = Java Compiler**
+
 - `tsc` = `javac`
 - Type checking = Compile-time type checking
 - Interfaces = Abstract classes/interfaces
 
 ### **React DevTools = Java Debugger**
+
 - Component inspection = Object inspection
 - State monitoring = Variable watching
 - Performance profiling = Profiling tools
 
 ### **npm = Maven/Gradle**
+
 - `package.json` = `pom.xml`
 - `npm install` = `mvn install`
 - `npm start` = `mvn spring-boot:run`
@@ -457,6 +463,7 @@ try {
 ## 🎉 **You're Ready!**
 
 With these concepts, you can now:
+
 - ✅ Read and understand React/TypeScript code
 - ✅ Modify existing components
 - ✅ Create new components
@@ -465,4 +472,4 @@ With these concepts, you can now:
 - ✅ Add security measures
 - ✅ Debug and troubleshoot
 
-Remember: React is just JavaScript with a different paradigm, and TypeScript adds type safety like Java. The concepts are similar, just the syntax is different! 
+Remember: React is just JavaScript with a different paradigm, and TypeScript adds type safety like Java. The concepts are similar, just the syntax is different!

@@ -1,270 +1,293 @@
 // PATTERN: Service Layer - HTML Report Service
 // Handles the creation of HTML reports that open in new tabs with print functionality
 
-import { ErrorLogger } from '../config/security';
-import { EmailService, EmailData } from './emailService';
+import { ErrorLogger } from "../config/security";
+import { EmailService, EmailData } from "./emailService";
 
 export interface HTMLReportData {
-    userName: string;
-    quizTitle: string;
-    score: number;
-    resultText: string;
-    skinType: string;
-    agingCategory: string;
-    skinRecommendation: any;
-    agingRecommendation: any;
-    date: string;
-    quizResult?: {
-        minScore: number;
-        maxScore: number;
-        text: string | { ro: string; en: string };
-    };
-    language?: 'ro' | 'en';
-    logoUrl?: string; // Optional: URL or base64 string for custom logo
-    logoAlt?: string; // Optional: Alt text for the logo
+  userName: string;
+  quizTitle: string;
+  score: number;
+  resultText: string;
+  skinType: string;
+  agingCategory: string;
+  skinRecommendation: any;
+  agingRecommendation: any;
+  date: string;
+  quizResult?: {
+    minScore: number;
+    maxScore: number;
+    text: string | { ro: string; en: string };
+  };
+  language?: "ro" | "en";
+  logoUrl?: string; // Optional: URL or base64 string for custom logo
+  logoAlt?: string; // Optional: Alt text for the logo
 }
 
 /**
  * HTML Report Service Class
- * 
+ *
  * PATTERN: Service Layer Pattern
  * - Handles HTML report generation and opening in new tabs
  * - Provides clean interface for report operations
- * 
+ *
  * PATTERN: Error Handling
  * - Comprehensive error handling and logging
  * - Graceful fallbacks for report generation issues
  */
 export class HTMLReportService {
-    /**
-     * Generate HTML report and open in new tab
-     * @param data - Report data
-     */
-    public static async generateReport(data: HTMLReportData): Promise<void> {
-        try {
-            // Validate required data
-            if (!data.userName || data.userName.trim() === '') {
-                throw new Error('User name is required for report generation');
-            }
+  /**
+   * Generate HTML report and open in new tab
+   * @param data - Report data
+   */
+  public static async generateReport(data: HTMLReportData): Promise<void> {
+    try {
+      // Validate required data
+      if (!data.userName || data.userName.trim() === "") {
+        throw new Error("User name is required for report generation");
+      }
 
-            if (!data.quizTitle || !data.resultText) {
-                throw new Error('Quiz title and result text are required');
-            }
+      if (!data.quizTitle || !data.resultText) {
+        throw new Error("Quiz title and result text are required");
+      }
 
-            // Generate HTML content
-            const htmlContent = this.generateHTMLContent(data);
+      // Generate HTML content
+      const htmlContent = this.generateHTMLContent(data);
 
-            // Open in new tab and write HTML directly
-            const newWindow = window.open('', '_blank');
-            if (!newWindow) {
-                throw new Error('Failed to open new window. Please allow popups for this site.');
-            }
+      // Open in new tab and write HTML directly
+      const newWindow = window.open("", "_blank");
+      if (!newWindow) {
+        throw new Error(
+          "Failed to open new window. Please allow popups for this site.",
+        );
+      }
 
-            newWindow.document.open();
-            newWindow.document.write(htmlContent);
-            newWindow.document.close();
+      newWindow.document.open();
+      newWindow.document.write(htmlContent);
+      newWindow.document.close();
+    } catch (error) {
+      ErrorLogger.log(error as Error, "HTML Report Generation");
+      throw new Error(
+        `Failed to generate report: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  }
 
-        } catch (error) {
-            ErrorLogger.log(error as Error, 'HTML Report Generation');
-            throw new Error(`Failed to generate report: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        }
+  /**
+   * Send report to Skin Studio email
+   * @param data - Report data
+   */
+  public static async sendToSkinStudio(data: HTMLReportData): Promise<void> {
+    try {
+      // For now, we'll simulate sending to Skin Studio
+      // In a real implementation, this would send an email
+      console.log("Sending report to Skin Studio:", {
+        userName: data.userName,
+        quizTitle: data.quizTitle,
+        score: data.score,
+        date: data.date,
+        language: data.language,
+      });
+
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // In a real implementation, you would call:
+      // const emailData: EmailData = {
+      //     to: '', // Will be set by EmailService
+      //     subject: `Quiz Report - ${data.userName} - ${data.quizTitle}`,
+      //     htmlContent: this.generateHTMLContent(data),
+      //     userName: data.userName,
+      //     quizTitle: data.quizTitle,
+      //     score: data.score,
+      //     date: data.date,
+      //     language: data.language
+      // };
+      // await EmailService.sendToSkinStudio(emailData);
+    } catch (error) {
+      ErrorLogger.log(error as Error, "Send Report to Skin Studio");
+      throw new Error(
+        `Failed to send report to Skin Studio: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  }
+
+  /**
+   * Send report to user's email
+   * @param data - Report data
+   * @param userEmail - User's email address
+   */
+  public static async sendToUserEmail(
+    data: HTMLReportData,
+    userEmail: string,
+  ): Promise<void> {
+    try {
+      // Generate HTML content
+      const htmlContent = this.generateHTMLContent(data);
+
+      // Create email data
+      const emailData: EmailData = {
+        to: userEmail,
+        subject: `${data.language === "ro" ? "Raportul tău de îngrijire a pielii" : "Your Skin Care Report"} - Skin Studio`,
+        htmlContent: htmlContent,
+        userName: data.userName,
+        quizTitle: data.quizTitle,
+        score: data.score,
+        date: data.date,
+        language: data.language,
+      };
+
+      // Send to user
+      await EmailService.sendToUser(emailData);
+    } catch (error) {
+      ErrorLogger.log(error as Error, "Send Report to User Email");
+      throw new Error(
+        `Failed to send report to user email: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
+  }
+
+  /**
+   * Generate HTML content for the report
+   * @param data - Report data
+   * @returns HTML string
+   */
+  private static generateHTMLContent(data: HTMLReportData): string {
+    // Get localized result text
+    let localizedResult = data.resultText || "No result text available";
+    if (data.quizResult && typeof data.quizResult.text !== "undefined") {
+      if (typeof data.quizResult.text === "string") {
+        localizedResult = data.quizResult.text;
+      } else {
+        localizedResult =
+          data.quizResult.text[data.language || "ro"] ||
+          data.resultText ||
+          "No result text available";
+      }
     }
 
-    /**
-     * Send report to Skin Studio email
-     * @param data - Report data
-     */
-    public static async sendToSkinStudio(data: HTMLReportData): Promise<void> {
-        try {
-            // For now, we'll simulate sending to Skin Studio
-            // In a real implementation, this would send an email
-            console.log('Sending report to Skin Studio:', {
-                userName: data.userName,
-                quizTitle: data.quizTitle,
-                score: data.score,
-                date: data.date,
-                language: data.language
-            });
+    // Parse result text to separate sections
+    const lines = localizedResult.split("\n");
+    const skinTypeLine = lines[0] || "No skin type information available";
 
-            // Simulate network delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+    // Parse the result text into structured sections
+    const resultSections = this.parseResultText(localizedResult);
 
-            // In a real implementation, you would call:
-            // const emailData: EmailData = {
-            //     to: '', // Will be set by EmailService
-            //     subject: `Quiz Report - ${data.userName} - ${data.quizTitle}`,
-            //     htmlContent: this.generateHTMLContent(data),
-            //     userName: data.userName,
-            //     quizTitle: data.quizTitle,
-            //     score: data.score,
-            //     date: data.date,
-            //     language: data.language
-            // };
-            // await EmailService.sendToSkinStudio(emailData);
+    // Import translations for medical disclaimer and scientific references
+    const { translations } = require("../translations");
+    const currentTranslations = translations[data.language || "ro"];
 
-        } catch (error) {
-            ErrorLogger.log(error as Error, 'Send Report to Skin Studio');
-            throw new Error(`Failed to send report to Skin Studio: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        }
-    }
+    const t = {
+      ro: {
+        reportFor: "Raport pentru:",
+        testCompleted: "Test completat:",
+        scoreObtained: "Scor obținut:",
+        testResult: "Rezultatul Testului:",
+        scientificRefs: "📚 Referințe Științifice:",
+        skinType: "Tipul de Piele:",
+        aging: "Îmbătrânirea Pielii:",
+        lifestyle: "Stilul de Viață:",
+        ingredients: "Ingrediente Recomandate:",
+        additionalNotes: "Note Adiționale:",
+        professionalAdvice: "Sfaturi Profesionale:",
+        date: "Data:",
+        subtitle: "Raport Personalizat de Îngrijire a Pielii",
+        printReport: "Imprimați Raportul",
+        closeWindow: "Închideți Fereastra",
+        sendToEmail: "Trimiteți pe Email",
+        sendToSkinStudio: "Trimiteți la Skin Studio",
+        enterEmail: "Introduceți adresa de email:",
+        enterContactInfo: "Informații de contact:",
+        nameLabel: "Numele complet:",
+        emailLabel: "Email:",
+        phoneLabel: "Telefon (opțional):",
+        messageLabel: "Mesaj (opțional):",
+        subscribeUpdates:
+          "Vreau să primesc actualizări și oferte de la Skin Studio",
+        sendButton: "Trimiteți",
+        sending: "Se trimite...",
+        sentSuccess: "Raport trimis cu succes!",
+        sentError: "Eroare la trimiterea raportului.",
+        emailRequired: "Adresa de email este obligatorie.",
+        nameRequired: "Numele este obligatoriu.",
+        contactInfoRequired: "Informațiile de contact sunt obligatorii.",
+        recommendations: "Recomandări Personalizate:",
+        naturalProducts: "Produse Naturale Recomandate:",
+        dailyRoutine: "Rutina Zilnică:",
+        lifestyleTips: "Sfaturi pentru Stilul de Viață:",
+        ingredientsToAvoid: "Ingrediente de Evitat:",
+        medicalDisclaimer:
+          currentTranslations.quizResultForm.medicalDisclaimer.title,
+        medicalDisclaimerText:
+          currentTranslations.quizResultForm.medicalDisclaimer.text,
+        scientificReferences:
+          currentTranslations.quiz.scientificReferences.title,
+        agingStudies:
+          currentTranslations.quiz.scientificReferences.agingStudies,
+        skinTypeStudies:
+          currentTranslations.quiz.scientificReferences.skinTypeStudies,
+      },
+      en: {
+        reportFor: "Report for:",
+        testCompleted: "Test completed:",
+        scoreObtained: "Score obtained:",
+        testResult: "Test Result:",
+        scientificRefs: "📚 Scientific References:",
+        skinType: "Skin Type:",
+        aging: "Skin Aging:",
+        lifestyle: "Lifestyle:",
+        ingredients: "Recommended Ingredients:",
+        additionalNotes: "Additional Notes:",
+        professionalAdvice: "Professional Advice:",
+        date: "Date:",
+        subtitle: "Personalized Skin Care Report",
+        printReport: "Print Report",
+        closeWindow: "Close Window",
+        sendToEmail: "Send to Email",
+        sendToSkinStudio: "Send to Skin Studio",
+        enterEmail: "Enter email address:",
+        enterContactInfo: "Contact Information:",
+        nameLabel: "Full Name:",
+        emailLabel: "Email:",
+        phoneLabel: "Phone (optional):",
+        messageLabel: "Message (optional):",
+        subscribeUpdates:
+          "I want to receive updates and offers from Skin Studio",
+        sendButton: "Send",
+        sending: "Sending...",
+        sentSuccess: "Report sent successfully!",
+        sentError: "Error sending report.",
+        emailRequired: "Email address is required.",
+        nameRequired: "Name is required.",
+        contactInfoRequired: "Contact information is required.",
+        recommendations: "Personalized Recommendations:",
+        naturalProducts: "Recommended Natural Products:",
+        dailyRoutine: "Daily Routine:",
+        lifestyleTips: "Lifestyle Tips:",
+        ingredientsToAvoid: "Ingredients to Avoid:",
+        medicalDisclaimer:
+          currentTranslations.quizResultForm.medicalDisclaimer.title,
+        medicalDisclaimerText:
+          currentTranslations.quizResultForm.medicalDisclaimer.text,
+        scientificReferences:
+          currentTranslations.quiz.scientificReferences.title,
+        agingStudies:
+          currentTranslations.quiz.scientificReferences.agingStudies,
+        skinTypeStudies:
+          currentTranslations.quiz.scientificReferences.skinTypeStudies,
+      },
+    };
 
-    /**
-     * Send report to user's email
-     * @param data - Report data
-     * @param userEmail - User's email address
-     */
-    public static async sendToUserEmail(data: HTMLReportData, userEmail: string): Promise<void> {
-        try {
-            // Generate HTML content
-            const htmlContent = this.generateHTMLContent(data);
+    const currentT = t[data.language || "ro"];
 
-            // Create email data
-            const emailData: EmailData = {
-                to: userEmail,
-                subject: `${data.language === 'ro' ? 'Raportul tău de îngrijire a pielii' : 'Your Skin Care Report'} - Skin Studio`,
-                htmlContent: htmlContent,
-                userName: data.userName,
-                quizTitle: data.quizTitle,
-                score: data.score,
-                date: data.date,
-                language: data.language
-            };
-
-            // Send to user
-            await EmailService.sendToUser(emailData);
-
-        } catch (error) {
-            ErrorLogger.log(error as Error, 'Send Report to User Email');
-            throw new Error(`Failed to send report to user email: ${error instanceof Error ? error.message : 'Unknown error'}`);
-        }
-    }
-
-    /**
-     * Generate HTML content for the report
-     * @param data - Report data
-     * @returns HTML string
-     */
-    private static generateHTMLContent(data: HTMLReportData): string {
-        // Get localized result text
-        let localizedResult = data.resultText || 'No result text available';
-        if (data.quizResult && typeof data.quizResult.text !== 'undefined') {
-            if (typeof data.quizResult.text === 'string') {
-                localizedResult = data.quizResult.text;
-            } else {
-                localizedResult = data.quizResult.text[data.language || 'ro'] || data.resultText || 'No result text available';
-            }
-        }
-
-        // Parse result text to separate sections
-        const lines = localizedResult.split('\n');
-        const skinTypeLine = lines[0] || 'No skin type information available';
-
-        // Parse the result text into structured sections
-        const resultSections = this.parseResultText(localizedResult);
-
-        // Import translations for medical disclaimer and scientific references
-        const { translations } = require('../translations');
-        const currentTranslations = translations[data.language || 'ro'];
-
-        const t = {
-            ro: {
-                reportFor: 'Raport pentru:',
-                testCompleted: 'Test completat:',
-                scoreObtained: 'Scor obținut:',
-                testResult: 'Rezultatul Testului:',
-                scientificRefs: '📚 Referințe Științifice:',
-                skinType: 'Tipul de Piele:',
-                aging: 'Îmbătrânirea Pielii:',
-                lifestyle: 'Stilul de Viață:',
-                ingredients: 'Ingrediente Recomandate:',
-                additionalNotes: 'Note Adiționale:',
-                professionalAdvice: 'Sfaturi Profesionale:',
-                date: 'Data:',
-                subtitle: 'Raport Personalizat de Îngrijire a Pielii',
-                printReport: 'Imprimați Raportul',
-                closeWindow: 'Închideți Fereastra',
-                sendToEmail: 'Trimiteți pe Email',
-                sendToSkinStudio: 'Trimiteți la Skin Studio',
-                enterEmail: 'Introduceți adresa de email:',
-                enterContactInfo: 'Informații de contact:',
-                nameLabel: 'Numele complet:',
-                emailLabel: 'Email:',
-                phoneLabel: 'Telefon (opțional):',
-                messageLabel: 'Mesaj (opțional):',
-                subscribeUpdates: 'Vreau să primesc actualizări și oferte de la Skin Studio',
-                sendButton: 'Trimiteți',
-                sending: 'Se trimite...',
-                sentSuccess: 'Raport trimis cu succes!',
-                sentError: 'Eroare la trimiterea raportului.',
-                emailRequired: 'Adresa de email este obligatorie.',
-                nameRequired: 'Numele este obligatoriu.',
-                contactInfoRequired: 'Informațiile de contact sunt obligatorii.',
-                recommendations: 'Recomandări Personalizate:',
-                naturalProducts: 'Produse Naturale Recomandate:',
-                dailyRoutine: 'Rutina Zilnică:',
-                lifestyleTips: 'Sfaturi pentru Stilul de Viață:',
-                ingredientsToAvoid: 'Ingrediente de Evitat:',
-                medicalDisclaimer: currentTranslations.quizResultForm.medicalDisclaimer.title,
-                medicalDisclaimerText: currentTranslations.quizResultForm.medicalDisclaimer.text,
-                scientificReferences: currentTranslations.quiz.scientificReferences.title,
-                agingStudies: currentTranslations.quiz.scientificReferences.agingStudies,
-                skinTypeStudies: currentTranslations.quiz.scientificReferences.skinTypeStudies
-            },
-            en: {
-                reportFor: 'Report for:',
-                testCompleted: 'Test completed:',
-                scoreObtained: 'Score obtained:',
-                testResult: 'Test Result:',
-                scientificRefs: '📚 Scientific References:',
-                skinType: 'Skin Type:',
-                aging: 'Skin Aging:',
-                lifestyle: 'Lifestyle:',
-                ingredients: 'Recommended Ingredients:',
-                additionalNotes: 'Additional Notes:',
-                professionalAdvice: 'Professional Advice:',
-                date: 'Date:',
-                subtitle: 'Personalized Skin Care Report',
-                printReport: 'Print Report',
-                closeWindow: 'Close Window',
-                sendToEmail: 'Send to Email',
-                sendToSkinStudio: 'Send to Skin Studio',
-                enterEmail: 'Enter email address:',
-                enterContactInfo: 'Contact Information:',
-                nameLabel: 'Full Name:',
-                emailLabel: 'Email:',
-                phoneLabel: 'Phone (optional):',
-                messageLabel: 'Message (optional):',
-                subscribeUpdates: 'I want to receive updates and offers from Skin Studio',
-                sendButton: 'Send',
-                sending: 'Sending...',
-                sentSuccess: 'Report sent successfully!',
-                sentError: 'Error sending report.',
-                emailRequired: 'Email address is required.',
-                nameRequired: 'Name is required.',
-                contactInfoRequired: 'Contact information is required.',
-                recommendations: 'Personalized Recommendations:',
-                naturalProducts: 'Recommended Natural Products:',
-                dailyRoutine: 'Daily Routine:',
-                lifestyleTips: 'Lifestyle Tips:',
-                ingredientsToAvoid: 'Ingredients to Avoid:',
-                medicalDisclaimer: currentTranslations.quizResultForm.medicalDisclaimer.title,
-                medicalDisclaimerText: currentTranslations.quizResultForm.medicalDisclaimer.text,
-                scientificReferences: currentTranslations.quiz.scientificReferences.title,
-                agingStudies: currentTranslations.quiz.scientificReferences.agingStudies,
-                skinTypeStudies: currentTranslations.quiz.scientificReferences.skinTypeStudies
-            }
-        };
-
-        const currentT = t[data.language || 'ro'];
-
-        // Create a simple test HTML to see if basic generation works
-        const simpleTestHTML = `
+    // Create a simple test HTML to see if basic generation works
+    const simpleTestHTML = `
 <!DOCTYPE html>
-<html lang="${data.language || 'ro'}">
+<html lang="${data.language || "ro"}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skin Studio - ${data.quizTitle || 'Quiz'} Report</title>
+    <title>Skin Studio - ${data.quizTitle || "Quiz"} Report</title>
     
     <!-- EmailJS for email functionality -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -610,9 +633,9 @@ export class HTMLReportService {
         </div>
 
         <div class="section">
-            <h2>${currentT.reportFor} ${data.userName || 'User'}</h2>
+            <h2>${currentT.reportFor} ${data.userName || "User"}</h2>
             <div class="info-box">
-                <p><strong>${currentT.testCompleted}</strong> ${data.quizTitle || 'Quiz'}</p>
+                <p><strong>${currentT.testCompleted}</strong> ${data.quizTitle || "Quiz"}</p>
                 <p><strong>${currentT.scoreObtained}</strong> ${data.score || 0}</p>
             </div>
         </div>
@@ -623,42 +646,55 @@ export class HTMLReportService {
             <!-- Skin Type Result -->
             <div class="result-section">
                 <h3>${skinTypeLine}</h3>
-                ${resultSections.description ? `<p>${resultSections.description}</p>` : ''}
+                ${resultSections.description ? `<p>${resultSections.description}</p>` : ""}
             </div>
             
             <!-- Recommendations from Quiz Result -->
-            ${resultSections.recommendations ? `
+            ${
+              resultSections.recommendations
+                ? `
             <div class="recommendations-section">
                 <h3>${currentT.recommendations}</h3>
                 <ul>
-                    ${resultSections.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    ${resultSections.recommendations.map((rec) => `<li>${rec}</li>`).join("")}
                 </ul>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
             
             <!-- Natural Products Recommendations (only for relevant quiz types) -->
             ${this.generateNaturalProductsSection(data, currentT)}
             
             <!-- Scientific References from Quiz Result (only if not already in dedicated section) -->
-            ${resultSections.references && !this.shouldShowDedicatedScientificSection(data) ? `
+            ${
+              resultSections.references &&
+              !this.shouldShowDedicatedScientificSection(data)
+                ? `
             <div class="scientific-refs">
                 <h3>${currentT.scientificRefs}</h3>
                 <ul>
-                    ${resultSections.references.map(ref => `<li>${ref}</li>`).join('')}
+                    ${resultSections.references.map((ref) => `<li>${ref}</li>`).join("")}
                 </ul>
             </div>
-            ` : ''}
+            `
+                : ""
+            }
         </div>
 
         <!-- Dedicated Scientific References Section (only for specific quiz types) -->
-        ${this.shouldShowDedicatedScientificSection(data) ? `
+        ${
+          this.shouldShowDedicatedScientificSection(data)
+            ? `
         <div class="section">
             <h2>${currentT.scientificReferences}</h2>
             <div class="info-box">
                 ${this.generateScientificReferencesSection(data, currentT)}
             </div>
         </div>
-        ` : ''}
+        `
+            : ""
+        }
 
         <!-- Medical Disclaimer Section -->
         <div class="section">
@@ -706,7 +742,7 @@ export class HTMLReportService {
                 <div class="form-group checkbox-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="subscribeUpdates">
-                        <span class="checkbox-text">${data.language === 'ro' ? 'Accept să primesc conținut personalizat de la Skin Studio' : 'I accept to receive personalized content from Skin Studio'}</span>
+                        <span class="checkbox-text">${data.language === "ro" ? "Accept să primesc conținut personalizat de la Skin Studio" : "I accept to receive personalized content from Skin Studio"}</span>
                     </label>
                 </div>
                 <div class="form-group">
@@ -773,7 +809,7 @@ export class HTMLReportService {
                     quizTitle: '${data.quizTitle}',
                     score: ${data.score},
                     date: '${data.date}',
-                    language: '${data.language || 'ro'}',
+                    language: '${data.language || "ro"}',
                     htmlContent: document.documentElement.outerHTML
                 };
 
@@ -870,7 +906,7 @@ export class HTMLReportService {
                     quiz_score: ${data.score},
                     quiz_result: reportContent,
                     date: '${data.date}',
-                    language: '${data.language || 'ro'}',
+                    language: '${data.language || "ro"}',
                     'g-recaptcha-response': recaptchaResponse
                 };
 
@@ -903,7 +939,7 @@ export class HTMLReportService {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'skin-studio-report-${data.userName}-${new Date().toISOString().split('T')[0]}.html';
+            a.download = 'skin-studio-report-${data.userName}-${new Date().toISOString().split("T")[0]}.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -921,227 +957,275 @@ export class HTMLReportService {
 </body>
 </html>`;
 
-        return simpleTestHTML;
+    return simpleTestHTML;
+  }
+
+  /**
+   * Parse result text into structured sections
+   */
+  private static parseResultText(resultText: string): {
+    description: string;
+    recommendations: string[];
+    references: string[];
+  } {
+    const lines = resultText
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+
+    let description = "";
+    const recommendations: string[] = [];
+    const references: string[] = [];
+
+    let currentSection = "description";
+
+    for (const line of lines) {
+      if (line.includes("•") && !line.includes("📚")) {
+        // This is a recommendation
+        recommendations.push(line.replace(/^•\s*/, ""));
+      } else if (
+        line.includes("📚") ||
+        line.includes("Scientific references") ||
+        line.includes("Referințe științifice")
+      ) {
+        currentSection = "references";
+      } else if (currentSection === "references" && line.includes("•")) {
+        // This is a reference
+        references.push(line.replace(/^•\s*/, ""));
+      } else if (
+        currentSection === "description" &&
+        !line.includes("📚") &&
+        !line.includes("Scientific references") &&
+        !line.includes("Referințe științifice")
+      ) {
+        // This is part of the description
+        if (description) {
+          description += " " + line;
+        } else {
+          description = line;
+        }
+      }
     }
 
-    /**
-     * Parse result text into structured sections
-     */
-    private static parseResultText(resultText: string): {
-        description: string;
-        recommendations: string[];
-        references: string[];
-    } {
-        const lines = resultText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    return {
+      description,
+      recommendations,
+      references,
+    };
+  }
 
-        let description = '';
-        const recommendations: string[] = [];
-        const references: string[] = [];
+  /**
+   * Generate natural products recommendations section
+   */
+  private static generateNaturalProductsSection(
+    data: HTMLReportData,
+    currentT: any,
+  ): string {
+    // Import the recommendations data
+    const {
+      SKIN_TYPE_RECOMMENDATIONS,
+      AGING_RECOMMENDATIONS,
+      getAgingCategoryFromScore,
+    } = require("../data/skinCareRecommendations");
 
-        let currentSection = 'description';
+    let skinRecommendation = null;
+    let agingRecommendation = null;
 
-        for (const line of lines) {
-            if (line.includes('•') && !line.includes('📚')) {
-                // This is a recommendation
-                recommendations.push(line.replace(/^•\s*/, ''));
-            } else if (line.includes('📚') || line.includes('Scientific references') || line.includes('Referințe științifice')) {
-                currentSection = 'references';
-            } else if (currentSection === 'references' && line.includes('•')) {
-                // This is a reference
-                references.push(line.replace(/^•\s*/, ''));
-            } else if (currentSection === 'description' && !line.includes('📚') && !line.includes('Scientific references') && !line.includes('Referințe științifice')) {
-                // This is part of the description
-                if (description) {
-                    description += ' ' + line;
-                } else {
-                    description = line;
-                }
-            }
-        }
+    // Determine quiz type and get appropriate recommendations
+    const isAgingQuiz =
+      data.quizTitle?.toLowerCase().includes("aging") ||
+      data.quizTitle?.toLowerCase().includes("îmbătrânire");
+    const isSkinTypeQuiz =
+      data.quizTitle?.toLowerCase().includes("skin type") ||
+      data.quizTitle?.toLowerCase().includes("tip de piele");
 
-        return {
-            description,
-            recommendations,
-            references
-        };
+    // Only show skin type recommendations for skin type quiz
+    if (isSkinTypeQuiz) {
+      const skinType = this.getSkinTypeFromResult(data.resultText);
+      skinRecommendation =
+        SKIN_TYPE_RECOMMENDATIONS[skinType]?.[data.language || "ro"];
     }
 
-    /**
-     * Generate natural products recommendations section
-     */
-    private static generateNaturalProductsSection(data: HTMLReportData, currentT: any): string {
-        // Import the recommendations data
-        const { SKIN_TYPE_RECOMMENDATIONS, AGING_RECOMMENDATIONS, getAgingCategoryFromScore } = require('../data/skinCareRecommendations');
+    // Only show aging recommendations for aging quiz
+    if (isAgingQuiz) {
+      const agingCategory = getAgingCategoryFromScore(data.score);
+      agingRecommendation =
+        AGING_RECOMMENDATIONS[agingCategory]?.[data.language || "ro"];
+    }
 
-        let skinRecommendation = null;
-        let agingRecommendation = null;
+    let html = "";
 
-        // Determine quiz type and get appropriate recommendations
-        const isAgingQuiz = data.quizTitle?.toLowerCase().includes('aging') || data.quizTitle?.toLowerCase().includes('îmbătrânire');
-        const isSkinTypeQuiz = data.quizTitle?.toLowerCase().includes('skin type') || data.quizTitle?.toLowerCase().includes('tip de piele');
-
-        // Only show skin type recommendations for skin type quiz
-        if (isSkinTypeQuiz) {
-            const skinType = this.getSkinTypeFromResult(data.resultText);
-            skinRecommendation = SKIN_TYPE_RECOMMENDATIONS[skinType]?.[data.language || 'ro'];
-        }
-
-        // Only show aging recommendations for aging quiz
-        if (isAgingQuiz) {
-            const agingCategory = getAgingCategoryFromScore(data.score);
-            agingRecommendation = AGING_RECOMMENDATIONS[agingCategory]?.[data.language || 'ro'];
-        }
-
-        let html = '';
-
-        // Show skin type recommendations only for skin type quiz
-        if (skinRecommendation && isSkinTypeQuiz) {
-            html += `
+    // Show skin type recommendations only for skin type quiz
+    if (skinRecommendation && isSkinTypeQuiz) {
+      html += `
             <div class="natural-products-section">
                 <h3>${currentT.naturalProducts} - ${currentT.skinType}</h3>
                 
                 <div class="recommendations-section">
                     <h4>${currentT.dailyRoutine}</h4>
                     <ul>
-                        ${skinRecommendation.dailyRoutine.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${skinRecommendation.dailyRoutine.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
                 
                 <div class="recommendations-section">
                     <h4>${currentT.ingredients}</h4>
                     <ul>
-                        ${skinRecommendation.ingredients.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${skinRecommendation.ingredients.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
                 
                 <div class="lifestyle-section">
                     <h4>${currentT.lifestyleTips}</h4>
                     <ul>
-                        ${skinRecommendation.lifestyleTips.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${skinRecommendation.lifestyleTips.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
                 
                 <div class="lifestyle-section">
                     <h4>${currentT.ingredientsToAvoid}</h4>
                     <ul>
-                        ${skinRecommendation.avoidIngredients.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${skinRecommendation.avoidIngredients.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
             </div>`;
-        }
+    }
 
-        // Show aging recommendations only for aging quiz
-        if (agingRecommendation && isAgingQuiz) {
-            html += `
+    // Show aging recommendations only for aging quiz
+    if (agingRecommendation && isAgingQuiz) {
+      html += `
             <div class="natural-products-section">
                 <h3>${currentT.naturalProducts} - ${currentT.aging}</h3>
                 
                 <div class="recommendations-section">
                     <h4>${currentT.dailyRoutine}</h4>
                     <ul>
-                        ${agingRecommendation.antiAgingRoutine.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${agingRecommendation.antiAgingRoutine.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
                 
                 <div class="lifestyle-section">
                     <h4>${currentT.lifestyleTips}</h4>
                     <ul>
-                        ${agingRecommendation.lifestyleChanges.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${agingRecommendation.lifestyleChanges.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
                 
-                ${agingRecommendation.professionalTreatments ? `
+                ${
+                  agingRecommendation.professionalTreatments
+                    ? `
                 <div class="lifestyle-section">
-                    <h4>${data.language === 'ro' ? 'Tratamente Profesionale' : 'Professional Treatments'}</h4>
+                    <h4>${data.language === "ro" ? "Tratamente Profesionale" : "Professional Treatments"}</h4>
                     <ul>
-                        ${agingRecommendation.professionalTreatments.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${agingRecommendation.professionalTreatments.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
                 
-                ${agingRecommendation.preventionTips ? `
+                ${
+                  agingRecommendation.preventionTips
+                    ? `
                 <div class="lifestyle-section">
-                    <h4>${data.language === 'ro' ? 'Sfaturi de Prevenție' : 'Prevention Tips'}</h4>
+                    <h4>${data.language === "ro" ? "Sfaturi de Prevenție" : "Prevention Tips"}</h4>
                     <ul>
-                        ${agingRecommendation.preventionTips.map((item: string) => `<li>${item}</li>`).join('')}
+                        ${agingRecommendation.preventionTips.map((item: string) => `<li>${item}</li>`).join("")}
                     </ul>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
             </div>`;
-        }
-
-        return html;
     }
 
-    /**
-     * Generate scientific references section
-     */
-    private static generateScientificReferencesSection(data: HTMLReportData, currentT: any): string {
-        let html = '';
+    return html;
+  }
 
-        // Determine which studies to show based on quiz type
-        const isAgingQuiz = data.quizTitle?.toLowerCase().includes('aging') || data.quizTitle?.toLowerCase().includes('îmbătrânire');
-        const isSkinTypeQuiz = data.quizTitle?.toLowerCase().includes('skin type') || data.quizTitle?.toLowerCase().includes('tip de piele');
+  /**
+   * Generate scientific references section
+   */
+  private static generateScientificReferencesSection(
+    data: HTMLReportData,
+    currentT: any,
+  ): string {
+    let html = "";
 
-        // Show aging studies only for aging quiz
-        if (isAgingQuiz) {
-            html += `
+    // Determine which studies to show based on quiz type
+    const isAgingQuiz =
+      data.quizTitle?.toLowerCase().includes("aging") ||
+      data.quizTitle?.toLowerCase().includes("îmbătrânire");
+    const isSkinTypeQuiz =
+      data.quizTitle?.toLowerCase().includes("skin type") ||
+      data.quizTitle?.toLowerCase().includes("tip de piele");
+
+    // Show aging studies only for aging quiz
+    if (isAgingQuiz) {
+      html += `
             <div style="margin-bottom: 20px;">
-                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === 'ro' ? 'Studii de Îmbătrânire' : 'Aging Studies'}</h4>
+                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === "ro" ? "Studii de Îmbătrânire" : "Aging Studies"}</h4>
                 <ul style="padding-left: 20px;">
-                    ${currentT.agingStudies.map((study: string) => `<li style="margin-bottom: 8px; color: #555;">${study}</li>`).join('')}
+                    ${currentT.agingStudies.map((study: string) => `<li style="margin-bottom: 8px; color: #555;">${study}</li>`).join("")}
                 </ul>
             </div>`;
-        }
+    }
 
-        // Show skin type studies only for skin type quiz
-        if (isSkinTypeQuiz) {
-            html += `
+    // Show skin type studies only for skin type quiz
+    if (isSkinTypeQuiz) {
+      html += `
             <div style="margin-bottom: 20px;">
-                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === 'ro' ? 'Studii de Tip de Piele' : 'Skin Type Studies'}</h4>
+                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === "ro" ? "Studii de Tip de Piele" : "Skin Type Studies"}</h4>
                 <ul style="padding-left: 20px;">
-                    ${currentT.skinTypeStudies.map((study: string) => `<li style="margin-bottom: 8px; color: #555;">${study}</li>`).join('')}
+                    ${currentT.skinTypeStudies.map((study: string) => `<li style="margin-bottom: 8px; color: #555;">${study}</li>`).join("")}
                 </ul>
             </div>`;
-        }
+    }
 
-        // For other quiz types (like non-toxic), show a general scientific reference
-        if (!isAgingQuiz && !isSkinTypeQuiz) {
-            html += `
+    // For other quiz types (like non-toxic), show a general scientific reference
+    if (!isAgingQuiz && !isSkinTypeQuiz) {
+      html += `
             <div style="margin-bottom: 20px;">
-                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === 'ro' ? 'Studii Științifice' : 'Scientific Studies'}</h4>
+                <h4 style="color: #2c3e50; margin-bottom: 10px;">${data.language === "ro" ? "Studii Științifice" : "Scientific Studies"}</h4>
                 <ul style="padding-left: 20px;">
-                    <li style="margin-bottom: 8px; color: #555;">${data.language === 'ro' ? 'Studii de siguranță a ingredientelor cosmetice' : 'Cosmetic ingredient safety studies'}</li>
-                    <li style="margin-bottom: 8px; color: #555;">${data.language === 'ro' ? 'Cercetări despre efectele ingredientelor naturale asupra pielii' : 'Research on natural ingredient effects on skin'}</li>
+                    <li style="margin-bottom: 8px; color: #555;">${data.language === "ro" ? "Studii de siguranță a ingredientelor cosmetice" : "Cosmetic ingredient safety studies"}</li>
+                    <li style="margin-bottom: 8px; color: #555;">${data.language === "ro" ? "Cercetări despre efectele ingredientelor naturale asupra pielii" : "Research on natural ingredient effects on skin"}</li>
                 </ul>
             </div>`;
-        }
-
-        return html;
     }
 
-    /**
-     * Determine if a dedicated scientific references section should be shown.
-     * This is true if the quiz is an aging quiz or a skin type quiz.
-     */
-    private static shouldShowDedicatedScientificSection(data: HTMLReportData): boolean {
-        return data.quizTitle?.toLowerCase().includes('aging') || data.quizTitle?.toLowerCase().includes('îmbătrânire') ||
-            data.quizTitle?.toLowerCase().includes('skin type') || data.quizTitle?.toLowerCase().includes('tip de piele');
-    }
+    return html;
+  }
 
-    /**
-     * Get skin type from result text
-     */
-    private static getSkinTypeFromResult(resultText: string): string {
-        const lowerText = resultText.toLowerCase();
+  /**
+   * Determine if a dedicated scientific references section should be shown.
+   * This is true if the quiz is an aging quiz or a skin type quiz.
+   */
+  private static shouldShowDedicatedScientificSection(
+    data: HTMLReportData,
+  ): boolean {
+    return (
+      data.quizTitle?.toLowerCase().includes("aging") ||
+      data.quizTitle?.toLowerCase().includes("îmbătrânire") ||
+      data.quizTitle?.toLowerCase().includes("skin type") ||
+      data.quizTitle?.toLowerCase().includes("tip de piele")
+    );
+  }
 
-        if (lowerText.includes('dry') || lowerText.includes('uscat')) return 'dry';
-        if (lowerText.includes('oily') || lowerText.includes('gras')) return 'oily';
-        if (lowerText.includes('combination') || lowerText.includes('mixt')) return 'normal-mixed';
-        if (lowerText.includes('sensitive') || lowerText.includes('sensibil')) return 'sensitive';
-        if (lowerText.includes('normal') || lowerText.includes('normal')) return 'normal-mixed';
+  /**
+   * Get skin type from result text
+   */
+  private static getSkinTypeFromResult(resultText: string): string {
+    const lowerText = resultText.toLowerCase();
 
-        return 'normal-mixed'; // default
-    }
+    if (lowerText.includes("dry") || lowerText.includes("uscat")) return "dry";
+    if (lowerText.includes("oily") || lowerText.includes("gras")) return "oily";
+    if (lowerText.includes("combination") || lowerText.includes("mixt"))
+      return "normal-mixed";
+    if (lowerText.includes("sensitive") || lowerText.includes("sensibil"))
+      return "sensitive";
+    if (lowerText.includes("normal") || lowerText.includes("normal"))
+      return "normal-mixed";
 
-} 
+    return "normal-mixed"; // default
+  }
+}

@@ -55,7 +55,8 @@
   },
   "devDependencies": {
     "@types/react-google-recaptcha": "^2.1.9",
-    "cypress": "^14.5.1"
+    "cypress": "^14.5.1",
+    "prettier": "^3.6.2"
   },
   "homepage": "https://skinstudio.app/"
 }

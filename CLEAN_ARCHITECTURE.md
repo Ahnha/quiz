@@ -5,6 +5,7 @@ This document outlines the clean code principles and design patterns implemented
 ## 🏗️ Architecture Overview
 
 ### **Layered Architecture**
+
 ```
 ┌─────────────────────────────────────┐
 │           Presentation Layer        │  ← Components, Pages
@@ -18,12 +19,14 @@ This document outlines the clean code principles and design patterns implemented
 ## 🎯 Design Patterns Applied
 
 ### **1. Single Responsibility Principle (SRP)**
+
 - **HeroSection**: Only displays hero content
 - **InfoSection**: Only displays info sections and features
 - **QuizService**: Only handles quiz business logic
 - **AppFooter**: Only displays footer content
 
 ### **2. Interface Segregation Principle (ISP)**
+
 ```typescript
 // PATTERN: Interface Segregation - Only expose what's needed
 interface HeroSectionProps {
@@ -36,11 +39,13 @@ interface HeroSectionProps {
 ```
 
 ### **3. Dependency Injection (DI)**
+
 - Components receive data through props
 - Custom hooks encapsulate business logic
 - Services handle complex operations
 
 ### **4. Composition over Inheritance**
+
 ```typescript
 // PATTERN: Composition Pattern - Each section is a separate component
 <HeroSection {...heroProps} />
@@ -49,29 +54,34 @@ interface HeroSectionProps {
 ```
 
 ### **5. Service Layer Pattern**
+
 ```typescript
 // PATTERN: Service Pattern - Business logic separation
 export class QuizService {
-  static calculateProgress(current: number, total: number): number
-  static findResult(quiz: QuizDef, score: number): string
-  static validateScore(score: number): boolean
+  static calculateProgress(current: number, total: number): number;
+  static findResult(quiz: QuizDef, score: number): string;
+  static validateScore(score: number): boolean;
 }
 ```
 
 ### **6. Custom Hook Pattern**
+
 ```typescript
 // PATTERN: Custom Hook - Encapsulates related state and logic
 export const useQuizNavigation = () => {
   const navigate = useNavigate();
   const [isNavigating, setIsNavigating] = useState(false);
-  
-  const navigateToQuiz = async () => { /* ... */ };
-  
+
+  const navigateToQuiz = async () => {
+    /* ... */
+  };
+
   return { navigateToQuiz, isNavigating };
 };
 ```
 
 ### **7. Data Transfer Object (DTO)**
+
 ```typescript
 // PATTERN: Data Transfer Object - Clear structure for data
 export interface InfoSectionData {
@@ -86,12 +96,13 @@ export interface FeatureItem {
 ```
 
 ### **8. Constants Pattern**
+
 ```typescript
 // PATTERN: Constants Pattern - Centralized configuration
 export const ROUTES = {
-  HOME: '/',
-  QUIZ: '/quiz',
-  BLOG: '/blog'
+  HOME: "/",
+  QUIZ: "/quiz",
+  BLOG: "/blog",
 } as const;
 ```
 
@@ -122,20 +133,23 @@ src/
 ## 🔧 Clean Code Principles
 
 ### **1. Meaningful Names**
+
 - `HeroSection` instead of `Section1`
 - `useQuizNavigation` instead of `useNav`
 - `calculateProgress` instead of `calc`
 
 ### **2. Small Functions**
+
 - Each function has a single purpose
 - Functions are under 20 lines
 - Clear input/output contracts
 
 ### **3. Comments and Documentation**
+
 ```typescript
 /**
  * Quiz Component
- * 
+ *
  * PATTERN: Single Responsibility Principle
  * - Only responsible for quiz UI and state management
  * - Business logic delegated to QuizService
@@ -143,11 +157,13 @@ src/
 ```
 
 ### **4. Error Handling**
+
 - Graceful fallbacks for missing data
 - Validation in service layer
 - Type-safe interfaces
 
 ### **5. Immutability**
+
 ```typescript
 // PATTERN: Immutability - Uses const for calculated values
 const copyrightText = `© ${currentYear} ${companyName}. Toate drepturile rezervate.`;
@@ -156,11 +172,13 @@ const copyrightText = `© ${currentYear} ${companyName}. Toate drepturile rezerv
 ## 🎨 CSS Architecture
 
 ### **Component-Specific Styles**
+
 - Each component has its own CSS file
 - Global styles for shared elements
 - CSS variables for consistent theming
 
 ### **BEM Methodology**
+
 - Block: `.hero-section`
 - Element: `.hero-title`
 - Modifier: `.hero-button:hover`
@@ -180,4 +198,4 @@ const copyrightText = `© ${currentYear} ${companyName}. Toate drepturile rezerv
 2. **Testing**: Add unit tests for services and components
 3. **Error Boundaries**: Implement error boundaries for better UX
 4. **Performance**: Add React.memo for expensive components
-5. **Accessibility**: Enhance ARIA labels and keyboard navigation 
+5. **Accessibility**: Enhance ARIA labels and keyboard navigation

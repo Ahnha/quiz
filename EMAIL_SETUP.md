@@ -20,6 +20,7 @@ This document explains how to set up email functionality for the Skin Studio qui
 2. **Configure EmailJS**:
    - Get your Service ID, Template ID, and User ID
    - Update the constants in `src/services/emailService.ts`:
+
    ```typescript
    private static readonly EMAILJS_SERVICE_ID = 'your_service_id';
    private static readonly EMAILJS_TEMPLATE_ID = 'your_template_id';
@@ -29,10 +30,14 @@ This document explains how to set up email functionality for the Skin Studio qui
 
 3. **Add EmailJS to your HTML**:
    Add this script to your `public/index.html`:
+
    ```html
-   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+   <script
+     type="text/javascript"
+     src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+   ></script>
    <script type="text/javascript">
-     (function() {
+     (function () {
        emailjs.init("your_user_id");
      })();
    </script>
@@ -47,6 +52,7 @@ This document explains how to set up email functionality for the Skin Studio qui
 ### Option 2: Backend API (For Full-Stack Apps)
 
 1. **Create API Endpoints**:
+
    ```javascript
    // /api/send-email (for general email sending)
    // /api/send-user-email (for sending reports to users)
@@ -54,65 +60,95 @@ This document explains how to set up email functionality for the Skin Studio qui
    ```
 
 2. **Use a Node.js email service**:
+
    ```bash
    npm install nodemailer
    ```
 
 3. **Example Express endpoints**:
+
    ```javascript
-   const nodemailer = require('nodemailer');
-   
+   const nodemailer = require("nodemailer");
+
    // Send report to user
-   app.post('/api/send-user-email', async (req, res) => {
+   app.post("/api/send-user-email", async (req, res) => {
      try {
-       const { email, userName, quizTitle, score, date, language, htmlContent } = req.body;
-       
+       const {
+         email,
+         userName,
+         quizTitle,
+         score,
+         date,
+         language,
+         htmlContent,
+       } = req.body;
+
        const transporter = nodemailer.createTransporter({
-         service: 'gmail',
+         service: "gmail",
          auth: {
-           user: 'your_email@gmail.com',
-           pass: 'your_app_password'
-         }
+           user: "your_email@gmail.com",
+           pass: "your_app_password",
+         },
        });
-       
+
        await transporter.sendMail({
-         from: 'your_email@gmail.com',
+         from: "your_email@gmail.com",
          to: email,
-         subject: `${language === 'ro' ? 'Raportul tău de îngrijire a pielii' : 'Your Skin Care Report'} - Skin Studio`,
-         html: htmlContent
+         subject: `${language === "ro" ? "Raportul tău de îngrijire a pielii" : "Your Skin Care Report"} - Skin Studio`,
+         html: htmlContent,
        });
-       
+
        res.json({ success: true });
      } catch (error) {
        res.status(500).json({ success: false, error: error.message });
      }
    });
-   
+
    // Send contact form to Skin Studio
-   app.post('/api/send-to-skin-studio', async (req, res) => {
+   app.post("/api/send-to-skin-studio", async (req, res) => {
      try {
-       const { name, email, phone, message, userName, quizTitle, score, date, language, htmlContent } = req.body;
-       
+       const {
+         name,
+         email,
+         phone,
+         message,
+         userName,
+         quizTitle,
+         score,
+         date,
+         language,
+         htmlContent,
+       } = req.body;
+
        const transporter = nodemailer.createTransporter({
-         service: 'gmail',
+         service: "gmail",
          auth: {
-           user: 'your_email@gmail.com',
-           pass: 'your_app_password'
-         }
+           user: "your_email@gmail.com",
+           pass: "your_app_password",
+         },
        });
-       
+
        // Generate contact email HTML
        const contactEmailHTML = generateContactEmailHTML({
-         name, email, phone, message, userName, quizTitle, score, date, language, htmlContent
+         name,
+         email,
+         phone,
+         message,
+         userName,
+         quizTitle,
+         score,
+         date,
+         language,
+         htmlContent,
        });
-       
+
        await transporter.sendMail({
-         from: 'your_email@gmail.com',
-         to: 'skinstudio@example.com', // Replace with actual Skin Studio email
+         from: "your_email@gmail.com",
+         to: "skinstudio@example.com", // Replace with actual Skin Studio email
          subject: `Contact Form - ${name} - ${quizTitle}`,
-         html: contactEmailHTML
+         html: contactEmailHTML,
        });
-       
+
        res.json({ success: true });
      } catch (error) {
        res.status(500).json({ success: false, error: error.message });
@@ -123,7 +159,9 @@ This document explains how to set up email functionality for the Skin Studio qui
 ## Configuration
 
 ### Update Skin Studio Email
+
 In `src/services/emailService.ts`, update the Skin Studio email address:
+
 ```typescript
 private static readonly SKIN_STUDIO_EMAIL = 'your_actual_skinstudio_email@example.com';
 ```
@@ -131,33 +169,40 @@ private static readonly SKIN_STUDIO_EMAIL = 'your_actual_skinstudio_email@exampl
 ### Email Templates
 
 #### Skin Studio Notification Template
+
 Subject: `Quiz Report - {{user_name}} - {{quiz_title}}`
 Body: Include the full HTML report content with user details.
 
 #### User Email Template
+
 Subject: `Your Skin Care Report - Skin Studio` (or Romanian equivalent)
 Body: Include the full HTML report content.
 
 #### Skin Studio Contact Form Template
+
 Subject: `Contact Form - {{name}} - {{quiz_title}}`
 Body: Include contact information, quiz details, and the complete report.
 
 ## New Features in HTML Report
 
 ### Contact Form Modal
+
 The HTML report now includes a "Send to Skin Studio" button that opens a modal with:
+
 - **Full Name** (required)
 - **Email** (required)
 - **Phone** (optional)
 - **Message** (optional)
 
 ### Form Validation
+
 - Name and email are required fields
 - Email format validation
 - Real-time error messages
 - Success confirmation
 
 ### User Experience
+
 - Tab navigation through form fields
 - Enter key support for quick navigation
 - Ctrl+Enter to submit the form
@@ -205,14 +250,16 @@ The HTML report now includes a "Send to Skin Studio" button that opens a modal w
 ### Debug Mode
 
 Enable debug logging in `src/services/emailService.ts`:
+
 ```typescript
-console.log('Email data:', data);
-console.log('EmailJS response:', response);
+console.log("Email data:", data);
+console.log("EmailJS response:", response);
 ```
 
 ## Support
 
 For issues with:
+
 - **EmailJS**: Check [EmailJS documentation](https://www.emailjs.com/docs/)
 - **Nodemailer**: Check [Nodemailer documentation](https://nodemailer.com/)
-- **App-specific issues**: Check the browser console and server logs 
+- **App-specific issues**: Check the browser console and server logs

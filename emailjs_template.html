@@ -1,246 +1,245 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz Report from {{from_page}}</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+      }
 
-        .email-container {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+      .email-container {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #f0f0f0;
+      }
 
-        .header h1 {
-            color: #2c3e50;
-            margin: 0;
-            font-size: 28px;
-            font-weight: 600;
-        }
+      .header h1 {
+        color: #2c3e50;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+      }
 
-        .header p {
-            color: #7f8c8d;
-            margin: 10px 0 0 0;
-            font-size: 16px;
-        }
+      .header p {
+        color: #7f8c8d;
+        margin: 10px 0 0 0;
+        font-size: 16px;
+      }
 
-        .contact-info {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border-left: 4px solid #3498db;
-        }
+      .contact-info {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        border-left: 4px solid #3498db;
+      }
 
-        .contact-info h3 {
-            color: #2c3e50;
-            margin: 0 0 15px 0;
-            font-size: 18px;
-        }
+      .contact-info h3 {
+        color: #2c3e50;
+        margin: 0 0 15px 0;
+        font-size: 18px;
+      }
 
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+      .contact-item {
+        margin-bottom: 10px;
+      }
+
+      .contact-label {
+        font-weight: 600;
+        color: #34495e;
+        font-size: 14px;
+      }
+
+      .contact-value {
+        color: #2c3e50;
+        font-size: 14px;
+        margin-top: 2px;
+      }
+
+      .quiz-summary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        text-align: center;
+      }
+
+      .quiz-summary h3 {
+        margin: 0 0 15px 0;
+        font-size: 20px;
+      }
+
+      .quiz-details {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+      }
+
+      .quiz-detail {
+        text-align: center;
+        margin: 10px;
+      }
+
+      .quiz-detail-label {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+      }
+
+      .quiz-detail-value {
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .report-section {
+        margin-top: 30px;
+      }
+
+      .report-section h3 {
+        color: #2c3e50;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 20px;
+      }
+
+      .report-content {
+        background-color: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #ecf0f1;
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 14px;
+      }
+
+      .date-info {
+        background-color: #ecf0f1;
+        border-radius: 6px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #34495e;
+      }
+
+      @media (max-width: 600px) {
         .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .contact-item {
-            margin-bottom: 10px;
-        }
-
-        .contact-label {
-            font-weight: 600;
-            color: #34495e;
-            font-size: 14px;
-        }
-
-        .contact-value {
-            color: #2c3e50;
-            font-size: 14px;
-            margin-top: 2px;
-        }
-
-        .quiz-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .quiz-summary h3 {
-            margin: 0 0 15px 0;
-            font-size: 20px;
+          grid-template-columns: 1fr;
         }
 
         .quiz-details {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+          flex-direction: column;
         }
 
-        .quiz-detail {
-            text-align: center;
-            margin: 10px;
+        .email-container {
+          padding: 20px;
         }
-
-        .quiz-detail-label {
-            font-size: 12px;
-            opacity: 0.9;
-            margin-bottom: 5px;
-        }
-
-        .quiz-detail-value {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .report-section {
-            margin-top: 30px;
-        }
-
-        .report-section h3 {
-            color: #2c3e50;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .report-content {
-            background-color: #ffffff;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-        }
-
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
-            text-align: center;
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-
-        .date-info {
-            background-color: #ecf0f1;
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #34495e;
-        }
-
-        @media (max-width: 600px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quiz-details {
-                flex-direction: column;
-            }
-
-            .email-container {
-                padding: 20px;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="email-container">
-        <!-- Header -->
-        <div class="header">
-            <h1>{{from_page}}</h1>
-            <p>Quiz Report & Contact Information</p>
-        </div>
+      <!-- Header -->
+      <div class="header">
+        <h1>{{from_page}}</h1>
+        <p>Quiz Report & Contact Information</p>
+      </div>
 
-        <!-- Date Information -->
-        <div class="date-info">
-            <strong>Report Generated:</strong> {{date}}
-        </div>
+      <!-- Date Information -->
+      <div class="date-info"><strong>Report Generated:</strong> {{date}}</div>
 
-        <!-- Contact Information -->
-        <div class="contact-info">
-            <h3>📧 Contact Information</h3>
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <div class="contact-label">Name:</div>
-                    <div class="contact-value">{{name}}</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-label">Email:</div>
-                    <div class="contact-value">{{email}}</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-label">Phone:</div>
-                    <div class="contact-value">{{phone}}</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-label">User Name:</div>
-                    <div class="contact-value">{{user_name}}</div>
-                </div>
-            </div>
-            <div style="margin-top: 15px;">
-                <div class="contact-label">Message:</div>
-                <div class="contact-value" style="margin-top: 5px; font-style: italic;">{{message}}</div>
-            </div>
+      <!-- Contact Information -->
+      <div class="contact-info">
+        <h3>📧 Contact Information</h3>
+        <div class="contact-grid">
+          <div class="contact-item">
+            <div class="contact-label">Name:</div>
+            <div class="contact-value">{{name}}</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Email:</div>
+            <div class="contact-value">{{email}}</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Phone:</div>
+            <div class="contact-value">{{phone}}</div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">User Name:</div>
+            <div class="contact-value">{{user_name}}</div>
+          </div>
         </div>
+        <div style="margin-top: 15px">
+          <div class="contact-label">Message:</div>
+          <div
+            class="contact-value"
+            style="margin-top: 5px; font-style: italic"
+          >
+            {{message}}
+          </div>
+        </div>
+      </div>
 
-        <!-- Quiz Summary -->
-        <div class="quiz-summary">
-            <h3>📊 Quiz Results</h3>
-            <div class="quiz-details">
-                <div class="quiz-detail">
-                    <div class="quiz-detail-label">Quiz Title</div>
-                    <div class="quiz-detail-value">{{quiz_title}}</div>
-                </div>
-                <div class="quiz-detail">
-                    <div class="quiz-detail-label">Score</div>
-                    <div class="quiz-detail-value">{{quiz_score}}</div>
-                </div>
-            </div>
+      <!-- Quiz Summary -->
+      <div class="quiz-summary">
+        <h3>📊 Quiz Results</h3>
+        <div class="quiz-details">
+          <div class="quiz-detail">
+            <div class="quiz-detail-label">Quiz Title</div>
+            <div class="quiz-detail-value">{{quiz_title}}</div>
+          </div>
+          <div class="quiz-detail">
+            <div class="quiz-detail-label">Score</div>
+            <div class="quiz-detail-value">{{quiz_score}}</div>
+          </div>
         </div>
+      </div>
 
-        <!-- Complete Report -->
-        <div class="report-section">
-            <h3>📋 Complete Quiz Report</h3>
-            <div class="report-content">
-                {{quiz_result}}
-            </div>
-        </div>
+      <!-- Complete Report -->
+      <div class="report-section">
+        <h3>📋 Complete Quiz Report</h3>
+        <div class="report-content">{{quiz_result}}</div>
+      </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>This report was generated from the {{from_page}} application.</p>
-            <p>Contact email: {{from_email}}</p>
-            <p style="margin-top: 10px; font-size: 12px; color: #95a5a6;">
-                © 2024 Skin Studio Quiz App. All rights reserved.
-            </p>
-        </div>
+      <!-- Footer -->
+      <div class="footer">
+        <p>This report was generated from the {{from_page}} application.</p>
+        <p>Contact email: {{from_email}}</p>
+        <p style="margin-top: 10px; font-size: 12px; color: #95a5a6">
+          © 2024 Skin Studio Quiz App. All rights reserved.
+        </p>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
