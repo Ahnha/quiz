@@ -24,11 +24,7 @@
   "theme_color": "#06B6D4",
   "background_color": "#ffffff",
   "orientation": "portrait-primary",
-  "categories": [
-    "beauty",
-    "health",
-    "lifestyle"
-  ],
+  "categories": ["beauty", "health", "lifestyle"],
   "lang": "en",
   "dir": "ltr"
 }
